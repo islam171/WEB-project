@@ -1,0 +1,41 @@
+body {
+  background-color: #0b0f14; /* Темный фон из твоего макета */
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.global-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3fcc35; /* Зеленый цвет логотипа */
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a, .auth-section a {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+}
+
+.nav-links a:hover, .auth-section a:hover {
+  color: #3fcc35;
+}
