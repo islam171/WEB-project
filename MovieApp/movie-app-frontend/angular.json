@@ -23,6 +23,26 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "favicon.ico",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/Icons",
+                "output": "/assets/Icons"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/Images",
+                "output": "/assets/Images"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets/Logo",
+                "output": "/assets/Logo"
               }
             ],
             "styles": [
