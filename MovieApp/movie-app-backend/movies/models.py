@@ -5,6 +5,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    def __str__(self):
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255) # Режиссер
