@@ -1,0 +1,19 @@
+.actors__item{
+    position: relative;
+}
+
+.actors__img{
+    height: 200px;
+}
+.image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.actors__title{
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+}

@@ -24,3 +24,12 @@ export interface Movie {
   videoUrl?: string;
   inWatchlist: boolean;
 }
+
+
+export interface IReview {
+  id: number;
+  username: string;
+  text: string;
+  rating: number;
+  timeLeft: string;
+}

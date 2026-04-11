@@ -7,7 +7,7 @@
         <div class="movie__info">
             <div class="info__top">
                 <div class="movie__title">The Housemaid (2025)</div>
-                <div class="movie__rating rating">7.2</div>
+                <app-rating [rating]="7.8"/>
             </div>
             <div class="movie__details">
                 <div class="movie__genres">
@@ -25,67 +25,12 @@
     </div>
 
     <div class="title__wrapper">
-        <div class="title">Actors</div>
-
+        <app-section-title title="Actors"/>
     </div>
-    <div class="actors">
+    <app-actor-list/>
 
-        <div class="actors__content">
-            <div class="arrow"><img src="./assets/icons/left-arrow.png" alt=""></div>
-            <div class="actors__list">
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-                <div class="actors__item">
-                    <div class="actors__img">
-                        <img class="image"
-                             src="https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420"
-                             alt="">
-                    </div>
-                    <div class="actors__title">Сидни Суини</div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="title__wrapper">
-        <div class="title">Trailer</div>
+        <app-section-title title="Trailer"/>
     </div>
 
     <div class="trailer">
@@ -96,63 +41,8 @@
     </div>
 
     <div class="title__wrapper">
-        <div class="title">Reviews</div>
+        <app-section-title title="Reviews"/>
     </div>
 
-    <div class="reviews">
-        <div class="reviews__list">
-            <div class="reviews__item">
-                <div class="reviews__image"><img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt=""></div>
-                <div class="reviews__content">
-                    <div class="reviews__top">
-                        <div class="reviews__left">
-                            <div class="reviews__username">username</div>
-                            <div class="reviews__time">20 min ago</div>
-                        </div>
-                        <div class="reviews__rating rating">
-                            7.2
-                        </div>
-                    </div>
-                    <div class="reviews__text">
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </div>
-                </div>
-            </div>
-            <div class="reviews__item">
-                <div class="reviews__image"><img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt=""></div>
-                <div class="reviews__content">
-                    <div class="reviews__top">
-                        <div class="reviews__left">
-                            <div class="reviews__username">username</div>
-                            <div class="reviews__time">20 min ago</div>
-                        </div>
-                        <div class="reviews__rating rating">
-                            7.2
-                        </div>
-                    </div>
-                    <div class="reviews__text">
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </div>
-                </div>
-            </div>
-            <div class="reviews__item">
-                <div class="reviews__image"><img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt=""></div>
-                <div class="reviews__content">
-                    <div class="reviews__top">
-                        <div class="reviews__left">
-                            <div class="reviews__username">username</div>
-                            <div class="reviews__time">20 min ago</div>
-                        </div>
-                        <div class="reviews__rating rating">
-                            7.2
-                        </div>
-                    </div>
-                    <div class="reviews__text">
-                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <app-reviews-list/>
 </div>
