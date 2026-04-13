@@ -1,8 +1,13 @@
 <div class="actors__item">
     <div class="actors__img">
-        <img class="image"
-             [src]="img"
-             alt="">
+        @if (actor?.photo) {
+            <img class="image"
+                 [src]="actor?.photo"
+                 alt="">
+        } @else {
+        <div class="image__placeholder"></div>
+            
+        }
     </div>
-    <div class="actors__title">{{title}}</div>
+    <div class="actors__title">{{ actor?.name }}</div>
 </div>

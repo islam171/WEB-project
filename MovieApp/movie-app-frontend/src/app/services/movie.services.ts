@@ -27,4 +27,8 @@ export class MovieService {
   getAllActors(): Observable<any> {
     return this.http.get<Actor[]>(this.apiUrl + '/actors/');
   }
+
+  getMovieById(id: number): Observable<any>{
+    return this.http.get<Movie>(this.apiUrl + id);
+  }
 }

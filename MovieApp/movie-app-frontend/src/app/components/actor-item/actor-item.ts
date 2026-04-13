@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Actor } from '../../models/actor.model';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   selector: 'app-actor-item',
@@ -7,6 +9,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './actor-item.css',
 })
 export class ActorItem {
-  @Input({required: true}) title!: string;
-  @Input({required: true}) img!: string;
+  @Input({ required: true }) actor: Actor | undefined;
 }
