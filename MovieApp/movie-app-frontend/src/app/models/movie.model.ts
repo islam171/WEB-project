@@ -1,3 +1,5 @@
+import {Actor} from "./actor.model";
+
 export interface Category {
   id: number;
   name: string;
@@ -23,6 +25,8 @@ export interface Movie {
   categories: Category[];
   videoUrl?: string;
   inWatchlist: boolean;
+
+  actors: Actor[]
 }
 
 
