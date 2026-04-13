@@ -27,3 +27,8 @@ class MovieSerializer(serializers.ModelSerializer):
             'rating', 'short_description', 'poster', 'backdrop',
             'videoUrl', 'description', 'categories', 'actors'
         ]
+
+class ActorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actor
+        fields = ['id', 'name', 'photo', 'popularity']

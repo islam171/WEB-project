@@ -5,6 +5,10 @@
   align-items: center;
   padding: 20px 30px;
   background-color: rgb(23, 23, 23);
+
+  max-width: 1100ёpx; /* Максимальная ширина шапки */
+  width: 100%;       /* На маленьких экранах занимает все 100% */
+  margin: 0 auto;    /* auto по бокам центрирует блок на экране */
 }
 
 .logo-icon {

@@ -8,7 +8,7 @@ import { Rating } from '../../components/rating/rating';
 @Component({
   selector: 'app-movie-details-component',
   imports: [NgOptimizedImage, ActorList, SectionTitle, ReviewsList, Rating],
-  templateUrl: './movie-details-component.html',
-  styleUrl: './movie-details-component.css',
+  templateUrl: './movie-details.component.html',
+  styleUrl: './movie-details.component.css',
 })
 export class MovieDetailsComponent {}

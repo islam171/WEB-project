@@ -5,12 +5,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-class Actor(models.Model):
-    name = models.CharField(max_length=255)
-    desc = models.CharField(max_length=1000)
-    def __str__(self):
-        return self.name
-
 class Movie(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255) # Режиссер
@@ -22,7 +16,7 @@ class Movie(models.Model):
     rating = models.CharField(max_length=10, default="0/10") # "10/10"
     short_description = models.CharField(max_length=255, blank=True, null=True)
 
-    actors = models.ManyToManyField(Actor, related_name='movies')
+    actors = models.ManyToManyField('Actor', related_name='movies')
 
 
     poster = models.URLField(blank=True, null=True) # Вертикальный постер
@@ -34,3 +28,15 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.year})"
+
+
+
+class Actor(models.Model):
+    name = models.CharField(max_length=150)
+    desc = models.CharField(max_length=1000)
+    photo = models.CharField(max_length=1000, blank=True, null=True)
+    popularity = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.name
+

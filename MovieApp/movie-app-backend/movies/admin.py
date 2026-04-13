@@ -5,6 +5,7 @@ admin.site.register(Category)
 
 # Продвинутая регистрация для фильмов
 @admin.register(Movie)
+
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'year', 'author')
     search_fields = ('title', 'author')
