@@ -1,0 +1,48 @@
+<div class="wrapper">
+    <div class="movie__content">
+        <div class="movie__img">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxhp511VdsK7-VfB_6eH-2QCF6O6OUH3x-Jg&s"
+                 alt="">
+        </div>
+        <div class="movie__info">
+            <div class="info__top">
+                <div class="movie__title">The Housemaid (2025)</div>
+                <app-rating [rating]="7.8"/>
+            </div>
+            <div class="movie__details">
+                <div class="movie__genres">
+                    <div class="genre">Action</div>
+                    <div class="genre">Mystery</div>
+                </div>
+                <div class="movie__duration">2h 11m</div>
+            </div>
+            <div class="movie__desc">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book.
+            </div>
+        </div>
+    </div>
+
+    <div class="title__wrapper">
+        <app-section-title title="Actors"/>
+    </div>
+    <app-actor-list/>
+
+    <div class="title__wrapper">
+        <app-section-title title="Trailer"/>
+    </div>
+
+    <div class="trailer">
+        <div class="trailer__video">
+            <video controls>
+            </video>
+        </div>
+    </div>
+
+    <div class="title__wrapper">
+        <app-section-title title="Reviews"/>
+    </div>
+
+    <app-reviews-list/>
+</div>

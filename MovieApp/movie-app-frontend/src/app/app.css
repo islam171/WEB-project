@@ -1,0 +1,18 @@
+/* Настройки для самого корневого элемента Angular */
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Настройки для контейнера страниц */
+.main-layout {
+  flex-grow: 1; /* Забирает всё оставшееся пространство под шапкой */
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  max-width: 1400px; /* Максимальная ширина контента */
+  width: 100%;
+  margin: 0 auto;    /* Центрируем по горизонтали */
+}
