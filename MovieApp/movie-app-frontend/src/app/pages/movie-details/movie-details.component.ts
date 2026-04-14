@@ -34,7 +34,6 @@ export class MovieDetailsComponent {
     this.movieService.getMovieById(id).subscribe({next: (data: Movie) => {
         this.movie = data;
         this.loading = false;
-        console.log(this.movie);
         this.cdr.markForCheck()
     },
     error: error => {

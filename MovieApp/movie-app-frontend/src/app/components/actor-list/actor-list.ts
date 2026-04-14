@@ -11,6 +11,4 @@ import { ActorItem } from '../actor-item/actor-item';
 export class ActorList {
   @Input() actors: Actor[] | [] = [];
 
-  label = computed(() =>console.log( this.actors))
-
 }

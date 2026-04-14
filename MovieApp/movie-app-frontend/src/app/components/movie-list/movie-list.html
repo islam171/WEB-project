@@ -1,0 +1,26 @@
+<div class="movie__list">
+    @if (movies) {
+        @for (movie of movies; track movie.id) {
+            <div class="movie__item">
+                <img [src]="movie?.poster" alt="">
+                <div class="movie__info">
+                    <div class="movie__title">
+                        <a [routerLink]="['/movies', movie.id]">{{ movie?.title }}</a>
+                    </div>
+                    <div class="tab"></div>
+                    <div class="movie__bottom">
+                        <div class="duration">{{ movie?.duration }}</div>
+                        <div class="likes">
+                            {{ movie?.likes }}
+                        </div>
+                        <div class="rating">
+                            {{ movie?.rating }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+
+</div>
