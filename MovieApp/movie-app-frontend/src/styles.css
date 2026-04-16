@@ -11,3 +11,8 @@ body {
 :root{
     --second-color: #37f500;
 }
+
+a{
+    text-decoration: none;
+    color: white;
+}

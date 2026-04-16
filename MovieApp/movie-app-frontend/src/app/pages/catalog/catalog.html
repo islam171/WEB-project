@@ -1,0 +1,44 @@
+<div class="catalog">
+    <div class="top">
+        <app-search-input (searchChanged)="onSearch($event)"/>
+        <div class="sort" [ngClass]="{'active': SortBarIsOpen}">
+            <div class="sort__inner" (click)="showSort()">
+                <div class="text">
+                    Sort By
+                </div>
+                <div class="order">{{ order() }}</div>
+
+            </div>
+            <div class="sort__list">
+                <div class="sort__item" (click)="selectOrder('Name')">Name</div>
+                <div class="sort__item" (click)="selectOrder('Rating')">Rating</div>
+                <div class="sort__item" (click)="selectOrder('Duration')">Duration</div>
+            </div>
+            <!--            <div class="arrow"></div>-->
+        </div>
+    </div>
+    <div class="title">Genres</div>
+    <div class="genres">
+        <div class="genre">
+            <input type="checkbox" name="" id="">
+            <div class="genre__text">Action</div>
+        </div>
+        <div class="genre">
+            <input type="checkbox" name="" id="">
+            <div class="genre__text">Action</div>
+        </div>
+        <div class="genre">
+            <input type="checkbox" name="" id="">
+            <div class="genre__text">Action</div>
+        </div>
+        <div class="genre">
+            <input type="checkbox" name="" id="">
+            <div class="genre__text">Action</div>
+        </div>
+    </div>
+    <section class="movies">
+        @if (movies && !loading) {
+            <app-movie-list [movies]="movies"/>
+        }
+    </section>
+</div>

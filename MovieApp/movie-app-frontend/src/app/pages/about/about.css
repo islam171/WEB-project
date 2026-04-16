@@ -1,0 +1,44 @@
+.about-container{
+    background-color: #000;
+    color: #ffff;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-top: 25px;
+    color: #fff;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    line-height: 1.8;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+.tech_text{
+    margin: 10px 0;
+    line-height: 1.5;
+
+}
+

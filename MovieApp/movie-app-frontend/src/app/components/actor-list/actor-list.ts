@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, computed, Input } from '@angular/core';
+import { Actor } from '../../models/actor.model';
 import { ActorItem } from '../actor-item/actor-item';
 
 @Component({
@@ -8,26 +9,6 @@ import { ActorItem } from '../actor-item/actor-item';
   styleUrl: './actor-list.css',
 })
 export class ActorList {
-  actors = [
-    {
-      id: '1',
-      name: 'Actor 1',
-      img: 'https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420',
-    },
-    {
-      id: '1',
-      name: 'Actor 1',
-      img: 'https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420',
-    },
-    {
-      id: '1',
-      name: 'Actor 1',
-      img: 'https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420',
-    },
-    {
-      id: '1',
-      name: 'Actor 1',
-      img: 'https://avatars.mds.yandex.net/get-kinopoisk-image/4486362/3b9759cf-6c81-4f6c-92f3-c44f25621e35/280x420',
-    },
-  ];
+  @Input() actors: Actor[] | [] = [];
+
 }

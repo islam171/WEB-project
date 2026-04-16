@@ -7,14 +7,10 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id', 'name']
 
-
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = [
-            'id', 'name', 'desc',
-        ]
-
+        fields = ['id', 'name', 'photo', 'popularity', 'desc']
 
 class MovieSerializer(serializers.ModelSerializer):
     categories = CategorySerializer(many=True, read_only=True)
@@ -28,7 +24,3 @@ class MovieSerializer(serializers.ModelSerializer):
             'videoUrl', 'description', 'categories', 'actors'
         ]
 
-class ActorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Actor
-        fields = ['id', 'name', 'photo', 'popularity']
