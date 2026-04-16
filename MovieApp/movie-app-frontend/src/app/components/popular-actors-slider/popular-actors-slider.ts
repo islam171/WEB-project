@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../../services/movie.services';
 import { Actor } from '../../models/actor.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-popular-actors-slider',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './popular-actors-slider.html',
   styleUrls: ['./popular-actors-slider.css'],
 })

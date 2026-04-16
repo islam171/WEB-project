@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 50px;
   position: relative;
 }
 
@@ -15,6 +14,20 @@
   border-radius: 15px;
   overflow: hidden;
   position: relative;
+
+  opacity: 1;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.movie-banner.fading {
+  opacity: 0;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
 .overlay {
@@ -29,7 +42,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  gap: 40px;
+  gap: 20px;
   width: 100%;
   padding: 20px 50px;
 }
@@ -50,7 +63,8 @@
 
 .movie-title {
   font-size: 32px;
-  margin: 0 0 15px 0; /* Только отступ снизу */
+  max-width: 600px;
+  margin: 0;
 }
 
 .stats {
@@ -71,16 +85,22 @@
 }
 
 .watchlist-add {
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.watchlist-add:hover {
+  transform: scale(1.1);
 }
 
 .watchlist-add img {
-  width: 120px;
+  width: 40px;
   filter: invert(1);
 }
 
@@ -90,10 +110,16 @@
   cursor: pointer;
   z-index: 10;
   padding: 20px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
 }
 .arrow-btn img {
   width: 60px;
   filter: invert(1);
+}
+
+.arrow-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .arrow-btn.right img{

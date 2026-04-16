@@ -15,6 +15,8 @@ export class PopularMoviesComponent implements OnInit {
   currentMovie: Movie | null = null;
   isLoading = true;
 
+  isFading: boolean = false;
+
   constructor(
     private movieService: MovieService,
     private cdr: ChangeDetectorRef,
@@ -43,20 +45,44 @@ export class PopularMoviesComponent implements OnInit {
   }
 
   nextMovie(): void {
-    if (this.popularMovies.length > 0) {
-      this.currentMovieIndex = (this.currentMovieIndex + 1) % this.popularMovies.length;
-      this.updateCurrentMovie();
+    if (this.isFading) return;
+
+    this.isFading = true;
+
+    setTimeout(() => {
+      if (this.popularMovies.length > 0) {
+        this.currentMovieIndex = (this.currentMovieIndex + 1) % this.popularMovies.length;
+        this.updateCurrentMovie();
+        this.cdr.detectChanges();
+      }
+
+      this.isFading = false;
+
       this.cdr.detectChanges();
-    }
+
+    }, 150);
+
+
   }
 
   prevMovie(): void {
-    if (this.popularMovies.length > 0) {
-      this.currentMovieIndex =
-        (this.currentMovieIndex - 1 + this.popularMovies.length) % this.popularMovies.length;
-      this.updateCurrentMovie();
+    if (this.isFading) return;
+
+    this.isFading = true;
+
+    setTimeout(() => {
+      if (this.popularMovies.length > 0) {
+        this.currentMovieIndex =
+          (this.currentMovieIndex - 1 + this.popularMovies.length) % this.popularMovies.length;
+        this.updateCurrentMovie();
+        this.cdr.detectChanges();
+      }
+
+      this.isFading = false;
+
       this.cdr.detectChanges();
-    }
+    }, 150);
+
   }
 
   toggleWatchlist(): void {

@@ -9,22 +9,22 @@ import { Actor } from '../models/actor.model';
 })
 export class MovieService {
   // Адрес нашего Django API
-  private apiUrl = 'http://localhost:8000/api/movies/';
+  private apiUrl = 'http://localhost:8000/api/';
 
   constructor(private http: HttpClient) {}
 
   // Метод для получения фильмов с бэкенда
   getMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl);
+    return this.http.get<Movie[]>(this.apiUrl + 'movies/');
   }
 
   // Метод получение популярных актеров
   getPopularActors(): Observable<any> {
-    return this.http.get<Actor[]>(this.apiUrl + '/actors/popular/');
+    return this.http.get<Actor[]>(this.apiUrl + 'actors/popular/');
   }
 
   // Метод для получения всех актеров
   getAllActors(): Observable<any> {
-    return this.http.get<Actor[]>(this.apiUrl + '/actors/');
+    return this.http.get<Actor[]>(this.apiUrl + 'actors/');
   }
 }

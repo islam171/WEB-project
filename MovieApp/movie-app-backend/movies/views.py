@@ -13,7 +13,7 @@ class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_url_kwarg = 'id'
     
 class PopularActorsListView(generics.ListAPIView):
-    queryset = Actor.objects.filter(popularity__gt=0).order_by('-popularity')
+    queryset = Actor.objects.filter(popularity__gt=0).order_by('-popularity')[:20]
     serializer_class = ActorSerializer
     
 

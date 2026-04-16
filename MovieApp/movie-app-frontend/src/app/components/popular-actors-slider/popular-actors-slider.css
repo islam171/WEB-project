@@ -4,9 +4,14 @@
 
 .section-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+.section-header img {
+  width: 30px;
+  filter: invert(1);
 }
 
 .section-header h2 {
@@ -94,3 +99,4 @@
   width: 100%;
   text-align: center;
 }
+
