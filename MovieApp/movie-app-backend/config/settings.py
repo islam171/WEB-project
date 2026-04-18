@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'movies',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,12 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'ORDERING_PARAM': 'order_by'
+}
 
 ROOT_URLCONF = 'config.urls'
 
