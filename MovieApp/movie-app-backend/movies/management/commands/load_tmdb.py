@@ -1,72 +1,85 @@
 import requests
+import time
 from django.core.management.base import BaseCommand
-from movies.models import Movie, Actor, Category
+from movies.models import Movie, Actor
 
 class Command(BaseCommand):
-    help = 'Loads 20 popular movies and their actors from TMDB'
+    help = 'Загружает популярные фильмы и их актерский состав из TMDB'
 
     def handle(self, *args, **kwargs):
+        # ВАЖНО: Твой API ключ
         API_KEY = '9bfb8c7d5918af58736adf3015ba747b'
-        BASE_URL = 'https://api.themoviedb.org/3'
-        IMAGE_BASE = 'https://image.tmdb.org/t/p'
 
-        self.stdout.write("Fetching movies from TMDB...")
+        self.stdout.write(self.style.WARNING('Начинаю загрузку фильмов и актеров...'))
 
-        # Загружаем только 1 страницу (20 фильмов)
-        url = f"{BASE_URL}/movie/popular?api_key={API_KEY}&language=en-US&page=1"
-        response = requests.get(url).json()
+        total_movies = 0
+        total_actors = 0
 
-        for item in response.get('results', []):
-            movie_id = item['id']
+        # Загружаем первые 3 страницы популярных фильмов (60 фильмов)
+        for page in range(1, 4):
+            url = f"https://api.themoviedb.org/3/movie/popular?api_key={API_KEY}&language=en-US&page={page}"
+            response = requests.get(url)
 
-            detail_url = f"{BASE_URL}/movie/{movie_id}?api_key={API_KEY}&append_to_response=credits"
-            detail = requests.get(detail_url).json()
+            if response.status_code == 200:
+                movies_list = response.json().get('results', [])
 
-            director_name = "Unknown"
-            for crew_member in detail.get('credits', {}).get('crew', []):
-                if crew_member['job'] == 'Director':
-                    director_name = crew_member['name']
-                    break
+                for item in movies_list:
+                    tmdb_id = item.get('id')
 
-            runtime = detail.get('runtime') or 0
-            duration_str = f"{runtime // 60}h {runtime % 60}m"
+                    # 1. Создаем или обновляем фильм
+                    poster_path = item.get('poster_path')
+                    backdrop_path = item.get('backdrop_path')
+                    release_date = item.get('release_date', '')
 
-            # update_or_create позволяет безопасно перезапускать скрипт много раз
-            movie, created = Movie.objects.update_or_create(
-                title=detail.get('title', 'No Title'),
-                defaults={
-                    'author': director_name,
-                    'year': int(detail.get('release_date', '0000')[:4]) if detail.get('release_date') else 0,
-                    'duration': duration_str,
-                    'likes': detail.get('vote_count', 0),
-                    'rating': f"{round(detail.get('vote_average', 0), 1)}/10",
-                    'short_description': detail.get('overview', '')[:250],
-                    'description': detail.get('overview', ''),
-                    'poster': f"{IMAGE_BASE}/w500{detail.get('poster_path')}" if detail.get('poster_path') else '',
-                    'backdrop': f"{IMAGE_BASE}/w1280{detail.get('backdrop_path')}" if detail.get('backdrop_path') else '',
-                    'videoUrl': ''
-                }
-            )
+                    movie, created = Movie.objects.update_or_create(
+                        tmdb_id=tmdb_id,
+                        defaults={
+                            'title': item.get('title'),
+                            'short_description': item.get('overview', '')[:250] + '...',
+                            'description': item.get('overview', ''),
+                            'tmdb_rating': item.get('vote_average', 0.0),
+                            'api_likes': item.get('vote_count', 0),
+                            'poster': f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None,
+                            'backdrop': f"https://image.tmdb.org/t/p/original{backdrop_path}" if backdrop_path else None,
+                            'year': int(release_date[:4]) if release_date else 0,
+                        }
+                    )
+                    total_movies += 1
 
-            for genre in detail.get('genres', []):
-                category, _ = Category.objects.get_or_create(name=genre['name'])
-                movie.categories.add(category)
+                    # 2. ЗАПРОС КРЕДИТОВ (АКТЕРОВ) ДЛЯ ЭТОГО ФИЛЬМА
+                    credits_url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/credits?api_key={API_KEY}&language=en-US"
+                    credits_response = requests.get(credits_url)
 
-            # Берем топ-5 актеров
-            cast = detail.get('credits', {}).get('cast', [])[:5]
-            for person in cast:
-                actor, _ = Actor.objects.update_or_create(
-                    name=person.get('name'),
-                    defaults={
-                        # Добавляем заглушку для обязательного поля desc
-                        'desc': person.get('known_for_department', 'Acting'),
-                        'photo': f"{IMAGE_BASE}/w500{person.get('profile_path')}" if person.get('profile_path') else '',
-                        'popularity': person.get('popularity', 0.0)
-                    }
-                )
-                # Связываем фильм и актера
-                movie.actors.add(actor)
+                    if credits_response.status_code == 200:
+                        # Берем только первых 10 актеров из списка cast
+                        cast_list = credits_response.json().get('cast', [])[:10]
 
-            self.stdout.write(f"Saved: {movie.title} with {len(cast)} actors.")
+                        for actor_data in cast_list:
+                            actor_tmdb_id = actor_data.get('id')
+                            profile_path = actor_data.get('profile_path')
 
-        self.stdout.write(self.style.SUCCESS('Successfully loaded 20 movies!'))
+                            # Создаем или обновляем актера
+                            actor, a_created = Actor.objects.update_or_create(
+                                tmdb_id=actor_tmdb_id,
+                                defaults={
+                                    'name': actor_data.get('name'),
+                                    'photo': f"https://image.tmdb.org/t/p/w500{profile_path}" if profile_path else None,
+                                    'popularity': actor_data.get('popularity', 0.0),
+                                    'desc': f"Актер фильма '{movie.title}'" # Краткое описание, т.к. био актера требует отдельного запроса
+                                }
+                            )
+
+                            # Привязываем актера к фильму (Many-to-Many)
+                            movie.actors.add(actor)
+                            if a_created:
+                                total_actors += 1
+
+                    self.stdout.write(f"Обработан фильм: {movie.title} (+ актеры)")
+
+                    # Небольшая пауза, чтобы не превысить лимиты API (TMDB лоялен, но 0.1 сек лишней не будет)
+                    time.sleep(0.1)
+
+            else:
+                self.stdout.write(self.style.ERROR(f'Ошибка на странице {page}'))
+
+        self.stdout.write(self.style.SUCCESS(f'Готово! Обработано фильмов: {total_movies}, добавлено новых актеров: {total_actors}'))

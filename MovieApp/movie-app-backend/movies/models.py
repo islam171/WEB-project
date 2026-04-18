@@ -39,6 +39,8 @@ class Movie(models.Model):
     # Рейтинг и популярность из внешнего API
     tmdb_rating = models.FloatField(default=0.0)
 
+    api_likes = models.IntegerField(default=0)
+
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
@@ -56,16 +58,19 @@ class Movie(models.Model):
         return f"{self.title} ({self.year})"
 
     @property
-    def local_likes(self):
-        return self.liked_by.count()
+    def display_likes(self):
+        # ВОТ ГЛАВНАЯ МАГИЯ:
+        # Берем базу из API (например, 3299) + прибавляем количество локальных юзеров (например, 1) = 3300
+        return self.api_likes + self.liked_by.count()
 
     @property
-    def local_rating(self):
-        # Локальный рейтинг от пользователей вашего сайта
+    def display_rating(self):
+        # Аналогично можно сделать с рейтингом (если есть свои - считаем их, если нет - берем из API)
+        from django.db.models import Avg
         avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
-        if avg is not None:
+        if avg:
             return round(avg, 1)
-        return 0.0
+        return self.tmdb_rating
 
 
 class Review(models.Model):
