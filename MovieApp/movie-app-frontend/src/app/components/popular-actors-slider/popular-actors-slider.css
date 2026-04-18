@@ -94,6 +94,10 @@
   cursor: not-allowed;
 }
 
+.nav-btn.next-btn {
+  transform: rotate(180deg);
+}
+
 .loading-text {
   color: #888;
   width: 100%;

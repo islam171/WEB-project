@@ -1,0 +1,52 @@
+<div class="top-ten-section">
+  <div class="section-header">
+    <div class="yellow-bar"></div>
+    <h2 class="title">Топ 10 недели</h2>
+  </div>
+
+  <div class="top-ten-grid-box">
+
+    <div class="top-three-row">
+      <div class="big-movie-card" *ngFor="let movie of topTen | slice:0:3; let i = index">
+
+        <div class="rank-badge">{{ i + 1 }}</div>
+
+        <a [routerLink]="['/movie', movie.id]" class="big-poster-wrapper">
+          <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
+
+          <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
+            <img src="assets/Icons/bookmark.png" alt="bookmark">
+            <span>{{ movie.inWatchlist ? '✓' : '+' }}</span>
+          </div>
+        </a>
+
+        <div class="big-card-info">
+          <a [routerLink]="['/movie', movie.id]" class="movie-title">{{ movie.title }}</a>
+          <p class="movie-desc">
+            {{ movie.short_description || 'Здесь будет захватывающее описание сюжета этого шедевра кинематографа, чтобы привлечь внимание зрителя...' }}
+          </p>
+          <button class="watchlist-btn" (click)="toggleWatchlist(movie, $event)">
+            {{ movie.inWatchlist ? 'В списке' : '+ Watchlist' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-seven-row">
+      <div class="small-movie-card" *ngFor="let movie of topTen | slice:3:10; let i = index">
+
+        <div class="rank-badge small-badge">{{ i + 4 }}</div>
+
+        <a [routerLink]="['/movie', movie.id]" class="small-poster-wrapper">
+          <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
+
+          <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
+            <img src="assets/Icons/bookmark.png" alt="bookmark">
+            <span>{{ movie.inWatchlist ? '✓' : '+' }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

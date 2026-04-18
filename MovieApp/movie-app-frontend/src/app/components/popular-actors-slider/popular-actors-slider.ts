@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core'; // Добавили ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../../services/movie.services';
 import { Actor } from '../../models/actor.model';
@@ -16,12 +16,19 @@ export class PopularActorsSliderComponent implements OnInit {
   currentIndex: number = 0;
   itemsToShow: number = 5;
 
-  constructor(private movieService: MovieService) {}
+  // Инжектируем ChangeDetectorRef в конструктор
+  constructor(
+    private movieService: MovieService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.movieService.getPopularActors().subscribe((data) => {
       // Жестко ограничиваем массив до 20 элементов (от индекса 0 до 20)
       this.actors = data.slice(0, 20);
+
+      // Сообщаем Angular, что данные изменились и нужно обновить компонент
+      this.cdr.detectChanges();
     });
   }
 
