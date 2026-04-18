@@ -13,8 +13,8 @@ export interface Movie {
   year: number;
   duration?: string;
 
-  likes?: number;
-  rating?: string;
+  likes: number;
+  rating: string;
 
   short_description?: string;
   description: string;

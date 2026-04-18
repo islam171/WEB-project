@@ -17,8 +17,8 @@ class ActorSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     # Делаем то же самое для фильма
-    likes = serializers.ReadOnlyField(source='local_likes')
-    rating = serializers.ReadOnlyField(source='local_rating')
+    likes = serializers.ReadOnlyField(source='display_likes')
+    rating = serializers.ReadOnlyField(source='display_rating')
     categories = CategorySerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
 
