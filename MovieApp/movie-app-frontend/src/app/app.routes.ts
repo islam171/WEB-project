@@ -5,7 +5,7 @@ import { About } from './pages/about/about';
 import { Catalog } from './pages/catalog/catalog';
 import { Signup } from './pages/signup/signup';
 import { SignIn } from './pages/sign-in/sign-in';
-import { WatchList } from './pages/watch-list/watch-list';
+import { WishlistComponent } from './pages/wishlist/wishlist';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -14,4 +14,5 @@ export const routes: Routes = [
   { path: 'catalog' , component: Catalog},
   { path: 'sign-up' , component: Signup},
   { path: 'sign-in', component: SignIn},
+  { path: 'wishlist', component:WishlistComponent}
 ];

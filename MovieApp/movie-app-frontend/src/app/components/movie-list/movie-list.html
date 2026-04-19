@@ -3,6 +3,10 @@
         @for (movie of movies; track movie.id) {
             <div class="movie__item">
                 <img [src]="movie?.poster" alt="">
+
+                <button class="wishlist-btn" (click)="toggleWishlist($event, movie.id)">
+                    {{ (wishlistIds$ | async)?.has(movie.id) ? '🔖' : '🏷️' }}
+                </button>
                 <div class="movie__info">
                     <div class="movie__title">
                         <a [routerLink]="['/movies', movie.id]">{{ movie?.title }}</a>

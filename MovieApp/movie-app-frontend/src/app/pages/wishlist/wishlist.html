@@ -1,0 +1,24 @@
+<div class="wishlist">
+  <h1>My watchlist</h1>
+
+  @if (loading) {
+    <p>Loading...</p>
+  }
+
+  @if (!loading && movies.length === 0) {
+    <p>watchlist empty</p>
+  }
+
+  <div class="wishlist__grid">
+    @for (movie of movies; track movie.id) {
+      <div class="wishlist__item">
+        <img [src]="movie.poster" [alt]="movie.title" [routerLink]="['/movies', movie.id]">
+        <div class="wishlist__info">
+          <h3>{{ movie.title }}</h3>
+          <p>{{ movie.year }}</p>
+          <button class="remove-btn" (click)="remove(movie.id)">Delete</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

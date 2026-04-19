@@ -133,3 +133,9 @@ MEDIA_URL = '/media/'
 
 # Физический путь на диске, где будут лежать файлы
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Это отключит CSRF проверку для всех API эндпоинтов. 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+}
