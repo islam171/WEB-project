@@ -24,8 +24,6 @@ export interface Movie {
 
   categories: Category[];
   videoUrl?: string;
-  inWatchlist: boolean;
-
   actors: Actor[]
 }
 

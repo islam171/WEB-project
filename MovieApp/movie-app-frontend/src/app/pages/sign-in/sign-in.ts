@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { RouterLink } from "@angular/router";
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-sign-in',
   imports: [RouterLink],
-  templateUrl: './signup.html',
-  styleUrl: './signup.css',
-  
+  templateUrl: './sign-in.html',
+  styleUrl: './sign-in.css',
 })
-export class Signup {}
+export class SignIn {}
