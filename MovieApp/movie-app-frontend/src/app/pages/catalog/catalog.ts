@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { SearchInput } from '../../components/search-input/search-input';
-import { SectionTitle } from '../../components/section-title/section-title';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
 import { MovieList } from '../../components/movie-list/movie-list';
 import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, isActive, Router } from '@angular/router';
 import { NgClass } from '@angular/common';
+import {IOrder} from "../../models/order.model";
 
 @Component({
   selector: 'app-catalog',
@@ -25,42 +25,9 @@ export class Catalog implements OnInit {
   loading: boolean = true;
   error: string = '';
 
-  searchQuery: string = '';
-  currentOrder: string = '';
-
-  constructor() {
-    this.route.queryParams.subscribe((params) => {
-      const searchParams: string = params['search'] || '';
-      const order = params['order'];
-      if (params['search']) {
-        this.searchQuery = params['search'];
-      } else {
-        this.loadData();
-        this.searchQuery = '';
-      }
-
-      if(params['order']){
-        this.currentOrder = params['order'];
-      }else{
-        this.currentOrder = '';
-      }
-    });
-
-    this.route.queryParams
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        switchMap((params) => {
-          console.log(params);
-          return this.movieService.getMovies();
-        }),
-      )
-      .subscribe((data) => (this.movies = data));
-  }
 
   ngOnInit() {
-    // this.loadData();
-    this.searchSubject.pipe(startWith(''), debounceTime(1000), distinctUntilChanged()).subscribe({
+    this.searchSubject.pipe(startWith(''), debounceTime(500), distinctUntilChanged()).subscribe({
       next: (text: string) => {
         this.router.navigate([], {
           relativeTo: this.route,
@@ -69,23 +36,30 @@ export class Catalog implements OnInit {
         });
       },
     });
+
+      this.route.queryParams
+          .pipe(
+              debounceTime(500),
+              switchMap((params) => {
+                  return this.movieService.getMoviesFilter(params);
+              })
+          )
+          .subscribe(
+              {
+                  next: (data: Movie[]) => {
+                      this.movies = data;
+                      this.cdr.markForCheck();
+                      this.loading = false;
+                  },
+                  error: (error) => {
+                      this.error = error;
+                      this.cdr.markForCheck();
+                      this.loading = false;
+                  },
+              }
+          );
   }
 
-  loadData() {
-    this.loading = true;
-    this.movieService.getMovies().subscribe({
-      next: (data: Movie[]) => {
-        this.movies = data;
-        this.cdr.markForCheck();
-        this.loading = false;
-      },
-      error: (error) => {
-        this.error = error;
-        this.cdr.markForCheck();
-        this.loading = false;
-      },
-    });
-  }
 
   onSearch(text: string) {
     this.searchSubject.next(text);
@@ -98,12 +72,30 @@ export class Catalog implements OnInit {
     this.SortBarIsOpen = !this.SortBarIsOpen;
   }
 
-  order = signal('Name')
-  selectOrder(value: string) {
+  orders: IOrder[] = [
+      {
+          id: 1,
+          key: 'title',
+          title: 'Name',
+      },
+      {
+          id: 2,
+          key: 'year',
+          title: 'Year',
+      },
+      {
+          id: 1,
+          key: 'duration',
+          title: 'Duration',
+      },
+  ]
+
+  order = signal<IOrder>(this.orders[0])
+  selectOrder(value: IOrder) {
     this.order.set(value);
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { order: value },
+      queryParams: { ordering: value.key },
       queryParamsHandling: "merge",
     })
 

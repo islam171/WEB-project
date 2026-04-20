@@ -11,8 +11,11 @@
   flex-direction: column;
 
   overflow: hidden;
+  width: 100%;   /* Центрируем по горизонтали */
+}
 
-  max-width: 1400px; /* Максимальная ширина контента */
-  width: 100%;
-  margin: 0 auto;    /* Центрируем по горизонтали */
+.container{
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }

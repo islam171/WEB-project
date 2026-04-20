@@ -15,9 +15,10 @@ from rest_framework import filters
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all() # Пока отдаем все фильмы
     serializer_class = MovieSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['categories']
     search_fields = ['title']
+    ordering_fields = ['title', 'year', 'duration']
 
     
 class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
