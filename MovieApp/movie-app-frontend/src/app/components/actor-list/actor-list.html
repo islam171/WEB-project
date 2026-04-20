@@ -1,0 +1,14 @@
+<div class="actors">
+
+    <div class="actors__content">
+        <!--        <div class="arrow"><img src="./assets/icons/left-arrow.png" alt=""></div>-->
+        <div class="actors__list">
+            @if (actors) {
+                @for (actor of actors; track actor.id) {
+                    <app-actor-item [actor]="actor"/>
+                }
+            }
+        </div>
+        <!--        <div class="arrow"><img src="./assets/icons/left-arrow.png" alt=""></div>-->
+    </div>
+</div>
