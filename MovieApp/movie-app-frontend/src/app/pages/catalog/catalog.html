@@ -1,40 +1,10 @@
 <div class="catalog">
     <div class="top">
         <app-search-input (searchChanged)="onSearch($event)"/>
-        <div class="sort" [ngClass]="{'active': SortBarIsOpen}">
-            <div class="sort__inner" (click)="showSort()">
-                <div class="text">
-                    Sort By
-                </div>
-                <div class="order">{{ order().title }}</div>
-
-            </div>
-            <div class="sort__list">
-                @for(order of orders; track order.id){
-                    <div class="sort__item" (click)="selectOrder(order)">{{ order.title }}</div>
-                }
-            </div>
-        </div>
+        <app-sort/>
     </div>
     <div class="title">Genres</div>
-<!--    <div class="genres">-->
-<!--        <div class="genre">-->
-<!--            <input type="checkbox" name="" id="">-->
-<!--            <div class="genre__text">Action</div>-->
-<!--        </div>-->
-<!--        <div class="genre">-->
-<!--            <input type="checkbox" name="" id="">-->
-<!--            <div class="genre__text">Action</div>-->
-<!--        </div>-->
-<!--        <div class="genre">-->
-<!--            <input type="checkbox" name="" id="">-->
-<!--            <div class="genre__text">Action</div>-->
-<!--        </div>-->
-<!--        <div class="genre">-->
-<!--            <input type="checkbox" name="" id="">-->
-<!--            <div class="genre__text">Action</div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <app-genre-list/>
     <section class="movies">
         @if (movies && !loading) {
             <app-movie-list [movies]="movies"/>

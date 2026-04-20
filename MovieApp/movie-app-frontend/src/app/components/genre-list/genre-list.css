@@ -1,0 +1,49 @@
+/* Контейнер для всех жанров */
+.genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* Скрываем стандартный чекбокс, но оставляем его доступным */
+.genre input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Стилизуем обертку (label или div), чтобы она выглядела как кнопка */
+.genre {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 6px 14px;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.genre__text {
+    color: #999;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.genre:hover {
+    border-color: #555;
+    background: #252525;
+}
+
+/* Состояние, когда чекбокс внутри жанра выбран */
+.genre:has(input:checked) {
+    background: rgba(0, 255, 0, 0.1); /* Прозрачный зеленый фон */
+    border-color: #00ff00;           /* Твой ярко-зеленый акцент */
+}
+
+.genre:has(input:checked) .genre__text {
+    color: #00ff00;
+}

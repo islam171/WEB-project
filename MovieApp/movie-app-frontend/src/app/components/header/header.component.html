@@ -10,9 +10,19 @@
       <a routerLink="/about"><img src="../../../assets/Icons/info-button.png" alt="About us" style="width: 20px;"> About us</a>
     </div>
     
-    <button routerLink="sign-in" class="sign-in">
 
-      <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Sign in
-    </button>
+
+    @if (currentUser$ | async; as user) {
+      <div class="user-info">
+        <span>{{ user.username }}!</span>
+      </div>
+      <button routerLink="sign-in" class="sign-in" (click)="logout()">
+        <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Log out
+      </button>
+    } @else {
+      <button routerLink="sign-in" class="sign-in">
+        <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Sign in
+      </button>
+    }
   </div>
 </header>

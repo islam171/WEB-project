@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.decorators import permission_classes, api_view
 
-from .models import Movie, Actor,Wishlist
-from .serializers import MovieSerializer, ActorSerializer, ReviewSerializer, UserSerializer
+from .filters import MovieFilter
+from .models import Movie, Actor, Wishlist, Category
+from .serializers import MovieSerializer, ActorSerializer, ReviewSerializer, UserSerializer, CategorySerializer
 from rest_framework.response import Response
 from .serializers import WishlistSerializer
 from rest_framework.views import APIView
@@ -16,10 +17,10 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import filters
 
 class MovieListView(generics.ListAPIView):
-    queryset = Movie.objects.all() # Пока отдаем все фильмы
+    queryset = Movie.objects.all().distinct() # Пока отдаем все фильмы
     serializer_class = MovieSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['categories']
+    filterset_class = MovieFilter
     search_fields = ['title']
     ordering_fields = ['title', 'year', 'duration']
 
@@ -141,3 +142,15 @@ class ToggleMovieLikeView(APIView):
         else:
             movie.liked_by.add(request.user)
             return Response({'status': 'liked'})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated]) # Только для авторизованных
+def getUser(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getAllCategory(request):
+    queryset = Category.objects.all()
+    serializer = CategorySerializer(queryset, many=True)
+    return Response(serializer.data)
