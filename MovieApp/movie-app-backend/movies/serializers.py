@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Movie, Category, Actor, Wishlist
+from django.contrib.auth.models import User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -48,3 +49,23 @@ class WishlistSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        # Создаем пользователя с хешированным паролем
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password']
+        )
+        # Сразу создаем для него пустой Wishlist
+        from .models import Wishlist
+        Wishlist.objects.create(user=user)
+        return user
+
+class ReviewSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)

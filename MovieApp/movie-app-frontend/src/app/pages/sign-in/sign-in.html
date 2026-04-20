@@ -1,21 +1,14 @@
-<div class="signed-up-card">
-    <h2>Sign Up</h2>     
-       <p>Create new account</p>
-       <form>
-        <div class="input-group">
-            <img src="../../../assets/Icons/person_login.png">
-            <input type="text" placeholder="Username" name="username">
-        </div>
+<form (ngSubmit)="onSubmit()">
+  <div class="input-group">
+    <img src="../../../assets/Icons/person_login.png">
+    <input type="text" placeholder="Username" name="username" [(ngModel)]="credentials.username" required>
+  </div>
 
-        <div class="input-group">
-            <img src="../../../assets/Icons/lock-login.png">
+  <div class="input-group">
+    <img src="../../../assets/Icons/lock-login.png">
+    <input type="password" placeholder="Password" name="password" [(ngModel)]="credentials.password" required>
+  </div>
 
-            <input type="password" placeholder="Password" name="password">
-        </div>
-
-        <p class="account">Don’t have an account? <a routerLink="/sign-up">Login</a></p>
-        <button type="submit" class="submit-btn">Signup</button>
-            
-
-       </form>
-</div>
+  <p class="account">Don’t have an account? <a routerLink="/sign-up">Sign Up</a></p>
+  <button type="submit" class="submit-btn">Login</button>
+</form>
