@@ -30,7 +30,7 @@
         <app-section-title title="Actors"/>
     </div>
     @if (movie?.actors && !loading) {
-        <app-actor-list [actors]="movie?.actors || []"/>
+        <app-slider [actors]="movie?.actors || []"/>
     }
 
     <div class="title__wrapper">
