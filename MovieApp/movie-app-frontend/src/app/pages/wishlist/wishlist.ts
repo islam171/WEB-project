@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
-  imports: [AsyncPipe, RouterLink],
+  imports: [RouterLink],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css',
 })

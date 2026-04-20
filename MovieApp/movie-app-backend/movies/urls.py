@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='auth_register'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/user/', views.getUser),
 
     path('api/movies/', MovieListView.as_view(), name='movie-list'),
     path('api/movies/<int:id>', MovieDetailView.as_view(), name='movie-single'),
@@ -17,8 +18,10 @@ urlpatterns = [
     path('api/wishlist/', WishlistDetailView.as_view()),
     path('api/wishlist/toggle/', WishlistAddRemoveView.as_view()),
     path('wishlist/recent/', views.get_recent_wishlist, name='recent-wishlist'),
+    path('api/category', views.getAllCategory),
 
     # Взаимодействие
+
     path('api/wishlist/', WishlistDetailView.as_view()),
     path('api/wishlist/toggle/', WishlistAddRemoveView.as_view()),
     path('api/movies/<int:id>/like/', ToggleMovieLikeView.as_view()),
