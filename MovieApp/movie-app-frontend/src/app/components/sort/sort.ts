@@ -26,7 +26,7 @@ export class Sort implements OnInit {
       title: 'Year',
     },
     {
-      id: 3,
+      id: 1,
       key: 'duration',
       title: 'Duration',
     },

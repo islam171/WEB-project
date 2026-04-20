@@ -1,57 +1,55 @@
 /* NAVBAR */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 80px;
-    padding: 0 20px;
-    background-color: rgb(23, 23, 23);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background-color: rgb(23, 23, 23);
 
-    width: 100%; /* На маленьких экранах занимает все 100% */
-    margin: 0 auto; /* auto по бокам центрирует блок на экране */
+  width: 100%;       /* На маленьких экранах занимает все 100% */
+  margin: 0 auto;    /* auto по бокам центрирует блок на экране */
 }
 
 .logo-icon {
-    width: 180px;
+  width: 180px;
 }
 
 .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 40px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
 .nav-links {
-    display: flex;
-    gap: 25px;
+  display: flex;
+  gap: 25px;
 }
 
 .nav-links a {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    opacity: 0.8;
+  text-decoration: none;
+  color: white; display: flex;
+  align-items: center;
+  gap: 5px;
+  opacity: 0.8;
 }
 
 .nav-links a:hover {
-    opacity: 1;
+  opacity: 1;
 }
 
 .nav-links img {
-    filter: invert(1);
+  filter: invert(1);
 }
 
 .sign-in {
-    background: none;
-    border: 1px solid white;
-    color: white;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+  background: none;
+  border: 1px solid white;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .sign-in img {
-    filter: invert(1);
+  filter: invert(1);
 }
