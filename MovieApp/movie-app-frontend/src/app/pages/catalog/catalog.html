@@ -6,36 +6,35 @@
                 <div class="text">
                     Sort By
                 </div>
-                <div class="order">{{ order() }}</div>
+                <div class="order">{{ order().title }}</div>
 
             </div>
             <div class="sort__list">
-                <div class="sort__item" (click)="selectOrder('Name')">Name</div>
-                <div class="sort__item" (click)="selectOrder('Rating')">Rating</div>
-                <div class="sort__item" (click)="selectOrder('Duration')">Duration</div>
+                @for(order of orders; track order.id){
+                    <div class="sort__item" (click)="selectOrder(order)">{{ order.title }}</div>
+                }
             </div>
-            <!--            <div class="arrow"></div>-->
         </div>
     </div>
     <div class="title">Genres</div>
-    <div class="genres">
-        <div class="genre">
-            <input type="checkbox" name="" id="">
-            <div class="genre__text">Action</div>
-        </div>
-        <div class="genre">
-            <input type="checkbox" name="" id="">
-            <div class="genre__text">Action</div>
-        </div>
-        <div class="genre">
-            <input type="checkbox" name="" id="">
-            <div class="genre__text">Action</div>
-        </div>
-        <div class="genre">
-            <input type="checkbox" name="" id="">
-            <div class="genre__text">Action</div>
-        </div>
-    </div>
+<!--    <div class="genres">-->
+<!--        <div class="genre">-->
+<!--            <input type="checkbox" name="" id="">-->
+<!--            <div class="genre__text">Action</div>-->
+<!--        </div>-->
+<!--        <div class="genre">-->
+<!--            <input type="checkbox" name="" id="">-->
+<!--            <div class="genre__text">Action</div>-->
+<!--        </div>-->
+<!--        <div class="genre">-->
+<!--            <input type="checkbox" name="" id="">-->
+<!--            <div class="genre__text">Action</div>-->
+<!--        </div>-->
+<!--        <div class="genre">-->
+<!--            <input type="checkbox" name="" id="">-->
+<!--            <div class="genre__text">Action</div>-->
+<!--        </div>-->
+<!--    </div>-->
     <section class="movies">
         @if (movies && !loading) {
             <app-movie-list [movies]="movies"/>

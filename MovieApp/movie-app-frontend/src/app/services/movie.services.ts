@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable,BehaviorSubject, tap } from 'rxjs';
 import { Movie } from '../models/movie.model';
 import { Actor } from '../models/actor.model';
+import {IParam} from "../models/param";
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,10 @@ export class MovieService {
 
   getMovieById(id: number): Observable<any>{
     return this.http.get<Movie>(this.apiUrl + 'movies/' + id);
+  }
+
+  getMoviesFilter(params: any): Observable<any> {
+      return this.http.get<Movie[]>(this.apiUrl + 'movies/' , {params});
   }
 
   private wishlistIds$ = new BehaviorSubject<Set<number>>(new Set());
