@@ -1,14 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-popular-movies',
   standalone: true,
   templateUrl: './popular-movies-slader.html',
   styleUrls: ['./popular-movies-slader.css'],
+  imports: [RouterLink],
 })
-
 export class PopularMoviesComponent implements OnInit {
   popularMovies: Movie[] = [];
   currentMovieIndex = 0;
@@ -59,10 +60,7 @@ export class PopularMoviesComponent implements OnInit {
       this.isFading = false;
 
       this.cdr.detectChanges();
-
     }, 150);
-
-
   }
 
   prevMovie(): void {
@@ -82,7 +80,6 @@ export class PopularMoviesComponent implements OnInit {
 
       this.cdr.detectChanges();
     }, 150);
-
   }
 
   toggleWatchlist(): void {

@@ -1,4 +1,6 @@
 from rest_framework import generics
+from rest_framework.decorators import permission_classes, api_view
+
 from .models import Movie, Actor,Wishlist
 from .serializers import MovieSerializer, ActorSerializer
 from rest_framework.response import Response
@@ -62,3 +64,17 @@ class WishlistAddRemoveView(APIView):
         else:
             wishlist.movies.add(movie)
             return Response({'status': 'added', 'movie_id': movie_id})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated]) # Только для авторизованных
+def get_recent_wishlist(request):
+    try:
+        # Находим вишлист пользователя
+        wishlist = Wishlist.objects.get(user=request.user)
+        # Берем последние 6 фильмов (сортируем по убыванию id)
+        movies = wishlist.movies.all().order_by('-id')[:6]
+        serializer = MovieSerializer(movies, many=True)
+        return Response(serializer.data)
+    except Wishlist.DoesNotExist:
+        # Если вишлиста еще нет, возвращаем пустой список
+        return Response([])

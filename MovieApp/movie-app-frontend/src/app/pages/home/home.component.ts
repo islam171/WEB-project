@@ -5,11 +5,17 @@ import { PopularActorsSliderComponent } from '../../components/popular-actors-sl
 import { TopTenMoviesComponent } from '../../components/top-ten-movies/top-ten-movies';
 import { MovieService } from '../../services/movie.services';
 import { Movie } from '../../models/movie.model';
+import { RecentWishlistComponent } from '../../components/recent-wishlist/recent-wishlist';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [PopularMoviesComponent, PopularActorsSliderComponent, TopTenMoviesComponent],
+  imports: [
+    PopularMoviesComponent,
+    PopularActorsSliderComponent,
+    TopTenMoviesComponent,
+    RecentWishlistComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })

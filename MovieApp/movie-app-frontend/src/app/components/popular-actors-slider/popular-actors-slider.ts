@@ -47,4 +47,11 @@ export class PopularActorsSliderComponent implements OnInit {
       this.currentIndex--;
     }
   }
+
+  // Добавляем метод для лайков актеров
+  toggleActorLike(actor: any, event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+    actor.isLiked = !actor.isLiked;
+  }
 }

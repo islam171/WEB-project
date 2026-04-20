@@ -1,4 +1,6 @@
 from django.urls import path
+
+from . import views
 from .views import MovieListView, MovieDetailView, ActorsListView
 from .views import *
 
@@ -9,4 +11,5 @@ urlpatterns = [
     path('api/actors/popular/' , PopularActorsListView.as_view(), name='actor-popular'),
     path('api/wishlist/', WishlistDetailView.as_view()),
     path('api/wishlist/toggle/', WishlistAddRemoveView.as_view()),
+    path('wishlist/recent/', views.get_recent_wishlist, name='recent-wishlist'),
 ]

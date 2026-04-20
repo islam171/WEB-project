@@ -42,6 +42,7 @@
 /* Карточка актера */
 .actor-card {
   text-align: center;
+  position: relative;
   flex: 1; /* Чтобы все 5 карточек занимали равное пространство */
 }
 
@@ -64,6 +65,15 @@
   color: #ddd;
   font-size: 14px;
   margin: 0;
+}
+
+.actor-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.actor-link:hover .actor-name {
+  color: #f5c518;
 }
 
 /* Кнопки стрелок */
@@ -103,4 +113,5 @@
   width: 100%;
   text-align: center;
 }
+
 

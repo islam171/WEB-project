@@ -33,7 +33,7 @@ export class MovieService {
   }
 
   private wishlistIds$ = new BehaviorSubject<Set<number>>(new Set());
-  
+
    getWishlist(): Observable<{ id: number; movies: Movie[] }> {
     return this.http.get<any>(this.apiUrl + 'wishlist/').pipe(
       tap(w => this.wishlistIds$.next(new Set(w.movies.map((m: Movie) => m.id))))
@@ -57,4 +57,15 @@ export class MovieService {
   isInWishlist(movieId: number): boolean {
     return this.wishlistIds$.value.has(movieId);
   }
+
+  // Проверка, авторизован ли пользователь (проверяем наличие токена)
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
+  // Получение последних 6 фильмов
+  getRecentWishlist(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.apiUrl}/wishlist/recent/`);
+  }
+
 }

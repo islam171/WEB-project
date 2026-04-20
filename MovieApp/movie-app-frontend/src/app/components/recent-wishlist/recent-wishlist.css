@@ -1,0 +1,136 @@
+.recent-wishlist-section {
+  margin: 40px auto;
+  padding: 0 20px;
+  color: white;
+  max-width: 1440px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.green-bar {
+  width: 4px;
+  height: 28px;
+  background-color: #18f535;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.view-all-link {
+  margin-left: auto;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+}
+
+.view-all-link:hover {
+  color: #18f535;
+}
+
+.view-all-link img {
+  width: 16px;
+  filter: invert(1); /* Делаем стрелочку белой, если она черная */
+}
+
+/* --- Сетка фильмов --- */
+.movies-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* На случай, если экраны маленькие */
+  padding-bottom: 10px;
+}
+
+.movie-card {
+  position: relative;
+  flex: 0 0 200px; /* Ширина карточки 200px, не сжимается */
+  height: 350px; /* Высота под пропорции постера */
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Ленточка на карточке --- */
+.bookmark-ribbon {
+  position: absolute;
+  top: -2px;
+  left: 10px;
+  width: 32px;
+  z-index: 10;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+/* --- Блок логина --- */
+.login-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.prompt-icon {
+  width: 40px;
+  margin-bottom: 15px;
+  color: rgba(255,255,255,0.5);
+}
+
+.login-prompt p {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.prompt-subtext {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: #aaa;
+  margin-bottom: 20px !important;
+}
+
+.sign-in-btn {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #18f535;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 24px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.sign-in-btn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.empty-message {
+  padding: 30px;
+  text-align: center;
+  color: #aaa;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}

@@ -27,4 +27,13 @@ export class TopTenMoviesComponent implements OnChanges {
     event.preventDefault();
     movie.inWatchlist = !movie.inWatchlist;
   }
+
+  // Новый метод для трейлера
+  openTrailer(movie: Movie, event: Event): void {
+    event.stopPropagation(); // Чтобы не переходить на страницу фильма при клике
+    event.preventDefault();
+
+    // В будущем здесь можно открывать модальное окно с видео
+    alert('Тут будет запускаться трейлер для: ' + movie.title);
+  }
 }

@@ -3,4 +3,5 @@ export interface Actor {
   name: string,
   photo: string,
   popularity: number;
+  isLiked?: boolean;
 }

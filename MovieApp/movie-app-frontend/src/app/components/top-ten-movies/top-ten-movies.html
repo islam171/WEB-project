@@ -11,23 +11,27 @@
 
         <div class="rank-badge">{{ i + 1 }}</div>
 
-        <a [routerLink]="['/movie', movie.id]" class="big-poster-wrapper">
+        <a [routerLink]="['/movies', movie.id]" class="big-poster-wrapper">
           <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
 
           <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
-            <img src="assets/Icons/bookmark.png" alt="bookmark">
-            <span>{{ movie.inWatchlist ? '✓' : '+' }}</span>
+
+            <svg *ngIf="movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+
+            <svg *ngIf="!movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+
           </div>
         </a>
 
         <div class="big-card-info">
-          <a [routerLink]="['/movie', movie.id]" class="movie-title">{{ movie.title }}</a>
+          <a [routerLink]="['/movies', movie.id]" class="movie-title">{{ movie.title }}</a>
           <p class="movie-desc">
-            {{ movie.short_description || 'Здесь будет захватывающее описание сюжета этого шедевра кинематографа, чтобы привлечь внимание зрителя...' }}
+            {{ movie.short_description || 'Описание фильма подгружается...' }}
           </p>
-          <button class="watchlist-btn" (click)="toggleWatchlist(movie, $event)">
-            {{ movie.inWatchlist ? 'В списке' : '+ Watchlist' }}
-          </button>
         </div>
       </div>
     </div>
@@ -37,14 +41,25 @@
 
         <div class="rank-badge small-badge">{{ i + 4 }}</div>
 
-        <a [routerLink]="['/movie', movie.id]" class="small-poster-wrapper">
+        <a [routerLink]="['/movies', movie.id]" class="small-poster-wrapper">
           <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
 
           <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
-            <img src="assets/Icons/bookmark.png" alt="bookmark">
-            <span>{{ movie.inWatchlist ? '✓' : '+' }}</span>
+
+            <svg *ngIf="movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+
+            <svg *ngIf="!movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+            </svg>
+
           </div>
         </a>
+
+        <div class="small-card-info">
+          <a [routerLink]="['/movies', movie.id]" class="small-movie-title">{{ movie.title }}</a>
+        </div>
       </div>
     </div>
 
