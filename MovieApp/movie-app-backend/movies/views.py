@@ -4,15 +4,21 @@ from .serializers import MovieSerializer, ActorSerializer
 from rest_framework.response import Response
 from .serializers import WishlistSerializer
 from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework import filters
 
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all() # Пока отдаем все фильмы
     serializer_class = MovieSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['categories']
+    search_fields = ['title']
+
     
 class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Movie.objects.all()
