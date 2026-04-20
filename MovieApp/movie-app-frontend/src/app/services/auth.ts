@@ -25,17 +25,20 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login/`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.access);
-        this.getUserInfo()
+        this.getUserInfo();
       }),
     );
   }
 
   getUserInfo() {
-    return this.http.get(`${this.apiUrl}/user`).subscribe(
-      (user: any) => {
+    return this.http.get(`${this.apiUrl}/user`).subscribe({
+      next: (user: any) => {
         this.userSubject.next(user);
+      },
+      error: (error: any) => {
+        console.error(error);
       }
-    );
+    });
   }
 
   logout() {

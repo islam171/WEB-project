@@ -13,7 +13,7 @@
                 <div class="movie__details">
                     <div class="movie__genres">
                         @for (genre of movie.categories; track genre.id) {
-                            <div class="genre">{{ genre.name }}</div>
+                            <div class="genre" (click)="filterGenre(genre)">{{ genre.name }}</div>
                         }
                     </div>
                     <div class="movie__duration">{{ movie.duration }}</div>
@@ -30,7 +30,7 @@
         <app-section-title title="Actors"/>
     </div>
     @if (movie?.actors && !loading) {
-        <app-actor-list [actors]="movie?.actors || []"/>
+        <app-slider [actors]="movie?.actors || []"/>
     }
 
     <div class="title__wrapper">
