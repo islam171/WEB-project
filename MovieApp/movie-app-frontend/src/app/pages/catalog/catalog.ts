@@ -3,17 +3,14 @@ import { SearchInput } from '../../components/search-input/search-input';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
 import { MovieList } from '../../components/movie-list/movie-list';
-import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap, tap } from 'rxjs';
-import { ActivatedRoute, isActive, Router } from '@angular/router';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { IOrder } from '../../models/order.model';
-import { GenreService } from '../../services/genre.service';
+import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GenreList } from '../../components/genre-list/genre-list';
 import { Sort } from '../../components/sort/sort';
 
 @Component({
   selector: 'app-catalog',
-  imports: [SearchInput, MovieList, NgClass, AsyncPipe, GenreList, Sort],
+  imports: [SearchInput, MovieList, GenreList, Sort],
   templateUrl: './catalog.html',
   styleUrl: './catalog.css',
 })

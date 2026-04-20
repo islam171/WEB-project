@@ -1,7 +1,6 @@
 // 1. Добавляем ChangeDetectorRef в импорты
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PopularMoviesComponent } from '../../components/popular-movies-slader/popular-movies-slader';
-import { PopularActorsSliderComponent } from '../../components/popular-actors-slider/popular-actors-slider';
 import { TopTenMoviesComponent } from '../../components/top-ten-movies/top-ten-movies';
 import { MovieService } from '../../services/movie.services';
 import { Movie } from '../../models/movie.model';
@@ -14,7 +13,6 @@ import { Slider } from '../../components/slider/slider';
   standalone: true,
   imports: [
     PopularMoviesComponent,
-    PopularActorsSliderComponent,
     TopTenMoviesComponent,
     RecentWishlistComponent,
     Slider,
