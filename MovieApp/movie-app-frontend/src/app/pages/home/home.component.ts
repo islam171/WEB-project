@@ -7,6 +7,9 @@ import { Movie } from '../../models/movie.model';
 import { RecentWishlistComponent } from '../../components/recent-wishlist/recent-wishlist';
 import { Actor } from '../../models/actor.model';
 import { Slider } from '../../components/slider/slider';
+import { ActorCard } from '../../components/actor-card/actor-card';
+import { ActorService } from '../../services/actor';
+import { MovieBanner } from '../../components/movie-banner/movie-banner';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +19,7 @@ import { Slider } from '../../components/slider/slider';
     TopTenMoviesComponent,
     RecentWishlistComponent,
     Slider,
+    ActorCard,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
@@ -27,16 +31,15 @@ export class HomeComponent implements OnInit {
   // 2. Инжектируем ChangeDetectorRef в конструктор
   constructor(
     private movieService: MovieService,
+    private actorService: ActorService,
     private cdr: ChangeDetectorRef,
   ) {}
-
 
   ngOnInit(): void {
     this.movieService.getMovies().subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data;
 
-        // 3. Говорим Angular: "Данные пришли, можешь безопасно обновлять интерфейс"
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -44,7 +47,7 @@ export class HomeComponent implements OnInit {
       },
     });
 
-    this.movieService.getPopularActors().subscribe((data) => {
+    this.actorService.getPopularActors().subscribe((data) => {
       this.popularActors = data.slice(0, 20);
       this.cdr.detectChanges();
     });

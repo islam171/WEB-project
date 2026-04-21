@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IUser } from '../models/user.model';
 import { IGenre } from '../models/genre.model';
+import { MovieGenre } from '../models/movieGenre.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +25,9 @@ export class GenreService {
       },
       error: (err) => console.error('Ошибка загрузки жанров:', err)
     });
+  }
+
+  getGenresWithMovies(): Observable<MovieGenre[]> {
+    return this.http.get<MovieGenre[]>(`${this.apiUrl}category/movies`)
   }
 }

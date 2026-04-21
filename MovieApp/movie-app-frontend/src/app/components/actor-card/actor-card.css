@@ -1,0 +1,73 @@
+
+/* Карточка актера */
+.actor-card {
+    text-align: center;
+    position: relative;
+    flex: 1; /* Чтобы все 5 карточек занимали равное пространство */
+}
+
+.actor-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Делаем фото круглыми */
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.actor-photo:hover {
+    border-color: #37f300; /* Эффект при наведении */
+    cursor: pointer;
+}
+
+.actor-name {
+    color: #ddd;
+    font-size: 14px;
+    margin: 0;
+}
+
+.actor-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.actor-link:hover .actor-name {
+    color: #f5c518;
+}
+
+/* Анимация пульсации */
+@keyframes skeleton-pulse {
+    0% { background-color: #2a2a2a; }
+    50% { background-color: #3a3a3a; }
+    100% { background-color: #2a2a2a; }
+}
+
+/* Общий класс для элементов скелетона */
+.skeleton-circle,
+.skeleton-text {
+    animation: skeleton-pulse 1.5s infinite ease-in-out;
+    margin: 0 auto;
+}
+
+/* Скелетон для круглого фото */
+.skeleton-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Скелетон для имени (текста) */
+.skeleton-text {
+    width: 80px;
+    height: 14px;
+    border-radius: 4px;
+}
+
+/* Чтобы скелетон стоял ровно по центру, как и контент */
+.skeleton-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

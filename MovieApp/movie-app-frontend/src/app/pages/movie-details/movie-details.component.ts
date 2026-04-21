@@ -7,10 +7,11 @@ import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
 import { Slider } from '../../components/slider/slider';
 import { IGenre } from '../../models/genre.model';
+import { ActorCard } from '../../components/actor-card/actor-card';
 
 @Component({
   selector: 'app-movie-details-component',
-  imports: [ SectionTitle, ReviewsList, Rating, Slider],
+  imports: [SectionTitle, ReviewsList, Rating, Slider, ActorCard],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.css',
 })
@@ -19,7 +20,7 @@ export class MovieDetailsComponent {
   private movieService = inject(MovieService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
-  private route =inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
 
   movie: Movie | null = null;
   loading: boolean = true;
@@ -52,7 +53,7 @@ export class MovieDetailsComponent {
     this.router.navigate(['/catalog'], {
       relativeTo: this.route,
       queryParams: {
-        genres: genre.id
+        genres: genre.id,
       },
       queryParamsHandling: 'merge', // Сохраняем сортировку (ordering), если она есть
     });

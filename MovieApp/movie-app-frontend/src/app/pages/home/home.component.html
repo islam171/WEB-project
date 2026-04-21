@@ -1,8 +1,17 @@
 <div class="home-page">
 
   <main class="content">
+
     <app-popular-movies></app-popular-movies>
-    <app-slider [actors]="popularActors"/>
+<!--    <app-slider [actors]="popularActors"/>-->
+    <app-slider
+      [title]="'Popular Actors'"
+      [items]="popularActors"
+      [viewAllLink]="'/actors'">
+      <ng-template #itemTemplate let-actor>
+        <app-actor-card [actor]="actor"/>
+      </ng-template>
+    </app-slider>
     <app-top-ten-movies [allMovies]="popularMovies"></app-top-ten-movies>
     <app-recent-wishlist></app-recent-wishlist>
   </main>
