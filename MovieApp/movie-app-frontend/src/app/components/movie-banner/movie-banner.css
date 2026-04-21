@@ -1,0 +1,183 @@
+/* SLIDER */
+.main-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.movie-banner {
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+
+    opacity: 1;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.movie-banner.fading {
+    opacity: 0;
+}
+
+.title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.overlay {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 20%, transparent 100%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.banner-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 20px;
+    width: 100%;
+    padding: 20px 50px;
+}
+
+.main-poster {
+    width: 220px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: block;
+}
+
+.movie-details {
+    flex-grow: 1;
+    position: relative;
+
+    padding-bottom: 5px;
+}
+
+.movie-title {
+    font-size: 32px;
+    max-width: 600px;
+    margin: 0;
+}
+
+.stats {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.8); /* Слегка прозрачный белый текст */
+    margin-top: 10px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    gap: 6px; /* Отступ между самой иконкой и цифрой */
+}
+
+
+/* Базовые стили для SVG иконок */
+.stat-icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.heart-icon {
+    color: #e74c3c;
+}
+
+.star-icon {
+    color: #f5c518;
+}
+
+.stat-item:hover .stat-icon {
+    transform: scale(1.2);
+}
+
+.tagline {
+    font-style: italic;
+    color: #ddd;
+    max-width: 600px;
+    margin: 0; /* Убираем стандартный margin */
+    line-height: 1.5;
+}
+
+/* Кнопка вишлиста рядом с заголовком */
+.watchlist-add {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    /* Базовый цвет иконки (белый) */
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* Настрой размер иконки под свой дизайн */
+    transition: all 0.2s ease;
+    margin-left: 15px; /* Отступ от названия фильма */
+}
+
+
+/* Стили самого вектора */
+.watchlist-add .icon-svg {
+    width: 100%;
+    height: auto;
+    /* Тень, чтобы иконка выделялась даже на светлых постерах */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* Эффект при наведении */
+.watchlist-add:hover {
+    transform: scale(1.15); /* Плавное увеличение */
+    color: #f5c518; /* Желтый цвет IMDb */
+}
+
+/* Автоматически красим в желтый, если фильм уже добавлен (когда иконка закрашена) */
+.watchlist-add:has(path[fill="currentColor"]) {
+    color: #f5c518;
+}
+
+.arrow-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    padding: 20px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+.arrow-btn img {
+    width: 60px;
+    filter: invert(1);
+}
+
+.arrow-btn:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.arrow-btn.right img{
+    transform: rotate(180deg);
+}
+
+
+.section-title {
+    padding-left: 150px;
+}
+
+.movie-link-wrapper {
+    text-decoration: none;
+    color: inherit; /* берет белый цвет от родителя */
+    display: block;
+}
+.movie-link-wrapper:hover .movie-title {
+    color: #f5c518; /* заголовок желтеет при наведении */
+}

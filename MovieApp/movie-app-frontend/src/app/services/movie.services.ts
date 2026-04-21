@@ -19,10 +19,7 @@ export class MovieService {
     return this.http.get<Movie[]>(this.apiUrl + 'movies/');
   }
 
-  // Метод получение популярных актеров
-  getPopularActors(): Observable<any> {
-    return this.http.get<Actor[]>(this.apiUrl + 'actors/popular/');
-  }
+
 
   // Метод для получения всех актеров
   getAllActors(): Observable<any> {

@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from rest_framework.decorators import permission_classes, api_view
+from django.db.models import Prefetch
 
 from .filters import MovieFilter
 from .models import Movie, Actor, Wishlist, Category
-from .serializers import MovieSerializer, ActorSerializer, ReviewSerializer, UserSerializer, CategorySerializer
+from .serializers import MovieSerializer, ActorSerializer, ReviewSerializer, UserSerializer, CategorySerializer, \
+    CategoryWithMoviesSerializer
 from rest_framework.response import Response
 from .serializers import WishlistSerializer
 from rest_framework.views import APIView
@@ -38,6 +40,15 @@ class PopularActorsListView(generics.ListAPIView):
 class ActorsListView(generics.ListAPIView):
     serializer_class = ActorSerializer
     queryset = Actor.objects.all()
+
+class ActorsDetailView(generics.RetrieveAPIView):
+    serializer_class = ActorSerializer
+    queryset = Actor.objects.all()
+    lookup_url_kwarg = 'id'
+
+class CategoryListView(generics.ListAPIView):
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
 
 
 class WishlistDetailView(generics.RetrieveUpdateAPIView):
@@ -154,3 +165,10 @@ def getAllCategory(request):
     queryset = Category.objects.all()
     serializer = CategorySerializer(queryset, many=True)
     return Response(serializer.data)
+
+class GenreMoviesListView(generics.ListAPIView):
+    # Оптимизируем запрос: prefetch_related заберет фильмы одним доп. запросом
+    queryset = Category.objects.prefetch_related(
+        Prefetch('movies', queryset=Movie.objects.all())
+    ).all()
+    serializer_class = CategoryWithMoviesSerializer

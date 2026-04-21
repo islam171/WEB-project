@@ -69,3 +69,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+
+class MovieShortSerializer(serializers.ModelSerializer):
+    # Указываем ReadOnlyField для проперти из модели
+    likes = serializers.ReadOnlyField(source='display_likes')
+    rating = serializers.ReadOnlyField(source='display_rating')
+
+    class Meta:
+        model = Movie
+        fields = ['id', 'title', 'poster', 'year', 'likes', 'rating', 'short_description', 'backdrop']
+
+class CategoryWithMoviesSerializer(serializers.ModelSerializer):
+    # Поле movies должно совпадать с related_name в ManyToManyField модели Movie
+    movies = MovieShortSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'movies']

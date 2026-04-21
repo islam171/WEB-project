@@ -29,9 +29,21 @@
     <div class="title__wrapper">
         <app-section-title title="Actors"/>
     </div>
-    @if (movie?.actors && !loading) {
-        <app-slider [actors]="movie?.actors || []"/>
+
+    @if(movie && !loading){
+      @if(movie.actors){
+        <app-slider
+          [title]="'Popular Actors'"
+          [items]="movie.actors"
+          [viewAllLink]="'/actors'">
+          <ng-template #itemTemplate let-actor>
+            <app-actor-card [actor]="actor"/>
+          </ng-template>
+        </app-slider>
+      }
     }
+
+
 
     <div class="title__wrapper">
         <app-section-title title="Trailer"/>

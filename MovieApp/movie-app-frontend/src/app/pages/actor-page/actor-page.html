@@ -1,0 +1,40 @@
+<div class="container">
+  @if (actor) {
+    <div class="actor-card">
+      <div class="image-section">
+        <img [src]="actor.photo" [alt]="actor.name">
+        <div class="popularity-badge">⭐ {{ actor.popularity }}</div>
+      </div>
+
+      <div class="info-section">
+        <h1 class="name">{{ actor.name }}</h1>
+        <div class="description">
+          <h3>About</h3>
+          <p>{{ actor.desc }}</p>
+        </div>
+        <div class="actions">
+          <button class="like-btn" [class.active]="actor.isLiked" (click)="handleLike()">
+            <span class="heart-icon">{{ actor.isLiked ? '❤️' : '🤍' }}</span>
+            <span class="count">{{ actor.likes }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="actor-card skeleton">
+      <div class="image-section skeleton-box"></div>
+
+      <div class="info-section">
+        <div class="skeleton-line title"></div>
+        <div class="description">
+          <div class="skeleton-line label"></div>
+          <div class="skeleton-line text"></div>
+          <div class="skeleton-line text short"></div>
+        </div>
+        <div class="actions">
+          <div class="skeleton-line button"></div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
