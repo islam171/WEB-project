@@ -8,22 +8,19 @@
 
     <div class="top-three-row">
       <div class="big-movie-card" *ngFor="let movie of topTen | slice:0:3; let i = index">
-
         <div class="rank-badge">{{ i + 1 }}</div>
 
         <a [routerLink]="['/movies', movie.id]" class="big-poster-wrapper">
           <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
 
           <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
-
-            <svg *ngIf="movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
+            <svg *ngIf="movie.inWatchlist || movie.in_wishlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
 
-            <svg *ngIf="!movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg *ngIf="!(movie.inWatchlist || movie.in_wishlist)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
-
           </div>
         </a>
 
@@ -38,22 +35,19 @@
 
     <div class="bottom-seven-row">
       <div class="small-movie-card" *ngFor="let movie of topTen | slice:3:10; let i = index">
-
         <div class="rank-badge small-badge">{{ i + 4 }}</div>
 
         <a [routerLink]="['/movies', movie.id]" class="small-poster-wrapper">
           <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" class="poster-img" [alt]="movie.title">
 
           <div class="bookmark-ribbon" (click)="toggleWatchlist(movie, $event)">
-
-            <svg *ngIf="movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
+            <svg *ngIf="movie.inWatchlist || movie.in_wishlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
 
-            <svg *ngIf="!movie.inWatchlist" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg *ngIf="!(movie.inWatchlist || movie.in_wishlist)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
             </svg>
-
           </div>
         </a>
 

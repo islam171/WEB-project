@@ -1,15 +1,17 @@
 <div class="reviews__item">
-    <div class="reviews__image"><img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt=""></div>
-    <div class="reviews__content">
-        <div class="reviews__top">
-            <div class="reviews__left">
-                <div class="reviews__username">{{ review.username }}</div>
-                <div class="reviews__time">{{ review.timeLeft }}</div>
-            </div>
-            <app-rating [rating]="review.rating"/>
-        </div>
-        <div class="reviews__text">
-            {{review.text}}
-           </div>
+  <div class="reviews__image">
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="">
+  </div>
+  <div class="reviews__content">
+    <div class="reviews__top">
+      <div class="reviews__left">
+        <div class="reviews__username">{{ review.username }}</div>
+        <div class="reviews__time">{{ review.timeLeft || review.time_left || 'just now' }}</div>
+      </div>
+      <app-rating [rating]="review.rating" />
     </div>
+    <div class="reviews__text">
+      {{ review.text }}
+    </div>
+  </div>
 </div>

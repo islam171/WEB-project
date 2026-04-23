@@ -1,9 +1,11 @@
 export interface Actor {
-  id: number,
-  name: string,
-  photo: string,
-  desc: string,
+  id: number;
+  name: string;
+  photo: string;
   popularity: number;
+  desc?: string;
+  likes?: number;
+
   isLiked?: boolean;
-  likes: number;
+  is_liked?: boolean;
 }

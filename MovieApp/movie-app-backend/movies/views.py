@@ -1,119 +1,65 @@
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from rest_framework import generics
-from rest_framework.decorators import permission_classes, api_view
-from django.db.models import Prefetch
+
+from rest_framework import generics, status, filters
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .filters import MovieFilter
-from .models import Movie, Actor, Wishlist, Category
-from .serializers import MovieSerializer, ActorSerializer, ReviewSerializer, UserSerializer, CategorySerializer, \
-    CategoryWithMoviesSerializer
-from rest_framework.response import Response
-from .serializers import WishlistSerializer
-from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework import filters
+from .models import Movie, Actor, Wishlist, Category, Review
+from .serializers import (
+    MovieSerializer,
+    ActorSerializer,
+    ReviewSerializer,
+    UserSerializer,
+    CategorySerializer,
+    WishlistSerializer, CategoryWithMoviesSerializer,
+)
+
 
 class MovieListView(generics.ListAPIView):
-    queryset = Movie.objects.all().distinct() # Пока отдаем все фильмы
+    queryset = Movie.objects.all().distinct()
     serializer_class = MovieSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = MovieFilter
     search_fields = ['title']
     ordering_fields = ['title', 'year', 'duration']
 
-    
-class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
+
+class MovieDetailView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     lookup_url_kwarg = 'id'
-    
+
+
 class PopularActorsListView(generics.ListAPIView):
     queryset = Actor.objects.filter(popularity__gt=0).order_by('-popularity')[:20]
     serializer_class = ActorSerializer
-    
+
 
 class ActorsListView(generics.ListAPIView):
-    serializer_class = ActorSerializer
     queryset = Actor.objects.all()
-
-class ActorsDetailView(generics.RetrieveAPIView):
     serializer_class = ActorSerializer
-    queryset = Actor.objects.all()
-    lookup_url_kwarg = 'id'
-
-class CategoryListView(generics.ListAPIView):
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
 
 
-class WishlistDetailView(generics.RetrieveUpdateAPIView):
-    serializer_class = WishlistSerializer
-    permission_classes = [  ]
-
-    def get_object(self):
-        # Временно берём первого юзера пока нет авторизации
-        user = User.objects.first()
-        obj, _ = Wishlist.objects.get_or_create(user=user)
-        return obj
-    
-
-@method_decorator(csrf_exempt, name='dispatch')
-class WishlistAddRemoveView(APIView):
-    permission_classes = []
-
-    def post(self, request):
-        # Временно берём первого юзера пока нет авторизации
-        user = User.objects.first()
-        movie_id = request.data.get('movie_id')
-
-        try:
-            movie = Movie.objects.get(id=movie_id)
-        except Movie.DoesNotExist:
-            return Response({'error': 'Not found'}, status=404)
-
-        wishlist, _ = Wishlist.objects.get_or_create(user=user)
-
-        if movie in wishlist.movies.all():
-            wishlist.movies.remove(movie)
-            return Response({'status': 'removed', 'movie_id': movie_id})
-        else:
-            wishlist.movies.add(movie)
-            return Response({'status': 'added', 'movie_id': movie_id})
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated]) # Только для авторизованных
-def get_recent_wishlist(request):
-    try:
-        # Находим вишлист пользователя
-        wishlist = Wishlist.objects.get(user=request.user)
-        # Берем последние 6 фильмов (сортируем по убыванию id)
-        movies = wishlist.movies.all().order_by('-id')[:6]
-        serializer = MovieSerializer(movies, many=True)
-        return Response(serializer.data)
-    except Wishlist.DoesNotExist:
-        # Если вишлиста еще нет, возвращаем пустой список
-        return Response([])
-
-    # Регистрация
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
     serializer_class = UserSerializer
 
-# Настоящий Вишлист юзера
+
 class WishlistDetailView(generics.RetrieveAPIView):
     serializer_class = WishlistSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        # Теперь берем авторизованного пользователя, а не первого из базы
-        obj, _ = Wishlist.objects.get_or_create(user=self.request.user)
-        return obj
+        wishlist, _ = Wishlist.objects.get_or_create(user=self.request.user)
+        return wishlist
+
 
 class WishlistAddRemoveView(APIView):
     permission_classes = [IsAuthenticated]
@@ -123,52 +69,107 @@ class WishlistAddRemoveView(APIView):
         movie = get_object_or_404(Movie, id=movie_id)
         wishlist, _ = Wishlist.objects.get_or_create(user=request.user)
 
-        if movie in wishlist.movies.all():
+        if wishlist.movies.filter(id=movie.id).exists():
             wishlist.movies.remove(movie)
-            return Response({'status': 'removed'})
+            return Response({'status': 'removed', 'movie_id': movie.id})
         else:
             wishlist.movies.add(movie)
-            return Response({'status': 'added'})
+            return Response({'status': 'added', 'movie_id': movie.id})
 
-# Добавление отзыва и оценки
-class ReviewCreateView(generics.CreateAPIView):
-    serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        movie_id = self.kwargs.get('movie_id')
-        movie = get_object_or_404(Movie, id=movie_id)
-        # Привязываем отзыв к текущему юзеру
-        serializer.save(user=self.request.user, movie=movie)
-
-# Лайки фильму
 class ToggleMovieLikeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, id):
         movie = get_object_or_404(Movie, id=id)
-        if request.user in movie.liked_by.all():
+
+        if movie.liked_by.filter(id=request.user.id).exists():
             movie.liked_by.remove(request.user)
-            return Response({'status': 'unliked'})
+            return Response({'status': 'unliked', 'movie_id': movie.id})
         else:
             movie.liked_by.add(request.user)
-            return Response({'status': 'liked'})
+            return Response({'status': 'liked', 'movie_id': movie.id})
+
+
+class ToggleActorLikeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, id):
+        actor = get_object_or_404(Actor, id=id)
+
+        if actor.liked_by.filter(id=request.user.id).exists():
+            actor.liked_by.remove(request.user)
+            return Response({'status': 'unliked', 'actor_id': actor.id})
+        else:
+            actor.liked_by.add(request.user)
+            return Response({'status': 'liked', 'actor_id': actor.id})
+
+
+class ReviewListCreateView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, movie_id):
+        movie = get_object_or_404(Movie, id=movie_id)
+        reviews = movie.reviews.select_related('user').order_by('-created_at')
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, movie_id):
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        movie = get_object_or_404(Movie, id=movie_id)
+        text = request.data.get('text', '')
+        rating = request.data.get('rating')
+
+        if rating is None:
+            return Response({'rating': ['This field is required.']}, status=400)
+
+        review, created = Review.objects.update_or_create(
+            user=request.user,
+            movie=movie,
+            defaults={
+                'text': text,
+                'rating': rating,
+            }
+        )
+
+        serializer = ReviewSerializer(review)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
+        )
+
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated]) # Только для авторизованных
+@permission_classes([IsAuthenticated])
+def get_recent_wishlist(request):
+    wishlist, _ = Wishlist.objects.get_or_create(user=request.user)
+    movies = wishlist.movies.all().order_by('-id')[:6]
+    serializer = MovieSerializer(movies, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getUser(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def getAllCategory(request):
     queryset = Category.objects.all()
     serializer = CategorySerializer(queryset, many=True)
     return Response(serializer.data)
 
-class GenreMoviesListView(generics.ListAPIView):
-    # Оптимизируем запрос: prefetch_related заберет фильмы одним доп. запросом
-    queryset = Category.objects.prefetch_related(
-        Prefetch('movies', queryset=Movie.objects.all())
-    ).all()
-    serializer_class = CategoryWithMoviesSerializer
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def getCategoriesWithMovies(request):
+    queryset = Category.objects.prefetch_related('movies').all()
+    serializer = CategoryWithMoviesSerializer(queryset, many=True)
+    return Response(serializer.data)

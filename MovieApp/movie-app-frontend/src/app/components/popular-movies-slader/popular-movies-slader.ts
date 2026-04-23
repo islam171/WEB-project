@@ -15,8 +15,7 @@ export class PopularMoviesComponent implements OnInit {
   currentMovieIndex = 0;
   currentMovie: Movie | null = null;
   isLoading = true;
-
-  isFading: boolean = false;
+  isFading = false;
 
   constructor(
     private movieService: MovieService,
@@ -26,10 +25,16 @@ export class PopularMoviesComponent implements OnInit {
   ngOnInit(): void {
     this.movieService.getMovies().subscribe({
       next: (data: Movie[]) => {
-        this.popularMovies = data;
+        this.popularMovies = data.map((movie) => ({
+          ...movie,
+          inWatchlist: movie.inWatchlist ?? movie.in_wishlist ?? false,
+          in_wishlist: movie.in_wishlist ?? movie.inWatchlist ?? false,
+        }));
+
         if (this.popularMovies.length > 0) {
           this.updateCurrentMovie();
         }
+
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -58,7 +63,6 @@ export class PopularMoviesComponent implements OnInit {
       }
 
       this.isFading = false;
-
       this.cdr.detectChanges();
     }, 150);
   }
@@ -77,15 +81,16 @@ export class PopularMoviesComponent implements OnInit {
       }
 
       this.isFading = false;
-
       this.cdr.detectChanges();
     }, 150);
   }
 
   toggleWatchlist(): void {
-    if (this.currentMovie) {
-      this.currentMovie.inWatchlist = !this.currentMovie.inWatchlist;
-      this.cdr.detectChanges();
-    }
+    if (!this.currentMovie) return;
+
+    const current = this.currentMovie.inWatchlist ?? this.currentMovie.in_wishlist ?? false;
+    this.currentMovie.inWatchlist = !current;
+    this.currentMovie.in_wishlist = !current;
+    this.cdr.detectChanges();
   }
 }

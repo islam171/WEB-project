@@ -1,44 +1,44 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import { Observable,BehaviorSubject, tap } from 'rxjs';
-import { Movie } from '../models/movie.model';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+
+import { Movie, IReview } from '../models/movie.model';
 import { Actor } from '../models/actor.model';
-import {IParam} from "../models/param";
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
-  // Адрес нашего Django API
-  private apiUrl = 'http://localhost:8000/api/';
+  private apiUrl = 'http://localhost:8000/api';
+  private wishlistIds$ = new BehaviorSubject<Set<number>>(new Set());
 
   constructor(private http: HttpClient) {}
 
-  // Метод для получения фильмов с бэкенда
   getMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl + 'movies/');
+    return this.http.get<Movie[]>(`${this.apiUrl}/movies/`);
   }
 
-
-
-  // Метод для получения всех актеров
-  getAllActors(): Observable<any> {
-    return this.http.get<Actor[]>(this.apiUrl + 'actors/');
+  getPopularActors(): Observable<Actor[]> {
+    return this.http.get<Actor[]>(`${this.apiUrl}/actors/popular/`);
   }
 
-  getMovieById(id: number): Observable<any>{
-    return this.http.get<Movie>(this.apiUrl + 'movies/' + id);
+  getAllActors(): Observable<Actor[]> {
+    return this.http.get<Actor[]>(`${this.apiUrl}/actors/`);
   }
 
-  getMoviesFilter(params: any): Observable<any> {
-      return this.http.get<Movie[]>(this.apiUrl + 'movies/' , {params});
+  getMovieById(id: number): Observable<Movie> {
+    return this.http.get<Movie>(`${this.apiUrl}/movies/${id}/`);
   }
 
-  private wishlistIds$ = new BehaviorSubject<Set<number>>(new Set());
+  getMoviesFilter(params: any): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.apiUrl}/movies/`, { params });
+  }
 
-   getWishlist(): Observable<{ id: number; movies: Movie[] }> {
-    return this.http.get<any>(this.apiUrl + 'wishlist/').pipe(
-      tap(w => this.wishlistIds$.next(new Set(w.movies.map((m: Movie) => m.id))))
+  getWishlist(): Observable<{ id: number; movies: Movie[] }> {
+    return this.http.get<{ id: number; movies: Movie[] }>(`${this.apiUrl}/wishlist/`).pipe(
+      tap((wishlist) => {
+        this.wishlistIds$.next(new Set(wishlist.movies.map((m) => m.id)));
+      }),
     );
   }
 
@@ -46,28 +46,50 @@ export class MovieService {
     return this.wishlistIds$.asObservable();
   }
 
-  toggleWishlist(movieId: number): Observable<any> {
-    return this.http.post<any>(this.apiUrl + 'wishlist/toggle/', { movie_id: movieId }).pipe(
-      tap(res => {
-        const ids = new Set(this.wishlistIds$.value);
-        res.status === 'added' ? ids.add(movieId) : ids.delete(movieId);
-        this.wishlistIds$.next(ids);
-      })
-    );
+  toggleWishlist(movieId: number): Observable<{ status: string; movie_id: number }> {
+    return this.http
+      .post<{
+        status: string;
+        movie_id: number;
+      }>(`${this.apiUrl}/wishlist/toggle/`, { movie_id: movieId })
+      .pipe(
+        tap((res) => {
+          const ids = new Set(this.wishlistIds$.value);
+          if (res.status === 'added') {
+            ids.add(movieId);
+          } else {
+            ids.delete(movieId);
+          }
+          this.wishlistIds$.next(ids);
+        }),
+      );
   }
 
   isInWishlist(movieId: number): boolean {
     return this.wishlistIds$.value.has(movieId);
   }
 
-  // Проверка, авторизован ли пользователь (проверяем наличие токена)
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
-  // Получение последних 6 фильмов
   getRecentWishlist(): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.apiUrl}/wishlist/recent/`);
   }
 
+  toggleMovieLike(movieId: number): Observable<{ status: string }> {
+    return this.http.post<{ status: string }>(`${this.apiUrl}/movies/${movieId}/like/`, {});
+  }
+
+  toggleActorLike(actorId: number): Observable<{ status: string }> {
+    return this.http.post<{ status: string }>(`${this.apiUrl}/actors/${actorId}/like/`, {});
+  }
+
+  getMovieReviews(movieId: number): Observable<IReview[]> {
+    return this.http.get<IReview[]>(`${this.apiUrl}/movies/${movieId}/reviews/`);
+  }
+
+  addMovieReview(movieId: number, payload: { text: string; rating: number }): Observable<IReview> {
+    return this.http.post<IReview>(`${this.apiUrl}/movies/${movieId}/reviews/`, payload);
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
 }

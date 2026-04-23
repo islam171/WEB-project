@@ -11,12 +11,15 @@ import { RouterLink } from '@angular/router';
 export class MovieBanner {
   @Input() movie: Movie | null = null;
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  isFading: boolean = false;
+  isFading = false;
 
   toggleWatchlist(): void {
-    if (this.movie) {
-      this.movie.inWatchlist = !this.movie.inWatchlist;
-      this.cdr.detectChanges();
-    }
+    if (!this.movie) return;
+
+    const current = this.movie.inWatchlist ?? this.movie.in_wishlist ?? false;
+    this.movie.inWatchlist = !current;
+    this.movie.in_wishlist = !current;
+
+    this.cdr.detectChanges();
   }
 }

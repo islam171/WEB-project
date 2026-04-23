@@ -4,14 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 
 @Component({
-  selector: 'app-sign-in',
+  selector: 'app-sign-up',
   standalone: true,
   imports: [RouterLink, FormsModule],
   templateUrl: './signup.html',
   styleUrls: ['./signup.css'],
 })
 export class Signup {
-  credentials = { username: '', email : '', password: '' };
+  credentials = {
+    username: '',
+    email: '',
+    password: '',
+  };
+
+  errorMessage = '';
 
   constructor(
     private authService: AuthService,
@@ -19,12 +25,25 @@ export class Signup {
   ) {}
 
   onSubmit() {
-    this.authService.login(this.credentials).subscribe({
+    this.errorMessage = '';
+
+    this.authService.register(this.credentials).subscribe({
       next: () => {
-        alert('Успешный вход!');
-        this.router.navigate(['/']); // Возвращаем на главную
+        this.authService
+          .login({
+            username: this.credentials.username,
+            password: this.credentials.password,
+          })
+          .subscribe({
+            next: () => this.router.navigate(['/']),
+            error: () => {
+              this.router.navigate(['/sign-in']);
+            },
+          });
       },
-      error: (err) => alert('Ошибка входа: неверный логин или пароль'),
+      error: (err) => {
+        this.errorMessage = 'Ошибка регистрации. Возможно, пользователь уже существует.';
+      },
     });
   }
 }

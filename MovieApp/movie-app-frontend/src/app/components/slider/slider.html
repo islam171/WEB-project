@@ -1,12 +1,13 @@
 <div class="slider-section">
   <div class="section-header">
-    <div class="header-left">
-      <div class="yellow-bar"></div>
-      <h2>{{ title }}</h2>
+    <h2>{{ title }}</h2>
+
+    @if (viewAllLink) {
       <a [routerLink]="viewAllLink" [queryParams]="queryParams" class="view-all-btn">
-        View All <img src="assets/Icons/right-arrow.png" alt=">">
+        View All
+        <img src="assets/Icons/right-arrow.png" alt=">">
       </a>
-    </div>
+    }
   </div>
 
   <div class="slider-container">
@@ -14,17 +15,38 @@
       <img src="assets/Icons/left-arrow.png" alt="Prev">
     </button>
 
-    <div class="items-track" [class.fading]="isFading" [class.show]="!fading">
+    <div class="items-track" [ngClass]="{ 'fading': fading }">
       @for (item of visibleItems; track item.id) {
-        <div class="item-card">
-          @if (itemTemplate) {
-            <ng-container [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{ $implicit: item }">
-            </ng-container>
-          } @else {
-            <p style="color: red;">No template provided!</p>
-          }
+        @if (itemTemplate) {
+          <ng-container
+            [ngTemplateOutlet]="itemTemplate"
+            [ngTemplateOutletContext]="{ $implicit: item }">
+          </ng-container>
+        } @else {
+          <div class="item-card">
+            @if (isActor(item)) {
+              <a [routerLink]="['/actors', item.id]" class="item-link">
+                <img
+                  [src]="item.photo || 'assets/Icons/actor.png'"
+                  [alt]="item.name"
+                  class="item-photo"
+                >
+                <p class="item-name">{{ item.name }}</p>
+              </a>
+            }
 
-        </div>
+            @if (isMovie(item)) {
+              <a [routerLink]="['/movies', item.id]" class="item-link">
+                <img
+                  [src]="item.poster || 'assets/Icons/movie.png'"
+                  [alt]="item.title"
+                  class="item-photo"
+                >
+                <p class="item-name">{{ item.title }}</p>
+              </a>
+            }
+          </div>
+        }
       }
     </div>
 

@@ -13,8 +13,8 @@
           <p>{{ actor.desc }}</p>
         </div>
         <div class="actions">
-          <button class="like-btn" [class.active]="actor.isLiked" (click)="handleLike()">
-            <span class="heart-icon">{{ actor.isLiked ? '❤️' : '🤍' }}</span>
+          <button class="like-btn" [class.active]="actor.isLiked || actor.is_liked" (click)="handleLike()">
+            <span class="heart-icon">{{ (actor.isLiked || actor.is_liked) ? '❤️' : '🤍' }}</span>
             <span class="count">{{ actor.likes }}</span>
           </button>
         </div>

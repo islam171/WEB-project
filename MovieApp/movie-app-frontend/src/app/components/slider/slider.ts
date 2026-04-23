@@ -1,65 +1,79 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ContentChild,
-  inject,
-  Input,
-  TemplateRef,
-} from '@angular/core';
+import { Component, ContentChild, Input, TemplateRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+
+type SliderItem = {
+  id: number;
+  title?: string;
+  name?: string;
+  poster?: string;
+  photo?: string;
+  likes?: number;
+  isLiked?: boolean;
+  is_liked?: boolean;
+  inWatchlist?: boolean;
+  in_wishlist?: boolean;
+};
 
 @Component({
   selector: 'app-slider',
-  imports: [RouterLink, NgTemplateOutlet],
+  standalone: true,
+  imports: [RouterLink, NgClass, NgTemplateOutlet],
   templateUrl: './slider.html',
   styleUrl: './slider.css',
 })
 export class Slider {
-  @Input() title: string = '';
-  @Input() items: any[] = [];
-  @Input() viewAllLink: string = '/';
-  @Input() queryParams: {} = {};
-  @Input() itemsToShow: number = 5;
-  @Input() fading: boolean = false;
+  @Input() items: SliderItem[] = [];
+  @Input() viewAllLink = '';
+  @Input() title = 'Items';
+  @Input() itemsToShow = 5;
+  @Input() queryParams: any = {};
+  @Input() fading = false;
 
-  // Позволяет передавать кастомную верстку для карточки извне
-  @ContentChild('itemTemplate') itemTemplate: TemplateRef<any> | null = null;
+  @ContentChild('itemTemplate') itemTemplate?: TemplateRef<any>;
 
-  cdr = inject(ChangeDetectorRef);
+  currentIndex = 0;
 
-  currentIndex: number = 0;
-  isFading = false;
-
-  get visibleItems() {
+  get visibleItems(): SliderItem[] {
     return this.items.slice(this.currentIndex, this.currentIndex + this.itemsToShow);
   }
 
-  next() {
-    if (this.isFading) return;
-
-    this.isFading = true;
-    setTimeout(() => {
-      if (this.currentIndex + this.itemsToShow < this.items.length) {
-        this.currentIndex++;
-        this.cdr.detectChanges();
-      }
-      this.isFading = false;
-      this.cdr.detectChanges();
-    }, 150);
+  next(): void {
+    if (this.currentIndex + this.itemsToShow < this.items.length) {
+      this.currentIndex++;
+    }
   }
 
-  prev() {
-    if (this.isFading) return;
+  prev(): void {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
 
-    this.isFading = true;
-    setTimeout(() => {
-      if (this.currentIndex > 0) {
-        this.currentIndex--;
-        this.cdr.detectChanges();
-      }
-      this.isFading = false;
-      this.cdr.detectChanges();
-    }, 150);
+  isActor(item: SliderItem): boolean {
+    return !!item.name && !item.title;
+  }
+
+  isMovie(item: SliderItem): boolean {
+    return !!item.title;
+  }
+
+  toggleActorLike(item: SliderItem, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const current = item.isLiked ?? item.is_liked ?? false;
+    item.isLiked = !current;
+    item.is_liked = !current;
+    item.likes = !current ? (item.likes ?? 0) + 1 : Math.max(0, (item.likes ?? 0) - 1);
+  }
+
+  toggleMovieWishlist(item: SliderItem, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const current = item.inWatchlist ?? item.in_wishlist ?? false;
+    item.inWatchlist = !current;
+    item.in_wishlist = !current;
   }
 }

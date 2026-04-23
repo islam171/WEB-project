@@ -1,9 +1,7 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Actor } from '../../models/actor.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MovieService } from '../../services/movie.services';
 import { ActorService } from '../../services/actor';
-import { Movie } from '../../models/movie.model';
 
 @Component({
   selector: 'app-actor-page',
@@ -12,23 +10,20 @@ import { Movie } from '../../models/movie.model';
   styleUrl: './actor-page.css',
 })
 export class ActorPage {
-
   actor: Actor | null = null;
+
   private activeRoute = inject(ActivatedRoute);
   private actorService = inject(ActorService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
   private loading = true;
-  private error = null;
-
-  constructor() {}
+  private error: any = null;
 
   ngOnInit() {
     this.activeRoute.params.subscribe((params) => {
       const id = +params['id'];
-      this.loadData(id)
+      this.loadData(id);
     });
   }
 
@@ -36,7 +31,12 @@ export class ActorPage {
     this.loading = true;
     this.actorService.getActorById(id).subscribe({
       next: (data: Actor) => {
-        this.actor = data;
+        this.actor = {
+          ...data,
+          isLiked: data.isLiked ?? data.is_liked ?? false,
+          is_liked: data.is_liked ?? data.isLiked ?? false,
+          likes: data.likes ?? 0,
+        };
         this.loading = false;
         this.cdr.markForCheck();
       },
@@ -51,11 +51,16 @@ export class ActorPage {
   handleLike() {
     if (!this.actor) return;
 
-    if (this.actor.isLiked) {
-      this.actor.likes--;
+    const likedNow = this.actor.isLiked ?? this.actor.is_liked ?? false;
+
+    if (likedNow) {
+      this.actor.likes = Math.max(0, (this.actor.likes ?? 0) - 1);
     } else {
-      this.actor.likes++;
+      this.actor.likes = (this.actor.likes ?? 0) + 1;
     }
-    this.actor.isLiked = !this.actor.isLiked;
+
+    this.actor.isLiked = !likedNow;
+    this.actor.is_liked = !likedNow;
+    this.cdr.markForCheck();
   }
 }
