@@ -8,11 +8,7 @@ type SliderItem = {
   name?: string;
   poster?: string;
   photo?: string;
-  likes?: number;
-  isLiked?: boolean;
-  is_liked?: boolean;
-  inWatchlist?: boolean;
-  in_wishlist?: boolean;
+  popularity?: number;
 };
 
 @Component({
@@ -34,12 +30,16 @@ export class Slider {
 
   currentIndex = 0;
 
-  get visibleItems(): SliderItem[] {
-    return this.items.slice(this.currentIndex, this.currentIndex + this.itemsToShow);
+  get maxIndex(): number {
+    return Math.max(0, this.items.length - this.itemsToShow);
+  }
+
+  get trackTransform(): string {
+    return `translateX(-${this.currentIndex * (100 / this.itemsToShow)}%)`;
   }
 
   next(): void {
-    if (this.currentIndex + this.itemsToShow < this.items.length) {
+    if (this.currentIndex < this.maxIndex) {
       this.currentIndex++;
     }
   }
@@ -56,24 +56,5 @@ export class Slider {
 
   isMovie(item: SliderItem): boolean {
     return !!item.title;
-  }
-
-  toggleActorLike(item: SliderItem, event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const current = item.isLiked ?? item.is_liked ?? false;
-    item.isLiked = !current;
-    item.is_liked = !current;
-    item.likes = !current ? (item.likes ?? 0) + 1 : Math.max(0, (item.likes ?? 0) - 1);
-  }
-
-  toggleMovieWishlist(item: SliderItem, event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const current = item.inWatchlist ?? item.in_wishlist ?? false;
-    item.inWatchlist = !current;
-    item.in_wishlist = !current;
   }
 }
