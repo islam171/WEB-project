@@ -1,45 +1,119 @@
 .wishlist {
-  padding: 20px;
+  padding: 24px 0 40px;
+  color: white;
+}
+
+.wishlist__hero {
+  margin-bottom: 28px;
+}
+
+.wishlist__hero h1 {
+  margin: 0 0 8px;
+  font-size: 42px;
+}
+
+.wishlist__hero p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.wishlist__empty {
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .wishlist__grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(200px, 1fr));
-  gap: 20px;
+  gap: 22px;
   margin-top: 20px;
 }
 
 .wishlist__item {
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  aspect-ratio: 2/3;
-  cursor: pointer;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 22px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 18px;
 }
 
-.wishlist__item img {
+.wishlist__poster-link {
+  display: block;
+}
+
+.wishlist__poster-link img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
+  border-radius: 16px;
   display: block;
 }
 
 .wishlist__info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wishlist__info-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.wishlist__info-top h3 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.wishlist__meta {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.wishlist__desc {
+  margin: 0;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.wishlist__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wishlist__stats span {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .remove-btn {
-  margin-top: 5px;
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 4px 10px;
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff9b9b;
+  border-radius: 999px;
+  padding: 10px 16px;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: rgba(255, 107, 107, 0.2);
+  color: #ffd0d0;
+}
+
+@media (max-width: 900px) {
+  .wishlist__item {
+    grid-template-columns: 1fr;
+  }
+
+  .wishlist__poster-link {
+    max-width: 240px;
+  }
 }

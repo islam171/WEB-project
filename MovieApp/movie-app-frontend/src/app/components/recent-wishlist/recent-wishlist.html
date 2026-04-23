@@ -15,12 +15,19 @@
       @if (recentMovies.length > 0) {
         <div class="movies-row">
           @for (movie of recentMovies; track movie.id) {
-            <a [routerLink]="['/movie', movie.id]" class="movie-card">
+            <a [routerLink]="['/movies', movie.id]" class="movie-card">
               <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" [alt]="movie.title" class="poster-img">
               <div class="bookmark-ribbon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="#f5c518">
                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                 </svg>
+              </div>
+              <div class="movie-card__overlay">
+                <div class="movie-card__title">{{ movie.title }}</div>
+                <div class="movie-card__meta">
+                  <span>{{ movie.year }}</span>
+                  <span>{{ movie.duration || 'Runtime soon' }}</span>
+                </div>
               </div>
             </a>
           }

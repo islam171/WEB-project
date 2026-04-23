@@ -14,6 +14,7 @@ from .models import Movie, Actor, Wishlist, Category, Review
 from .serializers import (
     MovieSerializer,
     ActorSerializer,
+    ActorBasicSerializer,
     ReviewSerializer,
     UserSerializer,
     CategorySerializer,
@@ -38,12 +39,18 @@ class MovieDetailView(generics.RetrieveAPIView):
 
 class PopularActorsListView(generics.ListAPIView):
     queryset = Actor.objects.filter(popularity__gt=0).order_by('-popularity')[:20]
-    serializer_class = ActorSerializer
+    serializer_class = ActorBasicSerializer
 
 
 class ActorsListView(generics.ListAPIView):
     queryset = Actor.objects.all()
+    serializer_class = ActorBasicSerializer
+
+
+class ActorDetailView(generics.RetrieveAPIView):
+    queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    lookup_url_kwarg = 'id'
 
 
 class RegisterView(generics.CreateAPIView):
@@ -166,6 +173,7 @@ def getAllCategory(request):
     queryset = Category.objects.all()
     serializer = CategorySerializer(queryset, many=True)
     return Response(serializer.data)
+
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

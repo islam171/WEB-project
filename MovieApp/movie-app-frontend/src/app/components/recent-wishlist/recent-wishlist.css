@@ -42,24 +42,25 @@
 
 .view-all-link img {
   width: 16px;
-  filter: invert(1); /* Делаем стрелочку белой, если она черная */
+  filter: invert(1);
 }
 
-/* --- Сетка фильмов --- */
 .movies-row {
   display: flex;
   gap: 20px;
-  overflow-x: auto; /* На случай, если экраны маленькие */
+  overflow-x: auto;
   padding-bottom: 10px;
 }
 
 .movie-card {
   position: relative;
-  flex: 0 0 200px; /* Ширина карточки 200px, не сжимается */
-  height: 350px; /* Высота под пропорции постера */
-  border-radius: 8px;
+  flex: 0 0 220px;
+  height: 360px;
+  border-radius: 14px;
   overflow: hidden;
   transition: transform 0.2s;
+  text-decoration: none;
+  color: white;
 }
 
 .movie-card:hover {
@@ -72,17 +73,36 @@
   object-fit: cover;
 }
 
-/* --- Ленточка на карточке --- */
 .bookmark-ribbon {
   position: absolute;
-  top: -2px;
+  top: 10px;
   left: 10px;
   width: 32px;
   z-index: 10;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  pointer-events: none;
 }
 
-/* --- Блок логина --- */
+.movie-card__overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 16px 14px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.88) 100%);
+}
+
+.movie-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.movie-card__meta {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .login-prompt {
   display: flex;
   flex-direction: column;

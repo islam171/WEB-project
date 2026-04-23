@@ -1,12 +1,14 @@
 .signed-up-card {
-    background-color: #1a1a1a; 
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
     padding: 40px;
     border-radius: 25px;
     width: 400px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     font-family: Arial, sans-serif;
-    margin: 20px auto; 
+    margin: 32px auto; 
+    backdrop-filter: blur(14px);
 }
 
 .signed-up-card h2 {

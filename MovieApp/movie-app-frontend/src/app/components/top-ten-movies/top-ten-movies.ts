@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Movie } from '../../models/movie.model';
@@ -18,6 +18,7 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
 
   private movieService = inject(MovieService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
   private wishlistSubscription?: Subscription;
 
   ngOnInit(): void {
@@ -30,6 +31,7 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
           in_wishlist: inWishlist,
         };
       });
+      this.cdr.detectChanges();
     });
   }
 
@@ -59,8 +61,14 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
     this.movieService.toggleWishlist(movie.id).subscribe({
       next: (res) => {
         const added = res.status === 'added';
+        this.topTen = this.topTen.map((item) =>
+          item.id === movie.id
+            ? { ...item, inWatchlist: added, in_wishlist: added }
+            : item,
+        );
         movie.inWatchlist = added;
         movie.in_wishlist = added;
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Wishlist toggle error:', err),
     });

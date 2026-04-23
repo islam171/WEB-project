@@ -6,7 +6,7 @@ import { MovieService } from '../../services/movie.services';
 import { Movie } from '../../models/movie.model';
 import { RecentWishlistComponent } from '../../components/recent-wishlist/recent-wishlist';
 import { Actor } from '../../models/actor.model';
-import { Slider } from '../../components/slider/slider';
+import { Slider } from '../../components/actor-slider/slider';
 import { ActorCard } from '../../components/actor-card/actor-card';
 import { ActorService } from '../../services/actor';
 import { MovieBanner } from '../../components/movie-banner/movie-banner';

@@ -8,6 +8,7 @@ import { SignIn } from './pages/sign-in/sign-in';
 import { WishlistComponent } from './pages/wishlist/wishlist';
 import { CategoriesPage } from './pages/categories-page/categories-page';
 import { ActorPage } from './pages/actor-page/actor-page';
+import { ActorsPage } from './pages/actors-page/actors-page';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'sign-in', component: SignIn},
   { path: 'wishlist', component:WishlistComponent},
   { path: 'category', component:CategoriesPage},
+  { path: 'actors', component: ActorsPage},
   { path: 'actors/:id', component:ActorPage}
 ];

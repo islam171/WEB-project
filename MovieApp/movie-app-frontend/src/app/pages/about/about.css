@@ -1,11 +1,20 @@
 .about-container{
-    background-color: #000;
+    background: transparent;
     color: #ffff;
     min-height: 100vh;
     padding: 40px 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
+}
+
+.about-container .container {
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 28px;
+    padding: 36px 42px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(14px);
 }
 
 h1 {

@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { SectionTitle } from '../../components/section-title/section-title';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
 import { Rating } from '../../components/rating/rating';
-import { Slider } from '../../components/slider/slider';
+import { Slider } from '../../components/actor-slider/slider';
 
 import { Movie, IReview } from '../../models/movie.model';
 import { IGenre } from '../../models/genre.model';
@@ -25,8 +26,10 @@ export class MovieDetailsComponent {
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private sanitizer = inject(DomSanitizer);
 
   movie: Movie | null = null;
+  trailerUrl: SafeResourceUrl | null = null;
   reviews: IReview[] = [];
   loading = true;
   error = '';
@@ -53,11 +56,15 @@ export class MovieDetailsComponent {
     this.movieService.getMovieById(id).subscribe({
       next: (data: Movie) => {
         this.movie = data;
+        this.trailerUrl = data.videoUrl
+          ? this.sanitizer.bypassSecurityTrustResourceUrl(data.videoUrl)
+          : null;
         this.loading = false;
         this.cdr.markForCheck();
       },
       error: () => {
         this.error = 'Failed to load movie';
+        this.trailerUrl = null;
         this.loading = false;
         this.cdr.markForCheck();
       },

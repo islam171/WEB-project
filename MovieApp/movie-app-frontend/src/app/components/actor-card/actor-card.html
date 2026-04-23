@@ -1,11 +1,13 @@
 <div class="actor-card">
   @if (actor) {
-    <a [routerLink]="['/actors', actor.id]" class="actor-link">
-      <img [src]="actor.photo || 'assets/Icons/actor.png'" [alt]="actor.name" class="actor-photo">
-      <p class="actor-name">{{ actor.name }}</p>
-    </a>
-
-  }@else{
+    <div class="actor-card__frame">
+      <a [routerLink]="['/actors', actor.id]" class="actor-link">
+        <img [src]="actor.photo || 'assets/Icons/actor.png'" [alt]="actor.name" class="actor-photo">
+        <p class="actor-name">{{ actor.name }}</p>
+      </a>
+      <div class="actor-popularity">Popularity: {{ actor.popularity }}</div>
+    </div>
+  } @else {
     <div class="skeleton-wrapper">
       <div class="actor-photo skeleton-circle"></div>
       <div class="skeleton-text"></div>

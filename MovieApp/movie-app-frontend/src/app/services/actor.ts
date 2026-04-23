@@ -11,19 +11,19 @@ export class ActorService {
 
   constructor(private http: HttpClient) {}
 
-  // Метод получение популярных актеров
-  getPopularActors(): Observable<any> {
+  getPopularActors(): Observable<Actor[]> {
     return this.http.get<Actor[]>(this.apiUrl + 'actors/popular/');
   }
 
-
-  // Метод для получения всех актеров
-  getAllActors(): Observable<any> {
+  getAllActors(): Observable<Actor[]> {
     return this.http.get<Actor[]>(this.apiUrl + 'actors/');
   }
 
-  getActorById(id: number): Observable<any>{
-    return this.http.get<Actor>(this.apiUrl + 'actors/' + id);
+  getActorById(id: number): Observable<Actor> {
+    return this.http.get<Actor>(this.apiUrl + `actors/${id}/`);
   }
 
+  toggleActorLike(id: number): Observable<{ status: string; actor_id: number }> {
+    return this.http.post<{ status: string; actor_id: number }>(this.apiUrl + `actors/${id}/like/`, {});
+  }
 }

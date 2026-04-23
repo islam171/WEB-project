@@ -1,9 +1,7 @@
 .actors-page {
   min-height: 100vh;
   padding: 32px 40px 56px;
-  background:
-    radial-gradient(circle at top left, rgba(55, 243, 0, 0.12), transparent 22%),
-    #101010;
+  background: transparent;
 }
 
 .page-header {

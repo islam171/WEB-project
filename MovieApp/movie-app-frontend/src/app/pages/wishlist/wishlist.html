@@ -1,22 +1,36 @@
 <div class="wishlist">
-  <h1>My watchlist</h1>
+  <div class="wishlist__hero">
+    <h1>My Watchlist</h1>
+    <p>Keep your saved movies in one place and jump back into them anytime.</p>
+  </div>
 
   @if (loading) {
     <p>Loading...</p>
   }
 
   @if (!loading && movies.length === 0) {
-    <p>watchlist empty</p>
+    <p class="wishlist__empty">Your watchlist is empty right now.</p>
   }
 
   <div class="wishlist__grid">
     @for (movie of movies; track movie.id) {
       <div class="wishlist__item">
-        <img [src]="movie.poster" [alt]="movie.title" [routerLink]="['/movies', movie.id]">
+        <a class="wishlist__poster-link" [routerLink]="['/movies', movie.id]">
+          <img [src]="movie.poster" [alt]="movie.title">
+        </a>
         <div class="wishlist__info">
-          <h3>{{ movie.title }}</h3>
-          <p>{{ movie.year }}</p>
-          <button class="remove-btn" (click)="remove(movie.id)">Delete</button>
+          <div class="wishlist__info-top">
+            <div>
+              <h3>{{ movie.title }}</h3>
+              <p class="wishlist__meta">{{ movie.year }} • {{ movie.duration || 'Runtime soon' }}</p>
+            </div>
+            <button class="remove-btn" (click)="remove(movie.id)">Remove</button>
+          </div>
+          <p class="wishlist__desc">{{ movie.short_description || movie.description || 'Description is not available yet.' }}</p>
+          <div class="wishlist__stats">
+            <span>{{ movie.likes }} likes</span>
+            <span>{{ movie.rating }} rating</span>
+          </div>
         </div>
       </div>
     }

@@ -75,7 +75,7 @@
   @if (movie?.actors && !loading) {
     <app-slider
       [items]="movie?.actors || []"
-      [title]="'Actors'"
+      [title]="''"
       [itemsToShow]="5">
     </app-slider>
   }
@@ -86,10 +86,13 @@
 
   <div class="trailer-card">
     <div class="trailer__video">
-      @if (movie?.videoUrl) {
-        <video controls>
-          <source [src]="movie?.videoUrl">
-        </video>
+      @if (trailerUrl) {
+        <iframe
+          [src]="trailerUrl"
+          title="Movie trailer"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       } @else {
         <div class="error">Trailer is not available.</div>
       }

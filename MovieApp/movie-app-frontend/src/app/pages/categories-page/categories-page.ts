@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MovieBanner } from '../../components/movie-banner/movie-banner';
-import { Slider } from '../../components/slider/slider';
+import { Slider } from '../../components/actor-slider/slider';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
 import { IGenre } from '../../models/genre.model';

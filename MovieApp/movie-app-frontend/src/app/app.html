@@ -1,4 +1,11 @@
-<div class="container">
+@if (isAppLoading) {
+  <div class="app-loader" [class.app-loader--hidden]="!isLoaderVisible">
+    <div class="app-loader__glow"></div>
+    <img src="assets/Icons/Cosmos.gif" alt="Loading" class="app-loader__gif">
+  </div>
+}
+
+<div class="container" [class.container--loading]="isAppLoading">
 
     <app-header></app-header>
 

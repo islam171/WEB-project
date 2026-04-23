@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
-from django.utils import timezone
 from rest_framework import serializers
 
 from .models import Movie, Category, Actor, Wishlist, Review
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,19 +10,31 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class MovieShortSerializer(serializers.ModelSerializer):
+    likes = serializers.ReadOnlyField(source='display_likes')
+    rating = serializers.ReadOnlyField(source='display_rating')
+
+    class Meta:
+        model = Movie
+        fields = ['id', 'title', 'poster', 'year', 'duration', 'likes', 'rating', 'short_description', 'backdrop']
+
+
+class ActorBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actor
+        fields = ['id', 'name', 'photo', 'popularity', 'desc']
+
+
 class ActorSerializer(serializers.ModelSerializer):
-    likes = serializers.ReadOnlyField(source='local_likes')
-    is_liked = serializers.SerializerMethodField()
+    movies = serializers.SerializerMethodField()
 
     class Meta:
         model = Actor
-        fields = ['id', 'name', 'photo', 'popularity', 'desc', 'likes', 'is_liked']
+        fields = ['id', 'name', 'photo', 'popularity', 'desc', 'movies']
 
-    def get_is_liked(self, obj):
-        request = self.context.get('request')
-        if request and request.user.is_authenticated:
-            return obj.liked_by.filter(id=request.user.id).exists()
-        return False
+    def get_movies(self, obj):
+        movies = obj.movies.all()[:10]
+        return MovieShortSerializer(movies, many=True).data
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -33,11 +45,12 @@ class ReviewSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'text', 'rating', 'created_at']
         read_only_fields = ['id', 'username', 'created_at']
 
+
 class MovieSerializer(serializers.ModelSerializer):
     likes = serializers.ReadOnlyField(source='display_likes')
     rating = serializers.ReadOnlyField(source='display_rating')
     categories = CategorySerializer(many=True, read_only=True)
-    actors = ActorSerializer(many=True, read_only=True)
+    actors = ActorBasicSerializer(many=True, read_only=True)
     in_wishlist = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField()
 
@@ -99,11 +112,6 @@ class UserSerializer(serializers.ModelSerializer):
         )
         Wishlist.objects.create(user=user)
         return user
-
-class MovieShortSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Movie
-        fields = ['id', 'title', 'poster', 'year', 'likes', 'rating', 'short_description', 'backdrop']
 
 
 class CategoryWithMoviesSerializer(serializers.ModelSerializer):

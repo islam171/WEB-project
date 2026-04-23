@@ -1,9 +1,12 @@
 .home-page {
-  background-color: #000000;
+  background: transparent;
   color: white;
   min-height: 100vh;
 }
 
 .content {
   margin: 0 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
