@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 
@@ -12,19 +12,25 @@ import { AuthService } from '../../services/auth';
 })
 export class SignIn {
   credentials = { username: '', password: '' };
+  message = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) {}
+    private route: ActivatedRoute,
+  ) {
+    if (this.route.snapshot.queryParamMap.get('registered') === '1') {
+      this.message = 'Registration successful. Please sign in.';
+    }
+  }
 
   onSubmit() {
     this.authService.login(this.credentials).subscribe({
       next: () => {
-        alert('Успешный вход!');
-        this.router.navigate(['/']); // Возвращаем на главную
+        alert('РЈСЃРїРµС€РЅС‹Р№ РІС…РѕРґ!');
+        this.router.navigate(['/']);
       },
-      error: (err) => alert('Ошибка входа: неверный логин или пароль'),
+      error: () => alert('РћС€РёР±РєР° РІС…РѕРґР°: РЅРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ'),
     });
   }
 }

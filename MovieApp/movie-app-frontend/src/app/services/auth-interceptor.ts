@@ -3,11 +3,16 @@ import { HttpInterceptorFn } from '@angular/common/http';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('token');
 
-  const skipAuthUrls = ['/api/login/', '/api/register/', '/api/login/refresh/'];
+  // Только эти эндпоинты должны идти БЕЗ токена
+  const publicUrls = [
+    '/api/login/',
+    '/api/register/',
+    '/api/login/refresh/'
+  ];
 
-  const shouldSkip = skipAuthUrls.some((url) => req.url.includes(url));
+  const isPublicRequest = publicUrls.some((url) => req.url.includes(url));
 
-  if (token && !shouldSkip) {
+  if (token && !isPublicRequest) {
     const cloned = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`,

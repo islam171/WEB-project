@@ -2,6 +2,9 @@
 <div class="signed-up-card">
   <h2>Sign In</h2>
   <p>Login</p>
+@if (message) {
+  <p class="success-message">{{ message }}</p>
+}
 <form (ngSubmit)="onSubmit()">
   <div class="input-group">
     <img src="../../../assets/Icons/person_login.png">

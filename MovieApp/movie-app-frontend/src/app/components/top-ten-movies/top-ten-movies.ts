@@ -1,7 +1,9 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Movie } from '../../models/movie.model';
+import { MovieService } from '../../services/movie.services';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-top-ten-movies',
@@ -10,9 +12,26 @@ import { Movie } from '../../models/movie.model';
   templateUrl: './top-ten-movies.html',
   styleUrls: ['./top-ten-movies.css'],
 })
-export class TopTenMoviesComponent implements OnChanges {
+export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
   @Input() allMovies: Movie[] = [];
   topTen: Movie[] = [];
+
+  private movieService = inject(MovieService);
+  private router = inject(Router);
+  private wishlistSubscription?: Subscription;
+
+  ngOnInit(): void {
+    this.wishlistSubscription = this.movieService.wishlistIds.subscribe((ids) => {
+      this.topTen = this.topTen.map((movie) => {
+        const inWishlist = ids.has(movie.id);
+        return {
+          ...movie,
+          inWatchlist: inWishlist,
+          in_wishlist: inWishlist,
+        };
+      });
+    });
+  }
 
   ngOnChanges(): void {
     if (this.allMovies && this.allMovies.length > 0) {
@@ -24,18 +43,32 @@ export class TopTenMoviesComponent implements OnChanges {
     }
   }
 
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
+  }
+
   toggleWatchlist(movie: Movie, event: Event): void {
     event.stopPropagation();
     event.preventDefault();
 
-    const current = movie.inWatchlist ?? movie.in_wishlist ?? false;
-    movie.inWatchlist = !current;
-    movie.in_wishlist = !current;
+    if (!this.movieService.isLoggedIn()) {
+      this.router.navigate(['/sign-in']);
+      return;
+    }
+
+    this.movieService.toggleWishlist(movie.id).subscribe({
+      next: (res) => {
+        const added = res.status === 'added';
+        movie.inWatchlist = added;
+        movie.in_wishlist = added;
+      },
+      error: (err) => console.error('Wishlist toggle error:', err),
+    });
   }
 
   openTrailer(movie: Movie, event: Event): void {
     event.stopPropagation();
     event.preventDefault();
-    alert('Тут будет запускаться трейлер для: ' + movie.title);
+    alert('РўСѓС‚ Р±СѓРґРµС‚ Р·Р°РїСѓСЃРєР°С‚СЊСЃСЏ С‚СЂРµР№Р»РµСЂ РґР»СЏ: ' + movie.title);
   }
 }

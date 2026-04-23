@@ -19,7 +19,7 @@ export class Header implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.getUserInfo();
+    this.authService.loadUserFromToken();
   }
 
   protected readonly onabort = onabort;

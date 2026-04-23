@@ -4,17 +4,17 @@
     </a>
   <div class="nav-right">
     <div class="nav-links">
-      <a href="/catalog"><img src="../../../assets/Icons/search.png" alt="Search" style="width: 20px;"> Search</a>
+      <a routerLink="/catalog"><img src="../../../assets/Icons/search.png" alt="Search" style="width: 20px;"> Search</a>
       <a routerLink="/wishlist"><img src="../../../assets/Icons/wishlist.png" alt="Watchlist" style="width: 20px;"> Watchlist</a>
       <a routerLink="/category"><img src="../../../assets/Icons/category.png" alt="Categories" style="width: 20px;"> Categories</a>
       <a routerLink="/about"><img src="../../../assets/Icons/info-button.png" alt="About us" style="width: 20px;"> About us</a>
     </div>
-    
+
 
 
     @if (currentUser$ | async; as user) {
       <div class="user-info">
-        <span>{{ user.username }}!</span>
+        <span>Welcome {{ user.username }}!</span>
       </div>
       <button routerLink="sign-in" class="sign-in" (click)="logout()">
         <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Log out

@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
 import { Movie } from '../../models/movie.model';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MovieService } from '../../services/movie.services';
 
 @Component({
   selector: 'app-movie-banner',
@@ -10,16 +11,29 @@ import { RouterLink } from '@angular/router';
 })
 export class MovieBanner {
   @Input() movie: Movie | null = null;
+
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  movieService = inject(MovieService);
+  router = inject(Router);
+
   isFading = false;
 
   toggleWatchlist(): void {
     if (!this.movie) return;
 
-    const current = this.movie.inWatchlist ?? this.movie.in_wishlist ?? false;
-    this.movie.inWatchlist = !current;
-    this.movie.in_wishlist = !current;
+    if (!this.movieService.isLoggedIn()) {
+      this.router.navigate(['/sign-in']);
+      return;
+    }
 
-    this.cdr.detectChanges();
+    this.movieService.toggleWishlist(this.movie.id).subscribe({
+      next: (res) => {
+        const added = res.status === 'added';
+        this.movie!.inWatchlist = added;
+        this.movie!.in_wishlist = added;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Wishlist toggle error:', err),
+    });
   }
 }

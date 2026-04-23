@@ -1,40 +1,71 @@
 <div class="details">
   @if (movie) {
-    <div class="movie__content">
-      <div class="movie__img">
-        <img [src]="movie.poster" alt="">
+    <section class="movie-hero">
+      <div class="movie-hero__backdrop" [style.backgroundImage]="'url(' + (movie.backdrop || movie.poster) + ')'">
+        <div class="movie-hero__overlay"></div>
       </div>
 
-      <div class="movie__info">
-        <div class="info__top">
-          <div class="movie__title">{{ movie.title }}</div>
-          <app-rating [rating]="+movie.rating" />
+      <div class="movie__content">
+        <div class="movie__img">
+          <img [src]="movie.poster" [alt]="movie.title">
         </div>
 
-        <div class="movie__details">
-          <div class="movie__genres">
-            @for (genre of movie.categories; track genre.id) {
-              <div class="genre" (click)="filterGenre(genre)">{{ genre.name }}</div>
-            }
+        <div class="movie__info">
+          <div class="info__top">
+            <div>
+              <h1 class="movie__title">{{ movie.title }}</h1>
+
+              <div class="movie__meta">
+                @if (movie.year) {
+                  <span class="meta-pill">{{ movie.year }}</span>
+                }
+
+                @if (movie.duration) {
+                  <span class="meta-pill">{{ movie.duration }}</span>
+                }
+
+                @if (movie.author) {
+                  <span class="meta-pill">Director: {{ movie.author }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="movie__score">
+              <div class="movie__score-label">Rating</div>
+              <app-rating [rating]="+movie.rating" />
+            </div>
           </div>
-          <div class="movie__duration">{{ movie.duration }}</div>
-        </div>
 
-        <div class="movie__desc">
-          {{ movie.description }}
-        </div>
+          @if (movie.categories?.length) {
+            <div class="movie__genres">
+              @for (genre of movie.categories; track genre.id) {
+                <button class="genre-chip" type="button" (click)="filterGenre(genre)">
+                  {{ genre.name }}
+                </button>
+              }
+            </div>
+          }
 
-        <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap;">
-          <button type="button" (click)="toggleWishlist()">
-            {{ (movie.in_wishlist|| movie.in_wishlist) ? 'Remove from wishlist' : 'Add to wishlist' }}
-          </button>
+          <div class="movie__desc-card">
+            <div class="desc-card__title">Overview</div>
+            <p class="movie__desc">
+              {{ movie.description || movie.short_description || 'Description is not available yet.' }}
+            </p>
+          </div>
 
-          <button type="button" (click)="toggleMovieLike()">
-            {{ movie.is_liked ? 'Unlike movie' : 'Like movie' }} ({{ movie.likes }})
-          </button>
+          <div class="movie__actions">
+            <button class="action-btn action-btn--primary" type="button" (click)="toggleWishlist()">
+              {{ (movie.inWatchlist || movie.in_wishlist) ? 'Remove from wishlist' : 'Add to wishlist' }}
+            </button>
+
+            <button class="action-btn action-btn--ghost" type="button" (click)="toggleMovieLike()">
+              {{ movie.is_liked ? 'Unlike movie' : 'Like movie' }}
+              <span class="action-count">({{ movie.likes }})</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   }
 
   <div class="title__wrapper">
@@ -45,60 +76,72 @@
     <app-slider
       [items]="movie?.actors || []"
       [title]="'Actors'"
-      [itemsToShow]="5"
-    />
+      [itemsToShow]="5">
+    </app-slider>
   }
 
   <div class="title__wrapper">
     <app-section-title title="Trailer" />
   </div>
 
-  <div class="trailer">
+  <div class="trailer-card">
     <div class="trailer__video">
       @if (movie?.videoUrl) {
         <video controls>
           <source [src]="movie?.videoUrl">
         </video>
       } @else {
-        <div class="error"></div>
+        <div class="error">Trailer is not available.</div>
       }
     </div>
   </div>
 
-  <div class="title__wrapper">
-    <app-section-title title="Reviews" />
-  </div>
-
-  <div style="margin-bottom: 24px;">
-    <h3>Leave a review</h3>
-
-    <div style="display:flex; flex-direction:column; gap:12px; max-width:500px;">
-      <label for="rating">Rating (1-10)</label>
-      <select id="rating" [(ngModel)]="reviewForm.rating">
-        @for (num of [1,2,3,4,5,6,7,8,9,10]; track num) {
-          <option [value]="num">{{ num }}</option>
-        }
-      </select>
-
-      <label for="reviewText">Review text</label>
-      <textarea
-        id="reviewText"
-        rows="5"
-        [(ngModel)]="reviewForm.text"
-        placeholder="Write your review here"
-      ></textarea>
-
-      <button type="button" (click)="submitReview()">Submit review</button>
+  <div class="reviews-section">
+    <div class="title__wrapper">
+      <app-section-title title="Reviews" />
     </div>
 
-    @if (reviewError) {
-      <p style="color:red; margin-top:10px;">{{ reviewError }}</p>
-    }
+    <div class="reviews-layout">
+      <div class="review-form-card">
+        <h3 class="review-form-card__title">Leave a review</h3>
+        <p class="review-form-card__subtitle">
+          Share your opinion and rate the movie from 1 to 10.
+        </p>
 
-    @if (reviewSuccess) {
-      <p style="color:green; margin-top:10px;">{{ reviewSuccess }}</p>
-    }
+        <div class="review-form">
+          <label class="review-label" for="rating">Rating</label>
+          <select id="rating" class="review-input" [(ngModel)]="reviewForm.rating">
+            @for (num of [1,2,3,4,5,6,7,8,9,10]; track num) {
+              <option [value]="num">{{ num }}</option>
+            }
+          </select>
+
+          <label class="review-label" for="reviewText">Your review</label>
+          <textarea
+            id="reviewText"
+            class="review-textarea"
+            rows="6"
+            [(ngModel)]="reviewForm.text"
+            placeholder="Write what you liked or disliked about this movie..."
+          ></textarea>
+
+          <button class="submit-review-btn" type="button" (click)="submitReview()">
+            Submit review
+          </button>
+        </div>
+
+        @if (reviewError) {
+          <p class="form-message form-message--error">{{ reviewError }}</p>
+        }
+
+        @if (reviewSuccess) {
+          <p class="form-message form-message--success">{{ reviewSuccess }}</p>
+        }
+      </div>
+
+      <div class="reviews-list-card">
+        <app-reviews-list [reviews]="reviews" />
+      </div>
+    </div>
   </div>
-
-  <app-reviews-list [reviews]="reviews" />
 </div>

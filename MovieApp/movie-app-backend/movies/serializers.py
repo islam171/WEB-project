@@ -4,7 +4,6 @@ from rest_framework import serializers
 
 from .models import Movie, Category, Actor, Wishlist, Review
 
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -28,25 +27,11 @@ class ActorSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
-    time_left = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
-        fields = ['id', 'username', 'text', 'rating', 'created_at', 'time_left']
-        read_only_fields = ['id', 'username', 'created_at', 'time_left']
-
-    def get_time_left(self, obj):
-        diff = timezone.now() - obj.created_at
-        if diff.days > 0:
-            return f'{diff.days} day(s) ago'
-        hours = diff.seconds // 3600
-        if hours > 0:
-            return f'{hours} hour(s) ago'
-        minutes = diff.seconds // 60
-        if minutes > 0:
-            return f'{minutes} min(s) ago'
-        return 'just now'
-
+        fields = ['id', 'username', 'text', 'rating', 'created_at']
+        read_only_fields = ['id', 'username', 'created_at']
 
 class MovieSerializer(serializers.ModelSerializer):
     likes = serializers.ReadOnlyField(source='display_likes')

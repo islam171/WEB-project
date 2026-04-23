@@ -1,25 +1,51 @@
 <div class="signed-up-card">
-    <h2>Sign Up</h2>     
-       <p>Create new account</p>
-       <form>
-        <div class="input-group">
-            <img src="../../../assets/Icons/person_login.png">
-            <input type="text" placeholder="Username" name="username">
-        </div>
+  <h2>Sign Up</h2>
+  <p>Create new account</p>
 
-        <div class="input-group">
-            <img src="../../../assets/Icons/email-login.png">
-            <input type="email" placeholder="Email" name="email">
-        </div>
-        <div class="input-group">
-            <img src="../../../assets/Icons/lock-login.png">
+  <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+    <div class="input-group">
+      <img src="../../../assets/Icons/person_login.png" alt="">
+      <input
+        type="text"
+        placeholder="Username"
+        name="username"
+        [(ngModel)]="credentials.username"
+        required
+      >
+    </div>
 
-            <input type="password" placeholder="Password" name="password">
-        </div>
+    <div class="input-group">
+      <img src="../../../assets/Icons/email-login.png" alt="">
+      <input
+        type="email"
+        placeholder="Email"
+        name="email"
+        [(ngModel)]="credentials.email"
+      >
+    </div>
 
-        <p class="account">Already have an account? <a routerLink="/sign-in">Login</a></p>
-        <button type="submit" class="submit-btn">Signup</button>
-            
+    <div class="input-group">
+      <img src="../../../assets/Icons/lock-login.png" alt="">
+      <input
+        type="password"
+        placeholder="Password"
+        name="password"
+        [(ngModel)]="credentials.password"
+        required
+      >
+    </div>
 
-       </form>
+    @if (errorMessage) {
+      <p class="error-message">{{ errorMessage }}</p>
+    }
+
+    <p class="account">
+      Already have an account?
+      <a routerLink="/sign-in">Login</a>
+    </p>
+
+    <button type="submit" class="submit-btn" [disabled]="!signupForm.form.valid">
+      Signup
+    </button>
+  </form>
 </div>

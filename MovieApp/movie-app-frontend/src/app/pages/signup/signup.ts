@@ -29,20 +29,13 @@ export class Signup {
 
     this.authService.register(this.credentials).subscribe({
       next: () => {
-        this.authService
-          .login({
-            username: this.credentials.username,
-            password: this.credentials.password,
-          })
-          .subscribe({
-            next: () => this.router.navigate(['/']),
-            error: () => {
-              this.router.navigate(['/sign-in']);
-            },
-          });
+        this.router.navigate(['/sign-in'], {
+          queryParams: { registered: '1' },
+        });
       },
       error: (err) => {
-        this.errorMessage = 'Ошибка регистрации. Возможно, пользователь уже существует.';
+        console.error('Signup error:', err);
+        this.errorMessage = 'Registration failed. Check your data or username uniqueness.';
       },
     });
   }

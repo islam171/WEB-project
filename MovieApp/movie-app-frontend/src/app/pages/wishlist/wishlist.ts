@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
 import { AsyncPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
@@ -14,9 +14,18 @@ export class WishlistComponent implements OnInit {
   movies: Movie[] = [];
   loading = true;
 
-  constructor(public movieService: MovieService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public movieService: MovieService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
+    if (!this.movieService.isLoggedIn()) {
+      this.router.navigate(['/sign-in']);
+      return;
+    }
+
     this.movieService.getWishlist().subscribe({
       next: (w) => {
         this.movies = w.movies;

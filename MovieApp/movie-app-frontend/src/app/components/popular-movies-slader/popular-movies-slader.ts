@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-popular-movies',
@@ -10,19 +11,43 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./popular-movies-slader.css'],
   imports: [RouterLink],
 })
-export class PopularMoviesComponent implements OnInit {
+export class PopularMoviesComponent implements OnInit, OnDestroy {
   popularMovies: Movie[] = [];
   currentMovieIndex = 0;
   currentMovie: Movie | null = null;
   isLoading = true;
   isFading = false;
+  private wishlistSubscription?: Subscription;
 
   constructor(
     private movieService: MovieService,
     private cdr: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    this.wishlistSubscription = this.movieService.wishlistIds.subscribe((ids) => {
+      this.popularMovies = this.popularMovies.map((movie) => {
+        const inWishlist = ids.has(movie.id);
+        return {
+          ...movie,
+          inWatchlist: inWishlist,
+          in_wishlist: inWishlist,
+        };
+      });
+
+      if (this.currentMovie) {
+        const inWishlist = ids.has(this.currentMovie.id);
+        this.currentMovie = {
+          ...this.currentMovie,
+          inWatchlist: inWishlist,
+          in_wishlist: inWishlist,
+        };
+      }
+
+      this.cdr.detectChanges();
+    });
+
     this.movieService.getMovies().subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data.map((movie) => ({
@@ -39,11 +64,15 @@ export class PopularMoviesComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error('Ошибка API:', err);
+        console.error('РћС€РёР±РєР° API:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
   }
 
   updateCurrentMovie(): void {
@@ -88,9 +117,24 @@ export class PopularMoviesComponent implements OnInit {
   toggleWatchlist(): void {
     if (!this.currentMovie) return;
 
-    const current = this.currentMovie.inWatchlist ?? this.currentMovie.in_wishlist ?? false;
-    this.currentMovie.inWatchlist = !current;
-    this.currentMovie.in_wishlist = !current;
-    this.cdr.detectChanges();
+    if (!this.movieService.isLoggedIn()) {
+      this.router.navigate(['/sign-in']);
+      return;
+    }
+
+    this.movieService.toggleWishlist(this.currentMovie.id).subscribe({
+      next: (res) => {
+        const added = res.status === 'added';
+        this.popularMovies = this.popularMovies.map((movie) =>
+          movie.id === this.currentMovie!.id
+            ? { ...movie, inWatchlist: added, in_wishlist: added }
+            : movie,
+        );
+        this.currentMovie!.inWatchlist = added;
+        this.currentMovie!.in_wishlist = added;
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Wishlist toggle error:', err),
+    });
   }
 }
