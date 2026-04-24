@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.db.models import Avg
+from django.db.models import Avg, Sum
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -66,11 +66,25 @@ class Movie(models.Model):
     @property
     def display_rating(self):
         # Аналогично можно сделать с рейтингом (если есть свои - считаем их, если нет - берем из API)
-        from django.db.models import Avg
-        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
-        if avg:
-            return round(avg, 1)
-        return self.tmdb_rating
+        review_stats = self.reviews.aggregate(
+            local_avg=Avg('rating'),
+            local_sum=Sum('rating'),
+        )
+        local_avg = review_stats['local_avg']
+        local_sum = review_stats['local_sum'] or 0
+        local_count = self.reviews.count()
+
+        if local_count == 0:
+            return round(self.tmdb_rating or 0, 1)
+
+        server_votes = max(self.api_likes or 0, 0)
+        server_rating = self.tmdb_rating or 0
+
+        if server_votes == 0:
+            return round(local_avg or 0, 1)
+
+        combined_rating = ((server_rating * server_votes) + local_sum) / (server_votes + local_count)
+        return round(combined_rating, 1)
 
 
 class Review(models.Model):
