@@ -3,3 +3,15 @@
     font-weight: bold;
     color: var(--second-color);
 }
+
+.rating--low {
+    color: #ef4444;
+}
+
+.rating--medium {
+    color: #facc15;
+}
+
+.rating--high {
+    color: #22c55e;
+}
