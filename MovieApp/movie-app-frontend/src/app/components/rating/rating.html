@@ -1,1 +1,8 @@
-<div class="rating">{{ rating  }}</div>
+<div
+  class="rating"
+  [class.rating--low]="isLowRating"
+  [class.rating--medium]="isMediumRating"
+  [class.rating--high]="isHighRating"
+>
+  {{ rating }}
+</div>
