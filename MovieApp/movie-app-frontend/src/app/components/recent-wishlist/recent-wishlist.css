@@ -1,8 +1,8 @@
 .recent-wishlist-section {
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 0;
   color: white;
-  max-width: 1440px;
+  width: 100%;
 }
 
 .section-header {
