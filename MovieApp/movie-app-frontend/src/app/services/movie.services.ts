@@ -96,4 +96,8 @@ export class MovieService {
   addMovieReview(movieId: number, payload: { text: string; rating: number }): Observable<IReview> {
     return this.http.post<IReview>(this.apiUrl + `movies/${movieId}/reviews/`, payload);
   }
+
+  deleteMovieReview(movieId: number | undefined): Observable<any> {
+    return this.http.delete<any>(this.apiUrl + `movies/${movieId}/reviews/`);
+  }
 }

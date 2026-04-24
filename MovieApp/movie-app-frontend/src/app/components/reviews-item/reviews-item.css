@@ -55,4 +55,10 @@
   line-height: 1.7;
   color: #e5e5e5;
   word-break: break-word;
+    flex: 1;
+}
+
+.review__bottom{
+    display: flex;
+    gap: 16px;
 }

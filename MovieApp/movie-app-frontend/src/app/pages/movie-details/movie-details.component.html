@@ -143,7 +143,7 @@
       </div>
 
       <div class="reviews-list-card">
-        <app-reviews-list [reviews]="reviews" />
+        <app-reviews-list [reviews]="reviews" (deleted)="deleteReview()" />
       </div>
     </div>
   </div>

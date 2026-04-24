@@ -52,6 +52,9 @@ class ActorDetailView(generics.RetrieveAPIView):
     serializer_class = ActorSerializer
     lookup_url_kwarg = 'id'
 
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer = CategorySerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -66,6 +69,8 @@ class WishlistDetailView(generics.RetrieveAPIView):
     def get_object(self):
         wishlist, _ = Wishlist.objects.get_or_create(user=self.request.user)
         return wishlist
+
+
 
 
 class WishlistAddRemoveView(APIView):
@@ -115,6 +120,12 @@ class ToggleActorLikeView(APIView):
 class ReviewListCreateView(APIView):
     permission_classes = [AllowAny]
 
+    def get_object(self, id, user_id):
+        try:
+            return Review.objects.get(movie__id=id, user_id=user_id)
+        except Review.DoesNotExist:
+            raise Review
+
     def get(self, request, movie_id):
         movie = get_object_or_404(Movie, id=movie_id)
         reviews = movie.reviews.select_related('user').order_by('-created_at')
@@ -149,6 +160,30 @@ class ReviewListCreateView(APIView):
             serializer.data,
             status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
         )
+    # def remove(self, movie_id):
+    def delete(self, request, movie_id):
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        print(movie_id, request.user.id)
+        reviews = get_object_or_404(Review, movie__id=movie_id, user_id=request.user.id)
+        reviews.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def put(self, request, movie_id):
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        review = get_object_or_404(Review, id=movie_id, user_id=request.user.user_id)
+        serializer = ReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -166,13 +201,6 @@ def getUser(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def getAllCategory(request):
-    queryset = Category.objects.all()
-    serializer = CategorySerializer(queryset, many=True)
-    return Response(serializer.data)
 
 
 @api_view(['GET'])

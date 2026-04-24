@@ -10,8 +10,17 @@
       </div>
       <app-rating [rating]="review.rating" />
     </div>
+    <div class="review__bottom">
+
     <div class="reviews__text">
       {{ review.text }}
+    </div>
+      @if(review.user_id){
+        <div (click)="deleteReview()">
+          <img src="../../../assets/Icons/trash.png" alt="trash" >
+
+        </div>
+      }
     </div>
   </div>
 </div>

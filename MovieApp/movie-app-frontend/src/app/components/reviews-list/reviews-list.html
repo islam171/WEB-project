@@ -1,7 +1,7 @@
 <div class="reviews">
   <div class="reviews__list">
     @for (review of reviews; track review.id) {
-      <app-reviews-item [review]="review" />
+      <app-reviews-item [review]="review" (deleted)="deleteReview($event)"/>
     }
   </div>
 
