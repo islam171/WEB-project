@@ -1,85 +1,91 @@
 :host {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
+}
+
+.page{
+
 }
 
 .app-loader {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    radial-gradient(circle at center, rgba(65, 255, 10, 0.16), transparent 28%),
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, rgba(65, 255, 10, 0.16), transparent 28%),
     rgba(0, 0, 0, 0.96);
-  backdrop-filter: blur(8px);
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+    backdrop-filter: blur(8px);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
 .app-loader--hidden {
-  opacity: 0;
-  visibility: hidden;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .app-loader__glow {
-  position: absolute;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(67, 255, 4, 0.34) 0%, rgba(67, 255, 4, 0) 72%);
-  filter: blur(10px);
-  animation: loader-pulse 1.8s ease-in-out infinite;
-  transition: transform 0.35s ease, opacity 0.35s ease;
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(67, 255, 4, 0.34) 0%, rgba(67, 255, 4, 0) 72%);
+    filter: blur(10px);
+    animation: loader-pulse 1.8s ease-in-out infinite;
+    transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
 .app-loader__gif {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
-  image-rendering: auto;
-  filter: drop-shadow(0 0 28px rgba(55, 245, 0, 0.22));
-  transform: scale(1);
-  transition: transform 0.35s ease, opacity 0.35s ease;
+    position: relative;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    image-rendering: auto;
+    filter: drop-shadow(0 0 28px rgba(55, 245, 0, 0.22));
+    transform: scale(1);
+    transition: transform 0.35s ease, opacity 0.35s ease;
 }
 
 .app-loader--hidden .app-loader__glow,
 .app-loader--hidden .app-loader__gif {
-  opacity: 0;
-  transform: scale(0.92);
+    opacity: 0;
+    transform: scale(0.92);
 }
 
 .container--loading {
-  pointer-events: none;
-  user-select: none;
+    pointer-events: none;
+    user-select: none;
 }
 
 .main-layout {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  background: transparent;
-  overflow: hidden;
-  width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    overflow: hidden;
+    width: 100%;
 }
 
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 @keyframes loader-pulse {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.65;
-  }
+    0% {
+        transform: scale(0.92);
+        opacity: 0.65;
+    }
 
-  100% {
-    transform: scale(1.12);
-    opacity: 1;
-  }
+    100% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
 }

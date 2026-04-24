@@ -1,3 +1,5 @@
+<div class="page">
+
 @if (isAppLoading) {
   <div class="app-loader" [class.app-loader--hidden]="!isLoaderVisible">
     <div class="app-loader__glow"></div>
@@ -6,7 +8,6 @@
 }
 
 <div class="container" [class.container--loading]="isAppLoading">
-
     <app-header></app-header>
 
     <main class="main-layout">
@@ -14,4 +15,5 @@
     </main>
 
     <app-footer></app-footer>
+</div>
 </div>

@@ -24,7 +24,6 @@ export class Slider {
   @Input() title = 'Items';
   @Input() itemsToShow = 5;
   @Input() queryParams: any = {};
-  @Input() fading = false;
 
   @ContentChild('itemTemplate') itemTemplate?: TemplateRef<any>;
 
