@@ -4,6 +4,15 @@ from rest_framework import serializers
 from .models import Movie, Category, Actor, Wishlist, Review
 
 
+class WishlistToggleSerializer(serializers.Serializer):
+    movie_id = serializers.IntegerField(min_value=1)
+
+
+class ReviewInputSerializer(serializers.Serializer):
+    text = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    rating = serializers.IntegerField(min_value=1, max_value=10)
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

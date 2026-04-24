@@ -11,6 +11,7 @@ from .views import (
     PopularActorsListView,
     WishlistDetailView,
     WishlistAddRemoveView,
+    LogoutView,
     ToggleMovieLikeView,
     ToggleActorLikeView,
     ReviewListCreateView,
@@ -22,6 +23,7 @@ urlpatterns = [
     path('api/register/', RegisterView.as_view(), name='auth_register'),
     path('api/login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/logout/', LogoutView.as_view(), name='auth_logout'),
     path('api/user/', getUser, name='current_user'),
 
     path('api/movies/', MovieListView.as_view(), name='movie_list'),

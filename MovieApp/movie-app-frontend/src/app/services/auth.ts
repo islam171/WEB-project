@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, finalize, switchMap, tap } from 'rxjs';
 import { IUser } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
@@ -47,6 +47,12 @@ export class AuthService {
   }
 
   logout() {
+    this.http.post(`${this.apiUrl}/logout/`, {}).pipe(
+      finalize(() => this.clearSession()),
+    ).subscribe();
+  }
+
+  private clearSession() {
     localStorage.removeItem('token');
     localStorage.removeItem('refresh');
     this.userSubject.next(null);
