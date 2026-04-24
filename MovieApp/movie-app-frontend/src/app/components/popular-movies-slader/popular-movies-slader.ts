@@ -64,7 +64,7 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
       },
       error: (err: any) => {
-        console.error('РћС€РёР±РєР° API:', err);
+        console.error('Error API:', err);
         this.isLoading = false;
         this.cdr.detectChanges();
       },

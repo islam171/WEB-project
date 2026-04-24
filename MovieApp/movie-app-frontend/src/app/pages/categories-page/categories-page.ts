@@ -31,7 +31,6 @@ export class CategoriesPage implements OnInit {
     this.movieService.getMovies().subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data;
-
         this.cdr.detectChanges();
       },
       error: (err) => {
