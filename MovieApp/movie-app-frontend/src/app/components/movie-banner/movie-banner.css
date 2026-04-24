@@ -111,39 +111,41 @@
 }
 
 /* Кнопка вишлиста рядом с заголовком */
-.watchlist-add {
-    background: none;
+.wishlist-btn {
+    background: rgba(0, 0, 0, 0.65);
     border: none;
-    padding: 0;
-    cursor: pointer;
-    /* Базовый цвет иконки (белый) */
-    color: #ffffff;
+    border-radius: 10px;
+    width: 42px;
+    height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px; /* Настрой размер иконки под свой дизайн */
-    transition: all 0.2s ease;
-    margin-left: 15px; /* Отступ от названия фильма */
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
 
 /* Стили самого вектора */
-.watchlist-add .icon-svg {
-    width: 100%;
-    height: auto;
-    /* Тень, чтобы иконка выделялась даже на светлых постерах */
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+.wishlist-icon {
+    width: 22px;
+    height: 22px;
+    color: white;
 }
 
 /* Эффект при наведении */
-.watchlist-add:hover {
-    transform: scale(1.15); /* Плавное увеличение */
-    color: #f5c518; /* Желтый цвет IMDb */
+.wishlist-btn:hover {
+    background: rgba(55, 245, 0, 0.16);
 }
 
 /* Автоматически красим в желтый, если фильм уже добавлен (когда иконка закрашена) */
-.watchlist-add:has(path[fill="currentColor"]) {
-    color: #f5c518;
+.wishlist-icon.active {
+    color: #37f500;
+}
+
+.wishlist-btn--banner {
+    margin-left: 15px;
+    position: relative;
+    z-index: 3;
 }
 
 .arrow-btn {

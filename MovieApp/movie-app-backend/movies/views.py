@@ -30,6 +30,23 @@ class MovieListView(generics.ListAPIView):
     search_fields = ['title']
     ordering_fields = ['title', 'year', 'duration']
 
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+        limit = self.request.query_params.get('limit')
+
+        if not limit:
+            return queryset
+
+        try:
+            limit_value = min(int(limit), 100)
+        except (TypeError, ValueError):
+            return queryset
+
+        if limit_value <= 0:
+            return queryset.none()
+
+        return queryset[:limit_value]
+
 
 class MovieDetailView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
@@ -207,5 +224,5 @@ def getUser(request):
 @permission_classes([AllowAny])
 def getCategoriesWithMovies(request):
     queryset = Category.objects.prefetch_related('movies').all()
-    serializer = CategoryWithMoviesSerializer(queryset, many=True)
+    serializer = CategoryWithMoviesSerializer(queryset, many=True, context={'request': request})
     return Response(serializer.data)

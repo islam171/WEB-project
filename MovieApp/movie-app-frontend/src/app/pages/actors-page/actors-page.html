@@ -9,6 +9,14 @@
     </div>
 
     <div class="filters-panel">
+      <label class="actor-search">
+        <span class="filter-label">Search</span>
+        <span class="actor-search-field">
+          <input type="text" placeholder="Actor name" (input)="onActorSearchChange($event)">
+          <img src="assets/Icons/search.png" alt="">
+        </span>
+      </label>
+
       <div class="filter-group">
         <span class="filter-label">Popularity</span>
         <div class="filter-buttons">

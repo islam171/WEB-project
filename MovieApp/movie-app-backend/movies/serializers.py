@@ -13,10 +13,28 @@ class CategorySerializer(serializers.ModelSerializer):
 class MovieShortSerializer(serializers.ModelSerializer):
     likes = serializers.ReadOnlyField(source='display_likes')
     rating = serializers.ReadOnlyField(source='display_rating')
+    in_wishlist = serializers.SerializerMethodField()
 
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'poster', 'year', 'duration', 'likes', 'rating', 'short_description', 'backdrop']
+        fields = [
+            'id',
+            'title',
+            'poster',
+            'year',
+            'duration',
+            'likes',
+            'rating',
+            'short_description',
+            'backdrop',
+            'in_wishlist',
+        ]
+
+    def get_in_wishlist(self, obj):
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            return obj.in_wishlists.filter(user=request.user).exists()
+        return False
 
 
 class ActorBasicSerializer(serializers.ModelSerializer):
@@ -34,7 +52,7 @@ class ActorSerializer(serializers.ModelSerializer):
 
     def get_movies(self, obj):
         movies = obj.movies.all()[:10]
-        return MovieShortSerializer(movies, many=True).data
+        return MovieShortSerializer(movies, many=True, context=self.context).data
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -124,4 +142,4 @@ class CategoryWithMoviesSerializer(serializers.ModelSerializer):
 
     def get_movies(self, obj):
         movies = obj.movies.all()[:10]
-        return MovieShortSerializer(movies, many=True).data
+        return MovieShortSerializer(movies, many=True, context=self.context).data

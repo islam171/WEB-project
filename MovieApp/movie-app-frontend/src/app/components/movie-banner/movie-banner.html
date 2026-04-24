@@ -13,14 +13,17 @@
               <h1 class="movie-title">{{ movie.title }} ({{ movie.year }})</h1>
             </a>
 
-            <button class="watchlist-add" (click)="toggleWatchlist()">
+            <button
+              type="button"
+              class="wishlist-btn wishlist-btn--banner"
+              (click)="toggleWatchlist()">
               @if (!(movie.inWatchlist || movie.in_wishlist)) {
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="none"
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="wishlist-icon" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                 </svg>
               } @else {
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="wishlist-icon active" fill="currentColor">
                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                 </svg>
               }

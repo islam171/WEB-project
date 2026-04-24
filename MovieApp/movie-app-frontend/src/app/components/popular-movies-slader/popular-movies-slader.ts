@@ -48,7 +48,7 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
-    this.movieService.getMovies().subscribe({
+    this.movieService.getMovies({ limit: 20 }).subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data.map((movie) => ({
           ...movie,

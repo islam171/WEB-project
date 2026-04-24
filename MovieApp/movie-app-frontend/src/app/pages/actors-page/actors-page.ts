@@ -21,6 +21,7 @@ export class ActorsPage implements OnInit {
   actors: Actor[] = [];
   loading = true;
   error = '';
+  searchQuery = '';
 
   popularitySort: PopularitySort = 'desc';
   surnameSort: SurnameSort = 'default';
@@ -48,8 +49,12 @@ export class ActorsPage implements OnInit {
     this.surnameSort = sort;
   }
 
+  onActorSearchChange(event: Event): void {
+    this.searchQuery = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  }
+
   get sortedActors(): Actor[] {
-    return [...this.actors].sort((a, b) => {
+    return this.filteredActors.sort((a, b) => {
       if (this.popularitySort !== 'default') {
         const popularityDiff =
           this.popularitySort === 'desc'
@@ -78,5 +83,13 @@ export class ActorsPage implements OnInit {
   private getSurname(name: string): string {
     const parts = name.trim().split(/\s+/);
     return parts[parts.length - 1] ?? name;
+  }
+
+  private get filteredActors(): Actor[] {
+    if (!this.searchQuery) {
+      return [...this.actors];
+    }
+
+    return this.actors.filter((actor) => actor.name.toLowerCase().includes(this.searchQuery));
   }
 }

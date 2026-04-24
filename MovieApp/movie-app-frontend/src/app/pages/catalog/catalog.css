@@ -1,21 +1,40 @@
-.catalog{
-
+.catalog {
+    padding: 32px 40px 56px;
 }
 
-.top{
+.top {
     display: flex;
-    justify-content: space-between;
-    padding: 50px 0;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 0 28px;
 }
 
+.top app-search-input {
+    flex: 1;
+    min-width: 260px;
+}
 
-
-
-.title{
+.title {
     font-size: 24px;
+    color: #fff;
+    font-weight: 700;
 }
 
-
-.movies{
+.movies {
     padding: 50px 0;
+}
+
+@media (max-width: 768px) {
+    .catalog {
+        padding: 24px 16px 40px;
+    }
+
+    .top {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .top app-search-input {
+        min-width: 0;
+    }
 }

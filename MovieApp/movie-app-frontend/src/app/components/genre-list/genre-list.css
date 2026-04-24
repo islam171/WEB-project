@@ -2,8 +2,8 @@
 .genres {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 12px;
+    margin: 20px 0 0;
 }
 
 /* Скрываем стандартный чекбокс, но оставляем его доступным */
@@ -19,31 +19,36 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    color: #f0f0f0;
+    padding: 10px 16px;
     transition: all 0.2s ease;
     user-select: none;
 }
 
-.genre__text {
-    color: #999;
+.genre__label {
+    color: inherit;
     font-size: 14px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .genre:hover {
-    border-color: #555;
-    background: #252525;
+    border-color: rgba(55, 243, 0, 0.45);
+    color: #fff;
 }
 
 /* Состояние, когда чекбокс внутри жанра выбран */
 .genre:has(input:checked) {
-    background: rgba(0, 255, 0, 0.1); /* Прозрачный зеленый фон */
-    border-color: #00ff00;           /* Твой ярко-зеленый акцент */
+    background: linear-gradient(135deg, #37f300, #1fa700);
+    border-color: transparent;
+    color: #091203;
+    font-weight: 700;
 }
 
-.genre:has(input:checked) .genre__text {
-    color: #00ff00;
+.genre:has(input:focus-visible) {
+    outline: 3px solid rgba(55, 243, 0, 0.25);
+    outline-offset: 3px;
 }
