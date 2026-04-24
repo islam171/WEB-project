@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { IReview } from '../../models/movie.model';
 import { Rating } from '../rating/rating';
+import { MovieService } from '../../services/movie.services';
 
 
 
@@ -12,4 +13,12 @@ import { Rating } from '../rating/rating';
 })
 export class ReviewsItem {
   @Input({ required: true }) review!: IReview;
+  @Output() deleted = new EventEmitter();
+
+  movieService = inject(MovieService);
+
+  deleteReview(){
+    this.deleted.emit("cliick");
+  }
+
 }

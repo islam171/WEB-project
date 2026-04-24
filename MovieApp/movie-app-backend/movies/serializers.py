@@ -39,11 +39,12 @@ class ActorSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
+    user_id = serializers.CharField(source='user.id', read_only=True)
 
     class Meta:
         model = Review
-        fields = ['id', 'username', 'text', 'rating', 'created_at']
-        read_only_fields = ['id', 'username', 'created_at']
+        fields = ['id', 'username', 'user_id', 'text', 'rating', 'created_at']
+        read_only_fields = ['id', 'username', 'user_id', 'created_at']
 
 
 class MovieSerializer(serializers.ModelSerializer):

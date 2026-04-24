@@ -44,7 +44,6 @@ class Movie(models.Model):
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
-    # Постеры из API (TMDB отдает просто пути, так что URLField отлично подойдет)
     poster = models.URLField(blank=True, null=True)
     backdrop = models.URLField(blank=True, null=True)
     videoUrl = models.URLField(blank=True, null=True)
@@ -59,13 +58,10 @@ class Movie(models.Model):
 
     @property
     def display_likes(self):
-        # ВОТ ГЛАВНАЯ МАГИЯ:
-        # Берем базу из API (например, 3299) + прибавляем количество локальных юзеров (например, 1) = 3300
         return self.api_likes + self.liked_by.count()
 
     @property
     def display_rating(self):
-        # Аналогично можно сделать с рейтингом (если есть свои - считаем их, если нет - берем из API)
         from django.db.models import Avg
         avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
         if avg:

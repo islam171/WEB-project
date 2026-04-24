@@ -160,4 +160,9 @@ export class MovieDetailsComponent {
       },
     });
   }
+  deleteReview() {
+
+    this.movieService.deleteMovieReview(this.movie?.id).subscribe()
+    this.loadData(this.movie!.id);
+  }
 }

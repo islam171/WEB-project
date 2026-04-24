@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReviewsItem } from '../reviews-item/reviews-item';
 import { IReview } from '../../models/movie.model';
 
@@ -10,4 +10,9 @@ import { IReview } from '../../models/movie.model';
 })
 export class ReviewsList {
   @Input() reviews: IReview[] = [];
+  @Output() deleted = new EventEmitter<any>();
+
+  deleteReview(event: string) {
+    this.deleted.emit(event);
+  }
 }
