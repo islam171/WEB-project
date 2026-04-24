@@ -34,6 +34,7 @@ export interface Movie {
 export interface IReview {
   id: number;
   username: string;
+  user_id: number;
   text: string;
   rating: number;
   timeLeft?: string;
