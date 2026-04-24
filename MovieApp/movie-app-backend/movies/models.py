@@ -62,13 +62,6 @@ class Movie(models.Model):
 
     @property
     def display_rating(self):
-<<<<<<< HEAD
-        from django.db.models import Avg
-        avg = self.reviews.aggregate(Avg('rating'))['rating__avg']
-        if avg:
-            return round(avg, 1)
-        return self.tmdb_rating
-=======
         # Аналогично можно сделать с рейтингом (если есть свои - считаем их, если нет - берем из API)
         review_stats = self.reviews.aggregate(
             local_avg=Avg('rating'),
@@ -89,7 +82,6 @@ class Movie(models.Model):
 
         combined_rating = ((server_rating * server_votes) + local_sum) / (server_votes + local_count)
         return round(combined_rating, 1)
->>>>>>> 400f8e56a603f242464c6e249aa4c755ef9cd7f8
 
 
 class Review(models.Model):

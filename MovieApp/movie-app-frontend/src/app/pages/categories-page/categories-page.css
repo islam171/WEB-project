@@ -1,0 +1,16 @@
+.categories-page {
+  --category-slider-width: 1300px;
+  padding: 12px 40px 48px;
+}
+
+.category-slider-frame {
+  width: min(100%, var(--category-slider-width));
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .categories-page {
+    --category-slider-width: 100%;
+    padding: 8px 16px 40px;
+  }
+}
