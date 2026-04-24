@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -17,6 +19,7 @@ from .serializers import (
     ActorBasicSerializer,
     ReviewSerializer,
     ReviewInputSerializer,
+    LogoutSerializer,
     WishlistToggleSerializer,
     UserSerializer,
     CategorySerializer,
@@ -73,7 +76,7 @@ class ActorDetailView(generics.RetrieveAPIView):
 
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
-    serializer = CategorySerializer
+    serializer_class = CategorySerializer
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -85,6 +88,19 @@ class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        serializer = LogoutSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        refresh_token = serializer.validated_data.get('refresh')
+        if refresh_token:
+            try:
+                RefreshToken(refresh_token).blacklist()
+            except TokenError:
+                return Response(
+                    {'detail': 'Invalid or expired refresh token'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
         return Response({'detail': 'Logged out successfully'})
 
 
@@ -127,23 +143,9 @@ class ToggleMovieLikeView(APIView):
         if movie.liked_by.filter(id=request.user.id).exists():
             movie.liked_by.remove(request.user)
             return Response({'status': 'unliked', 'movie_id': movie.id})
-        else:
-            movie.liked_by.add(request.user)
-            return Response({'status': 'liked', 'movie_id': movie.id})
 
-
-class ToggleActorLikeView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, id):
-        actor = get_object_or_404(Actor, id=id)
-
-        if actor.liked_by.filter(id=request.user.id).exists():
-            actor.liked_by.remove(request.user)
-            return Response({'status': 'unliked', 'actor_id': actor.id})
-        else:
-            actor.liked_by.add(request.user)
-            return Response({'status': 'liked', 'actor_id': actor.id})
+        movie.liked_by.add(request.user)
+        return Response({'status': 'liked', 'movie_id': movie.id})
 
 
 class ReviewListCreateView(APIView):
@@ -188,7 +190,13 @@ class ReviewListCreateView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
-        review = get_object_or_404(Review, movie_id=movie_id, user=request.user)
+        review = Review.objects.filter(movie_id=movie_id, user=request.user).first()
+        if not review:
+            return Response(
+                {'detail': 'Review not found for this movie and user'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -209,6 +217,44 @@ class ReviewListCreateView(APIView):
 
         serializer = ReviewSerializer(review)
         return Response(serializer.data)
+
+
+class ReviewDetailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, review_id):
+        review = get_object_or_404(Review.objects.select_related('user'), id=review_id)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+
+    def put(self, request, review_id):
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        review = get_object_or_404(Review, id=review_id, user=request.user)
+        input_serializer = ReviewInputSerializer(data=request.data)
+        input_serializer.is_valid(raise_exception=True)
+
+        review.text = input_serializer.validated_data.get('text', '')
+        review.rating = input_serializer.validated_data['rating']
+        review.save()
+
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+
+    def delete(self, request, review_id):
+        if not request.user.is_authenticated:
+            return Response(
+                {'detail': 'Authentication required'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        review = get_object_or_404(Review, id=review_id, user=request.user)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET'])

@@ -13,6 +13,10 @@ class ReviewInputSerializer(serializers.Serializer):
     rating = serializers.IntegerField(min_value=1, max_value=10)
 
 
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField(required=False, allow_blank=True)
+
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -114,7 +118,6 @@ class MovieSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return obj.liked_by.filter(id=request.user.id).exists()
         return False
-
 
 class WishlistSerializer(serializers.ModelSerializer):
     movies = MovieSerializer(many=True, read_only=True)

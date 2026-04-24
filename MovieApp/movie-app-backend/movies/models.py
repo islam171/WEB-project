@@ -19,15 +19,8 @@ class Actor(models.Model):
     photo = models.URLField(max_length=1000, blank=True, null=True) # Лучше использовать URLField для ссылок на фото из API
     popularity = models.FloatField(default=0.0) # Популярность из API
 
-    liked_by = models.ManyToManyField(User, related_name='liked_actors', blank=True)
-
     def __str__(self):
         return self.name
-
-    @property
-    def local_likes(self):
-        return self.liked_by.count()
-
 
 class Movie(models.Model):
     tmdb_id = models.IntegerField(unique=True, null=True, blank=True) # ID из внешнего API
@@ -52,7 +45,6 @@ class Movie(models.Model):
     actors = models.ManyToManyField('Actor', related_name='movies')
     categories = models.ManyToManyField(Category, related_name='movies')
     liked_by = models.ManyToManyField(User, related_name='liked_movies', blank=True)
-
     def __str__(self):
         return f"{self.title} ({self.year})"
 

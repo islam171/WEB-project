@@ -47,7 +47,9 @@ export class AuthService {
   }
 
   logout() {
-    this.http.post(`${this.apiUrl}/logout/`, {}).pipe(
+    const refresh = localStorage.getItem('refresh') || '';
+
+    this.http.post(`${this.apiUrl}/logout/`, { refresh }).pipe(
       finalize(() => this.clearSession()),
     ).subscribe();
   }
