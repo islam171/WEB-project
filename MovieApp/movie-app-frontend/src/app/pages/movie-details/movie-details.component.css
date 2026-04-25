@@ -233,10 +233,9 @@
 }
 
 .reviews-layout {
-  display: grid;
-  grid-template-columns: 360px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
-  align-items: start;
 }
 
 .review-form-card,
@@ -246,6 +245,7 @@
   border-radius: 24px;
   padding: 24px;
 }
+
 
 .review-form-card__title {
   margin: 0 0 8px;
@@ -334,11 +334,6 @@
   .movie__img {
     max-width: 320px;
   }
-
-  .reviews-layout {
-    grid-template-columns: 1fr;
-  }
-
   .info__top {
     flex-direction: column;
   }
