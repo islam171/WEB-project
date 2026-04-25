@@ -28,9 +28,6 @@ export class MovieService {
     );
   }
 
-  getAllActors(): Observable<Actor[]> {
-    return this.http.get<Actor[]>(this.apiUrl + 'actors/');
-  }
 
   getMovieById(id: number): Observable<Movie> {
     return this.http
@@ -72,10 +69,6 @@ export class MovieService {
         this.wishlistIds$.next(ids);
       }),
     );
-  }
-
-  isInWishlist(movieId: number): boolean {
-    return this.wishlistIds$.value.has(movieId);
   }
 
   isLoggedIn(): boolean {

@@ -26,7 +26,7 @@ from .serializers import (
     WishlistSerializer, CategoryWithMoviesSerializer,
 )
 
-
+# Generic `ListAPIView`: list of movies with filters/search/order and optional limit.
 class MovieListView(generics.ListAPIView):
     queryset = Movie.objects.all().distinct()
     serializer_class = MovieSerializer
@@ -53,37 +53,44 @@ class MovieListView(generics.ListAPIView):
         return queryset[:limit_value]
 
 
+# Generic `RetrieveAPIView`: one movie by id.
 class MovieDetailView(generics.RetrieveAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     lookup_url_kwarg = 'id'
 
 
+# Generic `ListAPIView`: short list of popular actors.
 class PopularActorsListView(generics.ListAPIView):
     queryset = Actor.objects.filter(popularity__gt=0).order_by('-popularity')[:20]
     serializer_class = ActorBasicSerializer
 
 
+# Generic `ListAPIView`: full actor list.
 class ActorsListView(generics.ListAPIView):
     queryset = Actor.objects.all()
     serializer_class = ActorBasicSerializer
 
 
+# Generic `RetrieveAPIView`: one actor with extended details.
 class ActorDetailView(generics.RetrieveAPIView):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
     lookup_url_kwarg = 'id'
 
+# Generic `ListAPIView`: list of categories.
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+# Generic `CreateAPIView`: user registration endpoint.
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]
     serializer_class = UserSerializer
 
 
+# Base `APIView`: custom logout logic with refresh-token blacklist.
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -104,6 +111,7 @@ class LogoutView(APIView):
         return Response({'detail': 'Logged out successfully'})
 
 
+# Generic `RetrieveAPIView`: current authenticated user's wishlist.
 class WishlistDetailView(generics.RetrieveAPIView):
     serializer_class = WishlistSerializer
     permission_classes = [IsAuthenticated]
@@ -114,7 +122,7 @@ class WishlistDetailView(generics.RetrieveAPIView):
 
 
 
-
+# Base `APIView`: custom POST toggle for add/remove wishlist movie.
 class WishlistAddRemoveView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -134,6 +142,7 @@ class WishlistAddRemoveView(APIView):
             return Response({'status': 'added', 'movie_id': movie.id})
 
 
+# Base `APIView`: custom POST toggle for movie like/unlike.
 class ToggleMovieLikeView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -148,6 +157,7 @@ class ToggleMovieLikeView(APIView):
         return Response({'status': 'liked', 'movie_id': movie.id})
 
 
+# Base `APIView`: grouped review endpoints for movie reviews.
 class ReviewListCreateView(APIView):
     permission_classes = [AllowAny]
 
@@ -219,6 +229,7 @@ class ReviewListCreateView(APIView):
         return Response(serializer.data)
 
 
+# Base `APIView`: operations on one конкретный review by its id.
 class ReviewDetailView(APIView):
     permission_classes = [AllowAny]
 
@@ -257,6 +268,7 @@ class ReviewDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# Function-based view (`@api_view`): short recent wishlist for current user.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_recent_wishlist(request):
@@ -266,6 +278,7 @@ def get_recent_wishlist(request):
     return Response(serializer.data)
 
 
+# Function-based view (`@api_view`): current authenticated user.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getUser(request):
@@ -274,6 +287,7 @@ def getUser(request):
 
 
 
+# Function-based view (`@api_view`): categories with nested movie lists.
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def getCategoriesWithMovies(request):
