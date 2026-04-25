@@ -7,6 +7,10 @@
   </a>
 </div>
 
+@if (errorMessage) {
+  <div class="banner-error">{{ errorMessage }}</div>
+}
+
 @if (currentMovie) {
   <div class="main-slider">
     <button class="arrow-btn left" (click)="prevMovie()">

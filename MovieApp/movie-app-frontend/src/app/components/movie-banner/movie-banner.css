@@ -1,4 +1,3 @@
-/* SLIDER */
 .main-slider {
     display: flex;
     align-items: center;
@@ -14,7 +13,6 @@
     border-radius: 15px;
     overflow: hidden;
     position: relative;
-
     opacity: 1;
     transition: opacity 0.15s ease-in-out;
 }
@@ -50,14 +48,13 @@
 .main-poster {
     width: 220px;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     display: block;
 }
 
 .movie-details {
     flex-grow: 1;
     position: relative;
-
     padding-bottom: 5px;
 }
 
@@ -71,7 +68,7 @@
     display: flex;
     align-items: center;
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.8); /* Слегка прозрачный белый текст */
+    color: rgba(255, 255, 255, 0.8);
     margin-top: 10px;
 }
 
@@ -79,11 +76,9 @@
     display: flex;
     align-items: center;
     margin-right: 20px;
-    gap: 6px; /* Отступ между самой иконкой и цифрой */
+    gap: 6px;
 }
 
-
-/* Базовые стили для SVG иконок */
 .stat-icon {
     width: 18px;
     height: 18px;
@@ -106,42 +101,35 @@
     font-style: italic;
     color: #ddd;
     max-width: 600px;
-    margin: 0; /* Убираем стандартный margin */
+    margin: 0;
     line-height: 1.5;
 }
 
-/* Кнопка вишлиста рядом с заголовком */
 .watchlist-add {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
-    /* Базовый цвет иконки (белый) */
     color: #ffffff;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px; /* Настрой размер иконки под свой дизайн */
+    width: 32px;
     transition: all 0.2s ease;
-    margin-left: 15px; /* Отступ от названия фильма */
+    margin-left: 15px;
 }
 
-
-/* Стили самого вектора */
 .watchlist-add .icon-svg {
     width: 100%;
     height: auto;
-    /* Тень, чтобы иконка выделялась даже на светлых постерах */
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
 }
 
-/* Эффект при наведении */
 .watchlist-add:hover {
-    transform: scale(1.15); /* Плавное увеличение */
-    color: #f5c518; /* Желтый цвет IMDb */
+    transform: scale(1.15);
+    color: #f5c518;
 }
 
-/* Автоматически красим в желтый, если фильм уже добавлен (когда иконка закрашена) */
 .watchlist-add:has(path[fill="currentColor"]) {
     color: #f5c518;
 }
@@ -155,6 +143,7 @@
     border-radius: 50%;
     transition: background-color 0.3s;
 }
+
 .arrow-btn img {
     width: 60px;
     filter: invert(1);
@@ -164,10 +153,9 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.arrow-btn.right img{
+.arrow-btn.right img {
     transform: rotate(180deg);
 }
-
 
 .section-title {
     padding-left: 150px;
@@ -175,9 +163,19 @@
 
 .movie-link-wrapper {
     text-decoration: none;
-    color: inherit; /* берет белый цвет от родителя */
+    color: inherit;
     display: block;
 }
+
 .movie-link-wrapper:hover .movie-title {
-    color: #f5c518; /* заголовок желтеет при наведении */
+    color: #f5c518;
+}
+
+.banner-error {
+    margin-bottom: 16px;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 107, 107, 0.35);
+    background: rgba(255, 107, 107, 0.12);
+    color: #ffd5d5;
 }

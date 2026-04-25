@@ -1,3 +1,7 @@
+@if (errorMessage) {
+  <div class="banner-error">{{ errorMessage }}</div>
+}
+
 @if (movie) {
   <div class="movie-banner" [style.backgroundImage]="'url(' + movie.backdrop + ')'" [class.fading]="isFading">
     <div class="overlay">

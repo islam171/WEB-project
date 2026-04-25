@@ -17,6 +17,7 @@ export class MovieBanner {
   router = inject(Router);
 
   isFading = false;
+  errorMessage = '';
 
   toggleWatchlist(): void {
     if (!this.movie) return;
@@ -31,9 +32,13 @@ export class MovieBanner {
         const added = res.status === 'added';
         this.movie!.inWatchlist = added;
         this.movie!.in_wishlist = added;
+        this.errorMessage = '';
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Wishlist toggle error:', err),
+      error: () => {
+        this.errorMessage = 'Failed to update watchlist. Please try again.';
+        this.cdr.detectChanges();
+      },
     });
   }
 }

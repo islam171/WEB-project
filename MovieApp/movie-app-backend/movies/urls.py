@@ -12,7 +12,6 @@ from .views import (
     WishlistDetailView,
     WishlistAddRemoveView,
     ToggleMovieLikeView,
-    ToggleActorLikeView,
     ReviewListCreateView,
     get_recent_wishlist,
     getUser,
@@ -37,7 +36,6 @@ urlpatterns = [
     path('api/wishlist/recent/', get_recent_wishlist, name='recent_wishlist'),
 
     path('api/movies/<int:id>/like/', ToggleMovieLikeView.as_view(), name='movie_like'),
-    path('api/actors/<int:id>/like/', ToggleActorLikeView.as_view(), name='actor_like'),
     path('api/movies/<int:movie_id>/reviews/', ReviewListCreateView.as_view(), name='movie_reviews'),
     path('api/category/movies', views.getCategoriesWithMovies),
 ]

@@ -12,7 +12,9 @@
 
   <div class="wishlist-content">
     @if (isUserLoggedIn) {
-      @if (recentMovies.length > 0) {
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      } @else if (recentMovies.length > 0) {
         <div class="movies-row">
           @for (movie of recentMovies; track movie.id) {
             <a [routerLink]="['/movies', movie.id]" class="movie-card">

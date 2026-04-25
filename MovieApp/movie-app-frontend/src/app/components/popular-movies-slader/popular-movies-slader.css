@@ -211,3 +211,12 @@
 .movie-link-wrapper:hover .movie-title {
   color: #f5c518;
 }
+
+.banner-error {
+  margin: 0 0 16px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ffd5d5;
+}

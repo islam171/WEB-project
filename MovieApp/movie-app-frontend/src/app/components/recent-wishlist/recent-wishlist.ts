@@ -13,21 +13,23 @@ import { Movie } from '../../models/movie.model';
 })
 export class RecentWishlistComponent implements OnInit {
   recentMovies: Movie[] = [];
-  isUserLoggedIn: boolean = false;
+  isUserLoggedIn = false;
+  errorMessage = '';
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit(): void {
-    // Проверяем авторизацию
     this.isUserLoggedIn = this.movieService.isLoggedIn();
 
-    // Если авторизован, грузим фильмы
     if (this.isUserLoggedIn) {
       this.movieService.getRecentWishlist().subscribe({
         next: (movies) => {
           this.recentMovies = movies;
+          this.errorMessage = '';
         },
-        error: (err) => console.error('Ошибка загрузки вишлиста', err),
+        error: () => {
+          this.errorMessage = 'Failed to load watchlist items. Please try again later.';
+        },
       });
     }
   }

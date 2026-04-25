@@ -1,4 +1,3 @@
-// 1. Добавляем ChangeDetectorRef в импорты
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PopularMoviesComponent } from '../../components/popular-movies-slader/popular-movies-slader';
 import { TopTenMoviesComponent } from '../../components/top-ten-movies/top-ten-movies';
@@ -9,7 +8,6 @@ import { Actor } from '../../models/actor.model';
 import { Slider } from '../../components/actor-slider/slider';
 import { ActorCard } from '../../components/actor-card/actor-card';
 import { ActorService } from '../../services/actor';
-import { MovieBanner } from '../../components/movie-banner/movie-banner';
 
 @Component({
   selector: 'app-home',
@@ -27,8 +25,9 @@ import { MovieBanner } from '../../components/movie-banner/movie-banner';
 export class HomeComponent implements OnInit {
   popularMovies: Movie[] = [];
   protected popularActors: Actor[] = [];
+  moviesError = '';
+  actorsError = '';
 
-  // 2. Инжектируем ChangeDetectorRef в конструктор
   constructor(
     private movieService: MovieService,
     private actorService: ActorService,
@@ -39,17 +38,25 @@ export class HomeComponent implements OnInit {
     this.movieService.getMovies().subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data;
-
+        this.moviesError = '';
         this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.error('Ошибка при загрузке фильмов:', err);
+      error: () => {
+        this.moviesError = 'Failed to load movies. Please try again later.';
+        this.cdr.detectChanges();
       },
     });
 
-    this.actorService.getPopularActors().subscribe((data) => {
-      this.popularActors = data.slice(0, 20);
-      this.cdr.detectChanges();
+    this.actorService.getPopularActors().subscribe({
+      next: (data) => {
+        this.popularActors = data.slice(0, 20);
+        this.actorsError = '';
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.actorsError = 'Failed to load popular actors. Please try again later.';
+        this.cdr.detectChanges();
+      },
     });
   }
 }

@@ -22,8 +22,4 @@ export class ActorService {
   getActorById(id: number): Observable<Actor> {
     return this.http.get<Actor>(this.apiUrl + `actors/${id}/`);
   }
-
-  toggleActorLike(id: number): Observable<{ status: string; actor_id: number }> {
-    return this.http.post<{ status: string; actor_id: number }>(this.apiUrl + `actors/${id}/like/`, {});
-  }
 }

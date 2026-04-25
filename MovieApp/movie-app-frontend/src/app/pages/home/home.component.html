@@ -1,6 +1,11 @@
 <div class="home-page">
   <main class="content">
     <app-popular-movies></app-popular-movies>
+
+    @if (moviesError) {
+      <div class="page-error">{{ moviesError }}</div>
+    }
+
     <app-slider
       [title]="'Popular Actors'"
       [items]="popularActors"
@@ -9,6 +14,11 @@
         <app-actor-card [actor]="actor"/>
       </ng-template>
     </app-slider>
+
+    @if (actorsError) {
+      <div class="page-error">{{ actorsError }}</div>
+    }
+
     <app-top-ten-movies [allMovies]="popularMovies"></app-top-ten-movies>
     <app-recent-wishlist></app-recent-wishlist>
   </main>

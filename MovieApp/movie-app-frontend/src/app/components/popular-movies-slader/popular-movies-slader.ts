@@ -17,6 +17,7 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
   currentMovie: Movie | null = null;
   isLoading = true;
   isFading = false;
+  errorMessage = '';
   private wishlistSubscription?: Subscription;
 
   constructor(
@@ -60,11 +61,12 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
           this.updateCurrentMovie();
         }
 
+        this.errorMessage = '';
         this.isLoading = false;
         this.cdr.detectChanges();
       },
-      error: (err: any) => {
-        console.error('Error API:', err);
+      error: () => {
+        this.errorMessage = 'Failed to load the banner movies. Please try again later.';
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -132,9 +134,13 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
         );
         this.currentMovie!.inWatchlist = added;
         this.currentMovie!.in_wishlist = added;
+        this.errorMessage = '';
         this.cdr.detectChanges();
       },
-      error: (err) => console.error('Wishlist toggle error:', err),
+      error: () => {
+        this.errorMessage = 'Failed to update watchlist. Please try again.';
+        this.cdr.detectChanges();
+      },
     });
   }
 }

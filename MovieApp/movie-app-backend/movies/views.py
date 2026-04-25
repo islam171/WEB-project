@@ -98,20 +98,6 @@ class ToggleMovieLikeView(APIView):
             return Response({'status': 'liked', 'movie_id': movie.id})
 
 
-class ToggleActorLikeView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, id):
-        actor = get_object_or_404(Actor, id=id)
-
-        if actor.liked_by.filter(id=request.user.id).exists():
-            actor.liked_by.remove(request.user)
-            return Response({'status': 'unliked', 'actor_id': actor.id})
-        else:
-            actor.liked_by.add(request.user)
-            return Response({'status': 'liked', 'actor_id': actor.id})
-
-
 class ReviewListCreateView(APIView):
     permission_classes = [AllowAny]
 

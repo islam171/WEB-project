@@ -8,7 +8,11 @@
     <p>Loading...</p>
   }
 
-  @if (!loading && movies.length === 0) {
+  @if (!loading && errorMessage) {
+    <p class="wishlist__error">{{ errorMessage }}</p>
+  }
+
+  @if (!loading && !errorMessage && movies.length === 0) {
     <p class="wishlist__empty">Your watchlist is empty right now.</p>
   }
 

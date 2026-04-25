@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.services';
-import { AsyncPipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -13,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 export class WishlistComponent implements OnInit {
   movies: Movie[] = [];
   loading = true;
+  errorMessage = '';
 
   constructor(
     public movieService: MovieService,
@@ -30,20 +30,28 @@ export class WishlistComponent implements OnInit {
       next: (w) => {
         this.movies = w.movies;
         this.loading = false;
-        this.cdr.detectChanges();  
+        this.errorMessage = '';
+        this.cdr.detectChanges();
       },
-      error: (err) => {
-        console.log(err);
+      error: () => {
+        this.errorMessage = 'Failed to load your watchlist. Please try again later.';
         this.loading = false;
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
   remove(movieId: number) {
-    this.movieService.toggleWishlist(movieId).subscribe(() => {
-      this.movies = this.movies.filter(m => m.id !== movieId);
-      this.cdr.detectChanges();
+    this.movieService.toggleWishlist(movieId).subscribe({
+      next: () => {
+        this.movies = this.movies.filter((m) => m.id !== movieId);
+        this.errorMessage = '';
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.errorMessage = 'Failed to update your watchlist. Please try again.';
+        this.cdr.detectChanges();
+      },
     });
   }
 }
