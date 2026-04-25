@@ -27,10 +27,10 @@ export class SignIn {
   onSubmit() {
     this.authService.login(this.credentials).subscribe({
       next: () => {
-        alert('РЈСЃРїРµС€РЅС‹Р№ РІС…РѕРґ!');
+        alert('Login successful!');
         this.router.navigate(['/']);
       },
-      error: () => alert('РћС€РёР±РєР° РІС…РѕРґР°: РЅРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ'),
+      error: () => alert('Login failed: incorrect username or password'),
     });
   }
 }

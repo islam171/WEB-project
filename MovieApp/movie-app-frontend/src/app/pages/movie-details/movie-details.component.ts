@@ -160,4 +160,17 @@ export class MovieDetailsComponent {
       },
     });
   }
+  deleteReview() {
+    if (!this.movie) return;
+
+    this.movieService.deleteMovieReview(this.movie.id).subscribe({
+      next: () => {
+        this.loadData(this.movie!.id);
+      },
+      error: () => {
+        this.reviewError = 'Failed to delete review';
+        this.cdr.markForCheck();
+      },
+    });
+  }
 }

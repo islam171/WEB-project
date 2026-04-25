@@ -22,4 +22,5 @@ export class ActorService {
   getActorById(id: number): Observable<Actor> {
     return this.http.get<Actor>(this.apiUrl + `actors/${id}/`);
   }
+
 }

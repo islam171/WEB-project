@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.movieService.getMovies().subscribe({
+    this.movieService.getMovies({ limit: 10 }).subscribe({
       next: (data: Movie[]) => {
         this.popularMovies = data;
         this.moviesError = '';

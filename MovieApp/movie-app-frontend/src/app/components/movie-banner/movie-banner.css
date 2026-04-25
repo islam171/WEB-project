@@ -105,33 +105,42 @@
     line-height: 1.5;
 }
 
-.watchlist-add {
-    background: none;
+/* Кнопка вишлиста рядом с заголовком */
+.wishlist-btn {
+    background: rgba(0, 0, 0, 0.65);
     border: none;
-    padding: 0;
-    cursor: pointer;
-    color: #ffffff;
+    border-radius: 10px;
+    width: 42px;
+    height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    transition: all 0.2s ease;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+
+/* Стили самого вектора */
+.wishlist-icon {
+    width: 22px;
+    height: 22px;
+    color: white;
+}
+
+/* Эффект при наведении */
+.wishlist-btn:hover {
+    background: rgba(55, 245, 0, 0.16);
+}
+
+/* Автоматически красим в желтый, если фильм уже добавлен (когда иконка закрашена) */
+.wishlist-icon.active {
+    color: #37f500;
+}
+
+.wishlist-btn--banner {
     margin-left: 15px;
-}
-
-.watchlist-add .icon-svg {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
-}
-
-.watchlist-add:hover {
-    transform: scale(1.15);
-    color: #f5c518;
-}
-
-.watchlist-add:has(path[fill="currentColor"]) {
-    color: #f5c518;
+    position: relative;
+    z-index: 3;
 }
 
 .arrow-btn {

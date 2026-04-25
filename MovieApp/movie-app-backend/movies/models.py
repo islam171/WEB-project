@@ -22,7 +22,6 @@ class Actor(models.Model):
     def __str__(self):
         return self.name
 
-
 class Movie(models.Model):
     tmdb_id = models.IntegerField(unique=True, null=True, blank=True) # ID из внешнего API
     title = models.CharField(max_length=255)
@@ -38,7 +37,6 @@ class Movie(models.Model):
     short_description = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
-    # Постеры из API (TMDB отдает просто пути, так что URLField отлично подойдет)
     poster = models.URLField(blank=True, null=True)
     backdrop = models.URLField(blank=True, null=True)
     videoUrl = models.URLField(blank=True, null=True)
@@ -47,14 +45,11 @@ class Movie(models.Model):
     actors = models.ManyToManyField('Actor', related_name='movies')
     categories = models.ManyToManyField(Category, related_name='movies')
     liked_by = models.ManyToManyField(User, related_name='liked_movies', blank=True)
-
     def __str__(self):
         return f"{self.title} ({self.year})"
 
     @property
     def display_likes(self):
-        # ВОТ ГЛАВНАЯ МАГИЯ:
-        # Берем базу из API (например, 3299) + прибавляем количество локальных юзеров (например, 1) = 3300
         return self.api_likes + self.liked_by.count()
 
     @property

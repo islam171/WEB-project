@@ -1,12 +1,15 @@
-@if (MoviesGenre && !loading) {
-  @for (movieGenre of MoviesGenre; track movieGenre.id) {
-    @if (movieGenre.movies.length != 0) {
-
-      <app-slider [items]="movieGenre.movies" [viewAllLink]="'/catalog'" [title]="movieGenre.name" [itemsToShow]="1" [queryParams]="{genres: movieGenre.id}">
-        <ng-template #itemTemplate let-movie>
-          <app-movie-banner [movie]="movie" />
-        </ng-template>
-      </app-slider>
+<div class="categories-page">
+  @if (MoviesGenre && !loading) {
+    @for (movieGenre of MoviesGenre; track movieGenre.id) {
+      @if (movieGenre.movies.length != 0) {
+        <section class="category-slider-frame">
+          <app-slider [items]="movieGenre.movies" [viewAllLink]="'/catalog'" [title]="movieGenre.name" [itemsToShow]="1" [queryParams]="{genres: movieGenre.id}">
+            <ng-template #itemTemplate let-movie>
+              <app-movie-banner [movie]="movie" />
+            </ng-template>
+          </app-slider>
+        </section>
+      }
     }
   }
-}
+</div>

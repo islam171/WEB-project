@@ -175,14 +175,18 @@
   background: #4cff19;
 }
 
+.action-btn:active {
+  background: #1a6d06;
+}
+
 .action-btn--ghost {
-  background: rgba(255, 255, 255, 0.08);
+  background: #bd0000;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .action-btn--ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: #9d0000;
 }
 
 .action-count {

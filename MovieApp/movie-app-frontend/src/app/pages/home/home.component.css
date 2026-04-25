@@ -5,10 +5,17 @@
 }
 
 .content {
-  margin: 0 100px;
+  width: min(100% - 48px, 1350px);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: min(100% - 32px, 1350px);
+  }
 }
 
 .page-error {

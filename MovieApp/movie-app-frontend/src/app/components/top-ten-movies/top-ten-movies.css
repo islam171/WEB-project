@@ -1,8 +1,8 @@
 .top-ten-section {
   margin: 40px auto;
-  padding: 0 20px;
+  padding: 0;
   color: white;
-  max-width: 1440px;
+  width: 100%;
 }
 
 .section-header {
@@ -28,11 +28,11 @@
 
 .top-ten-grid-box {
   width: 100%;
-  max-width: 1000px;
+  max-width: none;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .top-three-row {
