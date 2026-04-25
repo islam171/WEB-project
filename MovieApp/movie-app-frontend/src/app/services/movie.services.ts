@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { Observable, BehaviorSubject, map, tap } from 'rxjs';
 import { Movie, IReview } from '../models/movie.model';
 import { Actor } from '../models/actor.model';
 
@@ -15,10 +15,11 @@ export class MovieService {
 
   getMovies(params?: any): Observable<Movie[]> {
     return this.http.get<Movie[]>(this.apiUrl + 'movies/', { params }).pipe(
+      map((movies) => movies.map((movie) => this.normalizeMovie(movie))),
       tap((movies) => {
         const ids = new Set<number>();
         movies.forEach((movie) => {
-          if (movie.in_wishlist || movie.inWatchlist) {
+          if (movie.inWatchlist) {
             ids.add(movie.id);
           }
         });
@@ -32,27 +33,27 @@ export class MovieService {
   }
 
   getMovieById(id: number): Observable<Movie> {
-    return this.http.get<Movie>(this.apiUrl + 'movies/' + id + '/');
+    return this.http
+      .get<Movie>(this.apiUrl + 'movies/' + id + '/')
+      .pipe(map((movie) => this.normalizeMovie(movie)));
   }
 
   getMoviesFilter(params: any): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl + 'movies/', { params }).pipe(
-      tap((movies) => {
-        const ids = new Set<number>();
-        movies.forEach((movie) => {
-          if (movie.in_wishlist || movie.inWatchlist) {
-            ids.add(movie.id);
-          }
-        });
-        this.wishlistIds$.next(ids);
-      }),
-    );
+    return this.getMovies(params);
   }
 
   getWishlist(): Observable<{ id: number; movies: Movie[] }> {
     return this.http
       .get<{ id: number; movies: Movie[] }>(this.apiUrl + 'wishlist/')
-      .pipe(tap((w) => this.wishlistIds$.next(new Set(w.movies.map((m: Movie) => m.id)))));
+      .pipe(
+        map((wishlist) => ({
+          ...wishlist,
+          movies: wishlist.movies.map((movie) => this.normalizeMovie(movie)),
+        })),
+        tap((wishlist) =>
+          this.wishlistIds$.next(new Set(wishlist.movies.map((movie: Movie) => movie.id))),
+        ),
+      );
   }
 
   get wishlistIds() {
@@ -82,7 +83,9 @@ export class MovieService {
   }
 
   getRecentWishlist(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(this.apiUrl + 'wishlist/recent/');
+    return this.http
+      .get<Movie[]>(this.apiUrl + 'wishlist/recent/')
+      .pipe(map((movies) => movies.map((movie) => this.normalizeMovie(movie))));
   }
 
   toggleMovieLike(movieId: number): Observable<any> {
@@ -99,5 +102,12 @@ export class MovieService {
 
   deleteMovieReview(movieId: number | undefined): Observable<any> {
     return this.http.delete<any>(this.apiUrl + `movies/${movieId}/reviews/`);
+  }
+
+  private normalizeMovie(movie: Movie & { in_wishlist?: boolean }): Movie {
+    return {
+      ...movie,
+      inWatchlist: movie.inWatchlist ?? movie.in_wishlist ?? false,
+    };
   }
 }

@@ -102,7 +102,7 @@ export class MovieDetailsComponent {
       next: (res) => {
         if (!this.movie) return;
         const added = res.status === 'added';
-        this.movie.in_wishlist = added;
+        this.movie.inWatchlist = added;
         this.cdr.markForCheck();
       },
       error: () => {

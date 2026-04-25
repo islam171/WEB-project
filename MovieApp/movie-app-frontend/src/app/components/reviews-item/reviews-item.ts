@@ -18,7 +18,7 @@ export class ReviewsItem {
   movieService = inject(MovieService);
 
   deleteReview(){
-    this.deleted.emit("cliick");
+    this.deleted.emit("click");
   }
 
 }

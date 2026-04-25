@@ -27,7 +27,6 @@ export interface Movie {
   actors?: Actor[];
 
   inWatchlist?: boolean;
-  in_wishlist?: boolean;
   is_liked?: boolean;
 }
 

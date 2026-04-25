@@ -55,7 +55,7 @@
 
           <div class="movie__actions">
             <button class="action-btn action-btn--primary" type="button" (click)="toggleWishlist()">
-              {{ (movie.inWatchlist || movie.in_wishlist) ? 'Remove from wishlist' : 'Add to wishlist' }}
+              {{ movie.inWatchlist ? 'Remove from wishlist' : 'Add to wishlist' }}
             </button>
 
             <button class="action-btn action-btn--ghost" type="button" (click)="toggleMovieLike()">

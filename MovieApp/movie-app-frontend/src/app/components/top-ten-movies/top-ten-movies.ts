@@ -28,7 +28,6 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
         return {
           ...movie,
           inWatchlist: inWishlist,
-          in_wishlist: inWishlist,
         };
       });
       this.cdr.detectChanges();
@@ -39,8 +38,6 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
     if (this.allMovies && this.allMovies.length > 0) {
       this.topTen = this.allMovies.slice(0, 10).map((movie) => ({
         ...movie,
-        inWatchlist: movie.inWatchlist ?? movie.in_wishlist ?? false,
-        in_wishlist: movie.in_wishlist ?? movie.inWatchlist ?? false,
       }));
     }
   }
@@ -63,11 +60,10 @@ export class TopTenMoviesComponent implements OnChanges, OnInit, OnDestroy {
         const added = res.status === 'added';
         this.topTen = this.topTen.map((item) =>
           item.id === movie.id
-            ? { ...item, inWatchlist: added, in_wishlist: added }
+            ? { ...item, inWatchlist: added }
             : item,
         );
         movie.inWatchlist = added;
-        movie.in_wishlist = added;
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Wishlist toggle error:', err),

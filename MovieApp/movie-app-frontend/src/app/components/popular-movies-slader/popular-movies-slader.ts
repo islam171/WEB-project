@@ -33,7 +33,6 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
         return {
           ...movie,
           inWatchlist: inWishlist,
-          in_wishlist: inWishlist,
         };
       });
 
@@ -42,7 +41,6 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
         this.currentMovie = {
           ...this.currentMovie,
           inWatchlist: inWishlist,
-          in_wishlist: inWishlist,
         };
       }
 
@@ -51,11 +49,7 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
 
     this.movieService.getMovies({ limit: 20 }).subscribe({
       next: (data: Movie[]) => {
-        this.popularMovies = data.map((movie) => ({
-          ...movie,
-          inWatchlist: movie.inWatchlist ?? movie.in_wishlist ?? false,
-          in_wishlist: movie.in_wishlist ?? movie.inWatchlist ?? false,
-        }));
+        this.popularMovies = data;
 
         if (this.popularMovies.length > 0) {
           this.updateCurrentMovie();
@@ -129,11 +123,10 @@ export class PopularMoviesComponent implements OnInit, OnDestroy {
         const added = res.status === 'added';
         this.popularMovies = this.popularMovies.map((movie) =>
           movie.id === this.currentMovie!.id
-            ? { ...movie, inWatchlist: added, in_wishlist: added }
+            ? { ...movie, inWatchlist: added }
             : movie,
         );
         this.currentMovie!.inWatchlist = added;
-        this.currentMovie!.in_wishlist = added;
         this.errorMessage = '';
         this.cdr.detectChanges();
       },

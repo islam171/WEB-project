@@ -31,7 +31,6 @@ export class MovieBanner {
       next: (res) => {
         const added = res.status === 'added';
         this.movie!.inWatchlist = added;
-        this.movie!.in_wishlist = added;
         this.errorMessage = '';
         this.cdr.detectChanges();
       },
