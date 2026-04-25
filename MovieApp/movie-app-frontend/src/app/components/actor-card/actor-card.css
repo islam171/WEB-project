@@ -22,6 +22,14 @@
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
+.actor-photo--placeholder {
+  object-fit: contain;
+  box-sizing: border-box;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  filter: grayscale(1) brightness(1.55);
+}
+
 .actor-photo:hover {
   border-color: #37f300;
   transform: translateY(-4px);

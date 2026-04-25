@@ -3,7 +3,10 @@
     <div class="actor-layout">
       <aside class="actor-sidebar">
         <div class="actor-photo-card">
-          <img [src]="actor.photo" [alt]="actor.name">
+          <img
+            [src]="actor.photo || 'assets/Icons/actor.png'"
+            [alt]="actor.name"
+            [class.actor-photo-card__placeholder]="!actor.photo">
         </div>
 
         <div class="actor-side-panel">

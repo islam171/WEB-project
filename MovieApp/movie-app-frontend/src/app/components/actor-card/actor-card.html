@@ -2,7 +2,11 @@
   @if (actor) {
     <div class="actor-card__frame">
       <a [routerLink]="['/actors', actor.id]" class="actor-link">
-        <img [src]="actor.photo || 'assets/Icons/actor.png'" [alt]="actor.name" class="actor-photo">
+        <img
+          [src]="actor.photo || 'assets/Icons/actor.png'"
+          [alt]="actor.name"
+          class="actor-photo"
+          [class.actor-photo--placeholder]="!actor.photo">
         <p class="actor-name">{{ actor.name }}</p>
       </a>
       <div class="actor-popularity">Popularity: {{ actor.popularity }}</div>

@@ -38,6 +38,14 @@
   display: block;
 }
 
+.actor-photo-card__placeholder {
+  object-fit: contain;
+  box-sizing: border-box;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  filter: grayscale(1) brightness(1.55);
+}
+
 .actor-side-panel {
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
