@@ -1,0 +1,319 @@
+{
+  "info": {
+    "name": "MovieApp API",
+    "description": "Postman collection for MovieApp Angular + Django project defense.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"UserTest\",\n  \"email\": \"usertest@example.com\",\n  \"password\": \"1234\"\n}"
+            },
+            "url": "{{base_url}}/register/"
+          },
+          "response": [
+            {
+              "name": "Created user",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"UserTest\",\n  \"email\": \"usertest@example.com\",\n  \"password\": \"1234\"\n}"
+                },
+                "url": "{{base_url}}/register/"
+              },
+              "status": "Created",
+              "code": 201,
+              "body": "{\n  \"id\": 1,\n  \"username\": \"UserTest\",\n  \"email\": \"usertest@example.com\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data.access) pm.collectionVariables.set('access_token', data.access);",
+                  "if (data.refresh) pm.collectionVariables.set('refresh_token', data.refresh);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"UserTest\",\n  \"password\": \"1234\"\n}"
+            },
+            "url": "{{base_url}}/login/"
+          },
+          "response": [
+            {
+              "name": "JWT tokens",
+              "originalRequest": {
+                "method": "POST",
+                "header": [{ "key": "Content-Type", "value": "application/json" }],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"UserTest\",\n  \"password\": \"1234\"\n}"
+                },
+                "url": "{{base_url}}/login/"
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"refresh\": \"<refresh_token>\",\n  \"access\": \"<access_token>\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": "{{base_url}}/login/refresh/"
+          },
+          "response": []
+        },
+        {
+          "name": "Current user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/user/"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": "{{base_url}}/logout/"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "item": [
+        {
+          "name": "Get all movies",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/" },
+          "response": []
+        },
+        {
+          "name": "Get limited movies",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/?limit=20" },
+          "response": []
+        },
+        {
+          "name": "Search movies",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/?search=avatar" },
+          "response": []
+        },
+        {
+          "name": "Filter movies by genre",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/?genres={{genre_id}}" },
+          "response": []
+        },
+        {
+          "name": "Get movie detail",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/{{movie_id}}/" },
+          "response": []
+        },
+        {
+          "name": "Toggle movie like",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [],
+            "url": "{{base_url}}/movies/{{movie_id}}/like/"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get categories",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/category/" },
+          "response": []
+        },
+        {
+          "name": "Get categories with movies",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/category/movies" },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Actors",
+      "item": [
+        {
+          "name": "Get all actors",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/actors/" },
+          "response": []
+        },
+        {
+          "name": "Get popular actors",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/actors/popular/" },
+          "response": []
+        },
+        {
+          "name": "Get actor detail",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/actors/{{actor_id}}/" },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {
+          "name": "Get wishlist",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/wishlist/"
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle wishlist movie",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"movie_id\": {{movie_id}}\n}" },
+            "url": "{{base_url}}/wishlist/toggle/"
+          },
+          "response": []
+        },
+        {
+          "name": "Get recent wishlist",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/wishlist/recent/"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reviews CRUD",
+      "item": [
+        {
+          "name": "Read movie reviews",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/movies/{{movie_id}}/reviews/" },
+          "response": []
+        },
+        {
+          "name": "Create review",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"text\": \"Great movie!\",\n  \"rating\": 9\n}" },
+            "url": "{{base_url}}/movies/{{movie_id}}/reviews/"
+          },
+          "response": []
+        },
+        {
+          "name": "Get review detail",
+          "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [], "url": "{{base_url}}/reviews/{{review_id}}/" },
+          "response": []
+        },
+        {
+          "name": "Update review by review id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"text\": \"Updated review text\",\n  \"rating\": 8\n}" },
+            "url": "{{base_url}}/reviews/{{review_id}}/"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete review by review id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [{ "key": "token", "value": "{{access_token}}", "type": "string" }]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": "{{base_url}}/reviews/{{review_id}}/"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000/api" },
+    { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" },
+    { "key": "movie_id", "value": "1" },
+    { "key": "actor_id", "value": "1" },
+    { "key": "genre_id", "value": "1" },
+    { "key": "review_id", "value": "1" }
+  ]
+}

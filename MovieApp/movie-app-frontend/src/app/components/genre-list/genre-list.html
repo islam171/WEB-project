@@ -1,0 +1,13 @@
+<div class="genres">
+  @for(genre of (genres$ | async); track genre.id){
+    <div class="genre">
+      <input type="checkbox" [checked]="isGenreSelected(genre.id)"
+             (change)="toggleGenre(genre.id)" [id]="'genre-' + genre.id" class="genre__input">
+      <label [for]="'genre-' + genre.id" class="genre__label">
+        {{ genre.name }}
+      </label>
+    </div>
+  } @empty {
+    <div class="loading">Loading...</div>
+  }
+</div>

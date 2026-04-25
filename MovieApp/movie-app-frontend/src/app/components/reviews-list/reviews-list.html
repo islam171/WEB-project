@@ -1,7 +1,11 @@
 <div class="reviews">
-    <div class="reviews__list">
-        @for(review of reviews; track review.id){
-            <app-reviews-item [review]="review"/>
-        }
-    </div>
+  <div class="reviews__list">
+    @for (review of reviews; track review.id) {
+      <app-reviews-item [review]="review" (deleted)="deleteReview($event)"/>
+    }
+  </div>
+
+  @if (reviews.length === 0) {
+    <div class="reviews__empty">No reviews yet.</div>
+  }
 </div>

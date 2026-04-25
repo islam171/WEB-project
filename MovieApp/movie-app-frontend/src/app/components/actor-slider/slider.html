@@ -1,0 +1,69 @@
+<div class="slider-section">
+  <div class="section-header">
+    <div class="green-bar"></div>
+    @if (title) {
+      <h2>{{ title }}</h2>
+    }
+
+    @if (viewAllLink) {
+      <a [routerLink]="viewAllLink" [queryParams]="queryParams" class="view-all-btn">
+        View All
+        <img src="assets/Icons/right-arrow.png" alt=">">
+      </a>  
+    }
+  </div>
+
+  <div class="slider-container">
+    <button class="nav-btn prev-btn" (click)="prev()" [disabled]="currentIndex === 0">
+      <img src="assets/Icons/left-arrow.png" alt="Prev">
+    </button>
+
+    <div class="slider-viewport">
+      <div
+        class="items-track"
+        [style.transform]="trackTransform"
+        [style.--items-to-show]="itemsToShow"
+      >
+        @for (item of items; track item.id) {
+          <div class="slide-item">
+            @if (itemTemplate) {
+              <ng-container
+                [ngTemplateOutlet]="itemTemplate"
+                [ngTemplateOutletContext]="{ $implicit: item }">
+              </ng-container>
+            } @else {
+              <div class="item-card">
+                @if (isActor(item)) {
+                  <a [routerLink]="['/actors', item.id]" class="item-link">
+                    <img
+                      [src]="item.photo || 'assets/Icons/actor.png'"
+                      [alt]="item.name"
+                      class="item-photo item-photo--actor"
+                    >
+                    <p class="item-name">{{ item.name }}</p>
+                    <div class="item-badge">Popularity: {{ item.popularity }}</div>
+                  </a>
+                }
+
+                @if (isMovie(item)) {
+                  <a [routerLink]="['/movies', item.id]" class="item-link">
+                    <img
+                      [src]="item.poster || 'assets/Icons/movie.png'"
+                      [alt]="item.title"
+                      class="item-photo"
+                    >
+                    <p class="item-name">{{ item.title }}</p>
+                  </a>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <button class="nav-btn next-btn" (click)="next()" [disabled]="currentIndex >= maxIndex">
+      <img src="assets/Icons/left-arrow.png" alt="Next">
+    </button>
+  </div>
+</div>

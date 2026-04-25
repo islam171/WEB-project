@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
     'movies',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,14 @@ MEDIA_URL = '/media/'
 
 # Физический путь на диске, где будут лежать файлы
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Это отключит CSRF проверку для всех API эндпоинтов. 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}

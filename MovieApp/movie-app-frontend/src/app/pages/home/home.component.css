@@ -1,9 +1,27 @@
 .home-page {
-  background-color: #000000;
+  background: transparent;
   color: white;
   min-height: 100vh;
 }
 
 .content {
-  margin: 0 100px;
+  width: min(100% - 48px, 1350px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: min(100% - 32px, 1350px);
+  }
+}
+
+.page-error {
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ffd5d5;
 }

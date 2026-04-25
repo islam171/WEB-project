@@ -1,0 +1,67 @@
+<div class="actor-page">
+  @if (actor) {
+    <div class="actor-layout">
+      <aside class="actor-sidebar">
+        <div class="actor-photo-card">
+          <img [src]="actor.photo" [alt]="actor.name">
+        </div>
+
+        <div class="actor-side-panel">
+          <h3>Personal Info</h3>
+          <div class="info-row">
+            <div class="info-label">Known For</div>
+            <div class="info-value">Acting</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Popularity</div>
+            <div class="info-value">{{ actor.popularity }}</div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="actor-content">
+        <h1 class="actor-name">{{ actor.name }}</h1>
+
+        <div class="content-block">
+          <h2>Biography</h2>
+          <p>{{ actor.desc || 'Biography is not available yet.' }}</p>
+        </div>
+
+        <div class="content-block">
+          <h2>Known For</h2>
+
+          @if (actor.movies?.length) {
+            <div class="known-for-grid">
+              @for (movie of actor.movies; track movie.id) {
+                <a class="known-for-card" [routerLink]="['/movies', movie.id]">
+                  <img [src]="movie.poster || 'assets/Icons/movie.png'" [alt]="movie.title">
+                  <div class="known-for-title">{{ movie.title }}</div>
+                </a>
+              }
+            </div>
+          } @else {
+            <div class="known-for-empty">Movies are not available yet.</div>
+          }
+        </div>
+      </section>
+    </div>
+  } @else {
+    <div class="actor-layout actor-layout--loading">
+      <aside class="actor-sidebar">
+        <div class="actor-photo-card skeleton-box"></div>
+        <div class="actor-side-panel">
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line"></div>
+          <div class="skeleton-line"></div>
+        </div>
+      </aside>
+
+      <section class="actor-content">
+        <div class="skeleton-line title"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+        <div class="skeleton-line"></div>
+      </section>
+    </div>
+  }
+</div>

@@ -1,0 +1,14 @@
+<div class="sort" [ngClass]="{'active': SortBarIsOpen}">
+  <div class="sort__inner" (click)="showSort()">
+    <div class="text">
+      Sort By
+    </div>
+    <div class="order">{{ order().title }}</div>
+
+  </div>
+  <div class="sort__list">
+    @for(order of orders; track order.id){
+      <div class="sort__item" (click)="selectOrder(order)">{{ order.title }}</div>
+    }
+  </div>
+</div>

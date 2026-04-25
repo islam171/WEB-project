@@ -4,13 +4,26 @@
     </a>
   <div class="nav-right">
     <div class="nav-links">
-      <a href="#"><img src="../../../assets/Icons/search.png" alt="Search" style="width: 20px;"> Search</a>
-      <a routerLink="/watchlist"><img src="../../../assets/Icons/wishlist.png" alt="Watchlist" style="width: 20px;"> Watchlist</a>
-      <a routerLink="/catalog"><img src="../../../assets/Icons/category.png" alt="Categories" style="width: 20px;"> Categories</a>
+      <a routerLink="/catalog"><img src="../../../assets/Icons/search.png" alt="Search" style="width: 20px;"> Search</a>
+      <a routerLink="/actors"><img src="../../../assets/Icons/mask.png" alt="Actors" style="width: 20px;"> Actors</a>
+      <a routerLink="/wishlist"><img src="../../../assets/Icons/wishlist.png" alt="Watchlist" style="width: 20px;"> Watchlist</a>
+      <a routerLink="/category"><img src="../../../assets/Icons/category.png" alt="Categories" style="width: 20px;"> Categories</a>
       <a routerLink="/about"><img src="../../../assets/Icons/info-button.png" alt="About us" style="width: 20px;"> About us</a>
     </div>
-    <button class="sign-in">
-      <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Sign in
-    </button>
+
+
+
+    @if (currentUser$ | async; as user) {
+      <div class="user-info">
+        <span>Welcome {{ user.username }}!</span>
+      </div>
+      <button routerLink="sign-in" class="sign-in" (click)="logout()">
+        <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Log out
+      </button>
+    } @else {
+      <button routerLink="sign-in" class="sign-in">
+        <img src="../../../assets/Icons/log-in.png" alt="" style="width: 16px; margin-right: 5px;"> Sign in
+      </button>
+    }
   </div>
 </header>

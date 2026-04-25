@@ -1,0 +1,51 @@
+<div class="recent-wishlist-section">
+  <div class="section-header">
+    <div class="green-bar"></div>
+    <h2 class="title">From your Watchlist</h2>
+
+    @if (isUserLoggedIn) {
+      <a routerLink="/wishlist" class="view-all-link">
+        View All <img src="assets/Icons/right-arrow.png" alt=">">
+      </a>
+    }
+  </div>
+
+  <div class="wishlist-content">
+    @if (isUserLoggedIn) {
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      } @else if (recentMovies.length > 0) {
+        <div class="movies-row">
+          @for (movie of recentMovies; track movie.id) {
+            <a [routerLink]="['/movies', movie.id]" class="movie-card">
+              <img [src]="movie.poster || 'assets/Movies-Photos/Mario/background.jpg'" [alt]="movie.title" class="poster-img">
+              <div class="bookmark-ribbon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon-svg" fill="#f5c518">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                </svg>
+              </div>
+              <div class="movie-card__overlay">
+                <div class="movie-card__title">{{ movie.title }}</div>
+                <div class="movie-card__meta">
+                  <span>{{ movie.year }}</span>
+                  <span>{{ movie.duration || 'Runtime soon' }}</span>
+                </div>
+              </div>
+            </a>
+          }
+        </div>
+      } @else {
+        <div class="empty-message">
+          <p>Your watchlist is empty. Add some movies!</p>
+        </div>
+      }
+    } @else {
+      <div class="login-prompt">
+        <img src="assets/Icons/bookmark.svg" class="prompt-icon" alt="bookmark">
+        <p>Sign in to access your Watchlist</p>
+        <p class="prompt-subtext">Save shows and movies to keep track of what you want to watch.</p>
+        <a routerLink="/sign-in" class="sign-in-btn">Sign In</a>
+      </div>
+    }
+  </div>
+</div>

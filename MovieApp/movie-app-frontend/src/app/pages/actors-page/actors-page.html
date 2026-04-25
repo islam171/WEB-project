@@ -1,0 +1,57 @@
+<div class="actors-page">
+  <div class="page-header">
+    <div class="title-group">
+      <div class="green-bar"></div>
+      <div>
+        <h1>All Actors</h1>
+        <p>Browse every actor in the collection and sort them by popularity or surname.</p>
+      </div>
+    </div>
+
+    <div class="filters-panel">
+      <label class="actor-search">
+        <span class="filter-label">Search</span>
+        <span class="actor-search-field">
+          <input type="text" placeholder="Actor name" (input)="onActorSearchChange($event)">
+          <img src="assets/Icons/search.png" alt="">
+        </span>
+      </label>
+
+      <div class="filter-group">
+        <span class="filter-label">Popularity</span>
+        <div class="filter-buttons">
+          <button type="button" [class.active]="popularitySort === 'desc'" (click)="setPopularitySort('desc')">High to Low</button>
+          <button type="button" [class.active]="popularitySort === 'asc'" (click)="setPopularitySort('asc')">Low to High</button>
+          <button type="button" [class.active]="popularitySort === 'default'" (click)="setPopularitySort('default')">Default</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">Surname</span>
+        <div class="filter-buttons">
+          <button type="button" [class.active]="surnameSort === 'asc'" (click)="setSurnameSort('asc')">A to Z</button>
+          <button type="button" [class.active]="surnameSort === 'desc'" (click)="setSurnameSort('desc')">Z to A</button>
+          <button type="button" [class.active]="surnameSort === 'default'" (click)="setSurnameSort('default')">Default</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="actors-grid">
+      @for (_ of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
+        <app-actor-card></app-actor-card>
+      }
+    </div>
+  } @else if (error) {
+    <div class="state-card error-state">{{ error }}</div>
+  } @else if (!sortedActors.length) {
+    <div class="state-card">No actors found.</div>
+  } @else {
+    <div class="actors-grid">
+      @for (actor of sortedActors; track actor.id) {
+        <app-actor-card [actor]="actor"></app-actor-card>
+      }
+    </div>
+  }
+</div>
